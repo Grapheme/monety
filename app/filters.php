@@ -31,7 +31,7 @@ Route::filter('auth', function(){
 
 Route::filter('login', function(){
 	if(Auth::check()):
-		return Redirect::to(Auth::user()->groups()->first()->dashboard);
+		return Redirect::to(AuthAccount::getStartPage());
 	endif;
 });
 
@@ -40,10 +40,18 @@ Route::filter('auth.basic', function(){
 });
 
 Route::filter('admin.auth', function(){
-	if(Auth::guest()):
-		return Redirect::to('login');
-	elseif(Auth::user()->groups()->first()->group_id > 1):
-		return Redirect::to(Auth::user()->groups()->first()->dashboard);
+	if(AuthAccount::isAdminLoggined()):
+		return Redirect::to(AuthAccount::getStartPage());
+	else:
+		return Redirect::to('/');
+	endif;
+});
+
+Route::filter('user.auth', function(){
+	if(AuthAccount::isUserLoggined()):
+		return Redirect::to(AuthAccount::getStartPage());
+	else:
+		return Redirect::to('/');
 	endif;
 });
 

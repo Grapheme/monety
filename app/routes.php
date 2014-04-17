@@ -2,16 +2,20 @@
 
 $prefix = '';
 if(Auth::check()):
-	$prefix = Auth::user()->groups()->first()->dashboard;
+	$prefix = AuthAccount::getStartPage();
 endif;
 
 Route::group(array('before'=>'admin.auth','prefix'=>$prefix),function(){
-	Route::get('/', 'AdminController@mainPage');
+	Route::get('/','AdminCabinetController@mainPage');
 	Route::controller('users', 'UsersController');
 	Route::controller('languages', 'LangController');
 	Route::controller('templates', 'TempsController');
 	Route::controller('groups', 'GroupsController');
 	Route::controller('settings', 'SettingsController');
+});
+
+Route::group(array('before'=>'user.auth','prefix'=>$prefix),function(){
+	Route::get('/','UserCabinetController@mainPage');
 });
 
 Route::group(array('before'=>'auth'),function(){

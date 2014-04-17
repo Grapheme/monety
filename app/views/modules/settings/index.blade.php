@@ -26,7 +26,7 @@
 		</form>
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-		<form action="{{slink::createLink(Auth::user()->groups()->first()->dashboard.'/settings/adminlanguagechange')}}" class="smart-form">
+		<form action="{{slink::createLink(AuthAccount::getStartPage().'/settings/adminlanguagechange')}}" class="smart-form">
 			<fieldset>
 				<section>
 					<label class="label">Текущий язык:</label>

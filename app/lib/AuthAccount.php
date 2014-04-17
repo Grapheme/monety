@@ -15,14 +15,31 @@ class AuthAccount {
 		endif;
 	}
 	
-	public static function isAdminLoggined(){
+	public static function getGroupID(){
 		
 		if(Auth::check()):
-			if(Auth::user()->groups()->first()->id == 1):
-				return TRUE;
-			endif;
+			return  Auth::user()->groups()->first()->id;
+		else:
+			return FALSE;
 		endif;
-		return FALSE;
+	}
+	
+	public static function isAdminLoggined(){
+		
+		if(self::getGroupID() == 1):
+			return TRUE;
+		else:
+			return FALSE;
+		endif;
+	}
+	
+	public static function isUserLoggined(){
+		
+		if(self::getGroupID() == 2):
+			return TRUE;
+		else:
+			return FALSE;
+		endif;
 	}
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-class AdminController extends BaseController {
+class UserCabinetController extends BaseController {
 	
 	public function __construct(){
 		
@@ -9,7 +9,7 @@ class AdminController extends BaseController {
 	
 	public function mainPage(){
 		
-		return View::make('admin.dashboard');
+		return View::make('user-cabinet.dashboard');
 	}
 
 }
