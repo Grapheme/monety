@@ -4,7 +4,6 @@ App::before(function($request){
 	//
 });
 
-
 App::after(function($request, $response){
 	//
 });
@@ -23,7 +22,6 @@ App::error(function(Exception $exception, $code){
 });
 
 Route::filter('auth', function(){
-
 	if(Auth::guest()):
 		return App::abort(404);
 	endif;
@@ -40,18 +38,16 @@ Route::filter('auth.basic', function(){
 });
 
 Route::filter('admin.auth', function(){
-	if(AuthAccount::isAdminLoggined()):
-		return Redirect::to(AuthAccount::getStartPage());
-	else:
-		return Redirect::to('/');
+	
+	if(!AuthAccount::isAdminLoggined()):
+		return Redirect::to('login');
 	endif;
 });
 
 Route::filter('user.auth', function(){
-	if(AuthAccount::isUserLoggined()):
-		return Redirect::to(AuthAccount::getStartPage());
-	else:
-		return Redirect::to('/');
+	
+	if(!AuthAccount::isUserLoggined()):
+		return Redirect::to('login');
 	endif;
 });
 
