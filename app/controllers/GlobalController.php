@@ -83,7 +83,7 @@ class GlobalController extends \BaseController {
 			$account->touch();
 			Auth::login($account);
 			if(Auth::check()):
-				return Redirect::to(slink::createAuthLink());
+				return Redirect::to(AuthAccount::getStartPage());
 			endif;
 		else:
 			return App::abort(404);

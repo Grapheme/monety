@@ -40,14 +40,14 @@ Route::filter('auth.basic', function(){
 Route::filter('admin.auth', function(){
 	
 	if(!AuthAccount::isAdminLoggined()):
-		return Redirect::to('login');
+		return Redirect::to('/');
 	endif;
 });
 
 Route::filter('user.auth', function(){
 	
 	if(!AuthAccount::isUserLoggined()):
-		return Redirect::to('login');
+		return Redirect::to('/');
 	endif;
 });
 

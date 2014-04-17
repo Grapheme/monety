@@ -29,7 +29,7 @@ class slink {
 		if(Auth::check()):
 			return self::createLink(AuthAccount::getStartPage().$link);
 		else:
-			return url(AuthAccount::getStartPage().$link);
+			return url($link);
 		endif;
 	}
 
