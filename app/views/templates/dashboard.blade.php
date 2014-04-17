@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-	@include('templates.user-cabinet.head')
+	@include('templates.dashboard.head')
 	@yield('style')
 </head>
 <body class="smart-style-2">
 	<!--[if IE 7]><h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1><![endif]-->
-	@include('templates.user-cabinet.header')
-	@include('templates.user-cabinet.sidebar')
+	@include('templates.dashboard.header')
+	@include('templates.dashboard.sidebar')
 	<div id="main" role="main">
 		<div id="content">
 			@yield('content')
 		</div>
-		<!--@include('templates.user-cabinet.footer')-->
+		<!--@include('templates.dashboard.footer')-->
 	</div>
-	@include('templates.user-cabinet.scripts')
+	@include('templates.dashboard.scripts')
 	@yield('scripts')
 </body>
 </html>
