@@ -22,7 +22,7 @@ class HomeController extends BaseController {
 		endif;
 		if(!empty($news->template) && View::exists('templates.'.$news->template)):
 			return View::make('templates.'.$news->template,array('news'=>$news,'page_title'=>$news->seo_title,'page_description'=>$news->seo_description,
-					'pege_keywords'=>$news->seo_keywords,'page_author'=>'','page_h1'=>$news->seo_h1,'main_menu'=> Page::getMainMenu('news')));
+					'pege_keywords'=>$news->seo_keywords,'page_author'=>'','page_h1'=>$news->seo_h1,'menu'=> Page::getMenu('news')));
 		else:
 			return App::abort(404,'Отсутсвует шаблон: templates/'.$news->template);
 		endif;
@@ -43,7 +43,7 @@ class HomeController extends BaseController {
 		endif;
 		if(!empty($article->template) && View::exists('templates.'.$article->template)):
 			return View::make('templates.'.$article->template,array('article'=>$article,'page_title'=>$article->seo_title,'page_description'=>$article->seo_description,
-					'pege_keywords'=>$article->seo_keywords,'page_author'=>'','page_h1'=>$article->seo_h1,'main_menu'=> Page::getMainMenu('news')));
+					'pege_keywords'=>$article->seo_keywords,'page_author'=>'','page_h1'=>$article->seo_h1,'menu'=> Page::getMenu('news')));
 		else:
 			return App::abort(404,'Отсутсвует шаблон: templates/'.$article->template);
 		endif;

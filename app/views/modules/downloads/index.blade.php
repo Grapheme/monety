@@ -27,7 +27,4 @@
 @stop
 @section('scripts')
 <script src="{{slink::path('js/vendor/dropzone.min.js')}}"></script>
-<script>
-	$(".dropzone").dropzone();
-</script>
 @stop

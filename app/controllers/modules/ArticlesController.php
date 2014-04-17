@@ -50,7 +50,7 @@ class ArticlesController extends \BaseController {
 		if(is_null($articles)):
 			return App::abort(404);
 		endif;
-		return View::make('modules.articles.edit',array('articles'=>$articles,'templates'=>Templates::all(),'languages'=>Language::retArray()));
+		return View::make('modules.articles.edit',array('articles'=>$articles,'templates'=>Template::all(),'languages'=>Language::retArray()));
 	}
 
 	public function postUpdate($id){

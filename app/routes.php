@@ -32,8 +32,13 @@ Route::group(array('before'=>'user.auth','prefix'=>'dashboard'),function(){
 /*
 	| Роутеры доступные для всех групп авторизованных пользователей
 	*/
+
+$prefix = 'guest';
+if(Auth::check()):
+	$prefix = AuthAccount::getStartPage();
+endif;
 	
-Route::group(array('before'=>'auth','prefix'=>AuthAccount::getStartPage()),function(){
+Route::group(array('before'=>'auth','prefix'=>$prefix),function(){
 	Route::controller('pages', 'PagesController');
 	Route::controller('galleries', 'GalleriesController');
 	Route::controller('downloads', 'DownloadsController');
@@ -52,14 +57,12 @@ Route::group(array('before'=>'guest','prefix'=>Config::get('app.local')),functio
 });
 
 	/*
-	| Роутеры доступные для гостей и авторизованных пользователей зависят от языка системы
+	| Роутеры доступные для гостей и авторизованных пользователей
 	*/
 Route::get('login',array('before'=>'login','as'=>'login','uses'=>'GlobalController@loginPage'));
 Route::get('logout',array('before'=>'auth','as'=>'logout','uses'=>'GlobalController@logout'));
 
-Route::group(array('prefix'=>Config::get('app.local')),function(){
-	Route::get('/news/{news_url}','HomeController@showNews');
-	Route::get('/articles/{article_url}','HomeController@showArticle');
-	Route::get('/{url}','HomeController@showPage');
-	Route::get('/','HomeController@showPage');
-});
+Route::get('/news/{news_url}','HomeController@showNews');
+Route::get('/articles/{article_url}','HomeController@showArticle');
+Route::get('/{url}','HomeController@showPage');
+Route::get('/','HomeController@showPage');

@@ -1,6 +1,6 @@
 <header id="header">
 	<div id="logo-group">
-		<span id="logo"><a href="{{ url(AuthAccount::getStartPage()) }}">Панель администрирования</a></span>
+		<span id="logo"><a href="{{ url(AuthAccount::getStartPage()) }}">Панель управления</a></span>
 	</div>
 	<div class="pull-right">
 		<div id="hide-menu" class="btn-header pull-right">

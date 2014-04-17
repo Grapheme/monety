@@ -2,7 +2,7 @@
 	<div class="row margin-top-10">
 		<section class="col col-6">
 			<div class="well">
-				<header>Для создания страницы заполните форму:</header>
+				<header>Для изменения страницы воспользуйтесь формой:</header>
 				<fieldset>
 					<section>
 						<label class="label">Название</label>
@@ -14,11 +14,10 @@
 					<section>
 						<label class="label">Язык:</label>
 						<label class="select">
-							<select class="lang-change" name="language" autocomplete="off">
 							@foreach($languages as $language)
-								<option value="{{$language['code']}}">{{$language['name']}}</option>
+								<?php $langs[$language->code] = $language->name;?>
 							@endforeach
-							</select> <i></i>
+							{{ Form::select('language', $langs,NULL, array('class'=>'lang-change','autocomplete'=>'off')) }} <i></i>
 						</label>
 					</section>
 				@endif
@@ -26,12 +25,10 @@
 					<section>
 						<label class="label">Шаблон:</label>
 						<label class="select">
-							<select class="lang-change" name="template" autocomplete="off">
-								<option value="default">default</option>
 							@foreach($templates as $template)
-								 <option value="{{$template->id}}">{{$template->name}}</option>
+								<?php $temps[$template->name] = $template->name;?>
 							@endforeach
-							</select> <i></i>
+							{{ Form::select('template', $temps,NULL, array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
 						</label>
 					</section>
 				@endif
@@ -41,10 +38,10 @@
 							{{ Form::textarea('content',NULL,array('class'=>'redactor-no-filter')) }}
 						</label>
 					</section>
-					@if(Page::count() && Request::segment(3) == 'create')
+					@if(Page::count() || isset($page) && !$page->start_page)
 					<section class="pull-right">
 						<label class="toggle">
-							<input type="checkbox" name="in_menu" value="1">
+							{{ Form::checkbox('in_menu', '1', NULL) }}
 							<i data-swchon-text="да" data-swchoff-text="нет"></i>Показывать в меню: 
 						</label>
 					</section>

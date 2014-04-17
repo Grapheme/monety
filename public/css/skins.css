@@ -832,10 +832,20 @@ margin-left: 0;
 	width: 250px !important;
 }
 
+.height-500 {
+	height: 500px !important;
+}
+
 .smart-form header{
 	
 	background: none repeat;
 }
 .btn-spinner {
 	min-width: 115px !important;
+}
+.redactor_box {
+	max-width: 790px;
+}
+.redactor_box.redactor_box_fullscreen {
+	max-width: none;
 }

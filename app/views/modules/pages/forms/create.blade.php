@@ -27,7 +27,6 @@
 						<label class="label">Шаблон:</label>
 						<label class="select">
 							<select class="lang-change" name="template" autocomplete="off">
-								<option value="default">default</option>
 							@foreach($templates as $template)
 								 <option value="{{$template->name}}">{{$template->name}}</option>
 							@endforeach
@@ -44,7 +43,7 @@
 					@if(Page::count())
 					<section class="pull-right">
 						<label class="toggle">
-							<input type="checkbox" name="in_menu" value="1">
+							{{ Form::checkbox('in_menu', '1', NULL) }}
 							<i data-swchon-text="да" data-swchoff-text="нет"></i>Показывать в меню: 
 						</label>
 					</section>

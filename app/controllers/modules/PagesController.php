@@ -19,7 +19,7 @@ class PagesController extends BaseController {
 	public function getCreate(){
 		
 		$this->moduleActionPermission('pages','create');
-		return View::make('modules.pages.create',array('templates'=>Templates::all(),'languages'=>Language::all()));
+		return View::make('modules.pages.create',array('templates'=>Template::all(),'languages'=>Language::all()));
 	}
 
 	public function postStore(){
@@ -50,7 +50,7 @@ class PagesController extends BaseController {
 		if(is_null($page)):
 			return App::abort(404);
 		endif;
-		return View::make('modules.pages.edit',array('page'=>$page,'templates'=>Templates::all(),'languages'=>Language::retArray()));
+		return View::make('modules.pages.edit',array('page'=>$page,'templates'=>Template::all(),'languages'=>Language::retArray()));
 	}
 
 	public function postUpdate($id){
@@ -159,4 +159,5 @@ class PagesController extends BaseController {
 		$page->touch();
 		return $page->id;
 	}
+
 }

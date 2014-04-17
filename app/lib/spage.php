@@ -12,9 +12,8 @@ class sPage {
 		endif;
 		if(!empty($page->template) && View::exists('templates.'.$page->template)):
 			$content = self::content_render($page->content);
-			$main_menu = Page::getMainMenu($page->template);
 			return View::make('templates.'.$page->template,array('page_title'=>$page->seo_title,'page_description'=>$page->seo_description,
-					'pege_keywords'=>$page->seo_keywords,'page_author'=>'','page_h1'=>$page->seo_h1,'main_menu'=> $main_menu,'content' => $content));
+					'pege_keywords'=>$page->seo_keywords,'page_author'=>'','page_h1'=>$page->seo_h1,'menu'=> Page::getMenu($page->template),'content' => $content));
 		else:
 			App::abort(404,'Отсутсвует шаблон: templates/'.$page->template.'.php');
 		endif;

@@ -50,7 +50,7 @@ class NewsController extends BaseController {
 		if(is_null($news)):
 			return App::abort(404);
 		endif;
-		return View::make('modules.news.edit',array('news'=>$news,'templates'=>Templates::all(),'languages'=>Language::retArray()));
+		return View::make('modules.news.edit',array('news'=>$news,'templates'=>Template::all(),'languages'=>Language::retArray()));
 	}
 
 	public function postUpdate($id){
