@@ -18,6 +18,10 @@ class RolesTableSeeder extends Seeder{
 			'desc' => 'Управление страницами',
 		));
 		Role::create(array(
+			'name' => 'catalogs',
+			'desc' => 'Управление каталогами товаров',
+		));
+		Role::create(array(
 			'name' => 'users',
 			'desc' => 'Управление пользователями',
 		));

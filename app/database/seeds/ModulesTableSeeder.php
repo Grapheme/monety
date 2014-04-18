@@ -26,6 +26,11 @@ class ModulesTableSeeder extends Seeder{
 			'permissions'=> '[1,2,3,4,5,6]'
 		));
 		Modules::create(array(
+			'url' => 'catalogs',
+			'on' => 0,
+			'permissions'=> '[1,2,3,4,5,6]'
+		));
+		Modules::create(array(
 			'url' => 'users',
 			'on' => 1,
 			'permissions'=> '[1,2,3]'

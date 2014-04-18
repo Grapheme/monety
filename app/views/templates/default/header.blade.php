@@ -37,6 +37,7 @@
 			</div>
 		</div>
 		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+		@if(AuthAccount::isUserLoggined())
 			<div class="cart text-center">
 				<div class="cart-capt">
 					<span class="fa fa-shopping-cart regular-14 margin-right-5"></span> <span class="semibold-14 uppercase">Корзина</span>
@@ -45,13 +46,19 @@
 					<a href="#">5</a> товаров на сумму <span>2500 руб</span>
 				</div>
 			</div>
+		@endif
 			<div class="reg text-center margin-top-10">
 				<div class="reg-capt">
 					<span class="fa fa-user regular-14 margin-right-5"></span> <span class="semibold-14 uppercase">Личный кабинет</span>
 				</div>
 				<div class="reg-cont regular-12 margin-top-5">
+				@if(Auth::guest())
 					<a href="{{ url('login') }}" class="margin-right-10">Вход</a>
 					<a href="{{ url('login') }}">Регистрация</a>
+				@else
+					<a href="{{ slink::createAuthLink() }}" class="margin-right-10">{{ (AuthAccount::isAdminLoggined())?'Администрирование':'Кабинет' }}</a>
+					<a href="{{ url('logout') }}">Выход</a>
+				@endif
 				</div>
 			</div>
 		</div>

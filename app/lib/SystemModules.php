@@ -11,6 +11,13 @@ class SystemModules {
 			$start_page.'/galleries'=>array(trans('admin.galleries'),'fa-picture-o','galleries'),
 			$start_page.'/news'=>array(trans('admin.news'),'fa-calendar','news'),
 			$start_page.'/articles' =>array(trans('admin.articles'),'fa-file-text-o','articles'),
+			$start_page.'/catalogs#'=>array(trans('admin.catalogs'),'fa-truck','catalogs',
+				array(
+					$start_page.'/catalogs'=>array(trans('admin.catalog'),'fa-truck','catalogs'),
+					$start_page.'/catalogs/categories'=>array(trans('admin.categories'),'fa-list','categories'),
+					$start_page.'/catalogs/products'=>array(trans('admin.products'),'fa-th-large','products')
+				)
+			),
 			$start_page.'/templates'=>array(trans('admin.templates'),'fa-edit','templates'),
 			$start_page.'/users'=>array(trans('admin.users'),'fa-male','users'),
 			$start_page.'/groups'=>array(trans('admin.groups'),'fa-shield','users'),
@@ -31,6 +38,7 @@ class SystemModules {
 		$modules = array(
 			'seo'=>array(trans('modules.seo'),'fa-search','seo',FALSE),
 			'pages'=>array(trans('modules.pages'),'fa-list-alt','pages',TRUE),
+			'catalogs'=>array(trans('modules.catalogs'),'fa-truck','catalogs',FALSE),
 			'news'=>array(trans('modules.news'),'fa-calendar','news',TRUE),
 			'articles'=>array(trans('modules.articles'),'fa-file-text-o','articles',TRUE),
 			'galleries'=>array(trans('modules.galleries'),'fa-picture-o','galleries',TRUE),

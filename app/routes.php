@@ -19,6 +19,7 @@ Route::group(array('before'=>'admin.auth','prefix'=>'admin'),function(){
 	Route::controller('templates', 'TempsController');
 	Route::controller('groups', 'GroupsController');
 	Route::controller('settings', 'SettingsController');
+	Route::controller('catalogs', 'CatalogsController');
 });
 	
 	/*

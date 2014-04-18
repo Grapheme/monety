@@ -15,5 +15,8 @@ return array(
 	'templates' => 'Templates',
 	'groups' => 'Groups',
 	'downloads' => 'Downloads',
-
+	'catalog' => 'Catalog',
+	'catalogs' => 'Catalogs',
+	'categories' => 'Categories products',
+	'products' => 'Products',
 );

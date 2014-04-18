@@ -15,5 +15,9 @@ return array(
 	'templates' => 'Шаблоны',
 	'groups'	=> 'Группы',
 	'downloads' => 'Загрузки',
+	'catalog' => 'Каталог продукции',
+	'catalogs' => 'Каталоги',
+	'categories' => 'Категории продукции',
+	'products' => 'Продукция',
 
 );

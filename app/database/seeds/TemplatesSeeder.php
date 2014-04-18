@@ -9,6 +9,10 @@ class GroupsTableSeeder extends Seeder{
 			'name' => 'default',
 			'content' => '',
 		));
+		Group::create(array(
+			'name' => 'catalog',
+			'content' => '',
+		));
 	}
 
 }
