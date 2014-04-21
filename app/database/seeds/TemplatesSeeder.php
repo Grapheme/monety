@@ -21,6 +21,10 @@ class GroupsTableSeeder extends Seeder{
 			'name' => 'articles',
 			'content' => '',
 		));
+		Group::create(array(
+			'name' => 'category',
+			'content' => '',
+		));
 	}
 
 }
