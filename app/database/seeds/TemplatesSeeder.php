@@ -13,6 +13,14 @@ class GroupsTableSeeder extends Seeder{
 			'name' => 'catalog',
 			'content' => '',
 		));
+		Group::create(array(
+			'name' => 'news',
+			'content' => '',
+		));
+		Group::create(array(
+			'name' => 'articles',
+			'content' => '',
+		));
 	}
 
 }

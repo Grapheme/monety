@@ -19,7 +19,7 @@ class ArticlesController extends \BaseController {
 	public function getCreate(){
 
 		$this->moduleActionPermission('articles','create');
-		return View::make('modules.articles.create',array('settings'=>Settings::retArray(),'languages'=>Language::retArray()));
+		return View::make('modules.articles.create',array('templates'=>Template::all(),'languages'=>Language::retArray()));
 	}
 
 	public function postStore(){

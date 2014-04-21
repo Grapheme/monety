@@ -28,6 +28,17 @@
 						</label>
 					</section>
 				@endif
+				@if(Allow::valid_access('templates'))
+					<section>
+						<label class="label">Шаблон:</label>
+						<label class="select">
+							@foreach($templates as $template)
+								<?php $temps[$template->name] = $template->name;?>
+							@endforeach
+							{{ Form::select('template', $temps,NULL, array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
+						</label>
+					</section>
+				@endif
 					<section>
 						<label class="label">Содержание</label>
 						<label class="textarea">

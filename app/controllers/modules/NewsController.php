@@ -19,7 +19,7 @@ class NewsController extends BaseController {
 	public function getCreate(){
 		
 		$this->moduleActionPermission('news','create');
-		return View::make('modules.news.create',array('settings'=>Settings::retArray(),'languages'=>Language::retArray()));
+		return View::make('modules.news.create',array('templates'=>Template::all(),'languages'=>Language::retArray()));
 	}
 	
 	public function postStore(){
