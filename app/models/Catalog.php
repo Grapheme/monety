@@ -1,6 +1,6 @@
 <?php
 
-class Catalog extends \Eloquent {
+class Catalog extends BaseModel {
 	
 	protected $guarded = array();
 

@@ -27,15 +27,14 @@ class CatalogsController extends \BaseController {
 		$this->moduleActionPermission('catalogs','create');
 		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
 		if(Request::ajax()):
-			$validator = Validator::make(Input::all(),Catalog::$rules);
-			if($validator->passes()):
+			if(Catalog::validate(Input::all())):
 				self::saveCatalogModel();
 				$json_request['responseText'] = 'Каталог создан';
 				$json_request['redirect'] = slink::createAuthLink('catalogs');
 				$json_request['status'] = TRUE;
 			else:
 				$json_request['responseText'] = 'Неверно заполнены поля';
-				$json_request['responseErrorText'] = $validator->messages()->all();
+				$json_request['responseErrorText'] = Catalog::$errors;
 			endif;
 		else:
 			return App::abort(404);
@@ -61,8 +60,7 @@ class CatalogsController extends \BaseController {
 		$this->moduleActionPermission('catalogs','edit');
 		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
 		if(Request::ajax()):
-			$validator = Validator::make(Input::all(),Catalog::$rules);
-			if($validator->passes()):
+			if(Catalog::validate(Input::all())):
 				$catalog = $this->catalog->find($id);
 				self::saveCatalogModel($catalog);
 				$json_request['responseText'] = 'Каталог сохранен';
@@ -70,7 +68,7 @@ class CatalogsController extends \BaseController {
 				$json_request['status'] = TRUE;
 			else:
 				$json_request['responseText'] = 'Неверно заполнены поля';
-				$json_request['responseErrorText'] = $validator->messages()->all();
+				$json_request['responseErrorText'] = Catalog::$errors;
 			endif;
 		else:
 			return App::abort(404);

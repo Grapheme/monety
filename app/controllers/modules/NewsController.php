@@ -27,15 +27,14 @@ class NewsController extends BaseController {
 		$this->moduleActionPermission('news','create');
 		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
 		if(Request::ajax()):
-			$validator = Validator::make(Input::all(),News::$rules);
-			if($validator->passes()):
+			if(News::validate(Input::all())):
 				self::savePageModel();
 				$json_request['responseText'] = 'Новость создана';
 				$json_request['redirect'] = slink::createAuthLink('news');
 				$json_request['status'] = TRUE;
 			else:
 				$json_request['responseText'] = 'Неверно заполнены поля';
-				$json_request['responseErrorText'] = $validator->messages()->all();
+				$json_request['responseErrorText'] = News::$errors;
 			endif;
 		else:
 			return App::abort(404);
@@ -58,8 +57,7 @@ class NewsController extends BaseController {
 		$this->moduleActionPermission('news','edit');
 		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
 		if(Request::ajax()):
-			$validator = Validator::make(Input::all(),News::$rules);
-			if($validator->passes()):
+			if(News::validate(Input::all())):
 				$news = $this->news->find($id);
 				self::savePageModel($news);
 				$json_request['responseText'] = 'Новость сохранена';
@@ -67,7 +65,7 @@ class NewsController extends BaseController {
 				$json_request['status'] = TRUE;
 			else:
 				$json_request['responseText'] = 'Неверно заполнены поля';
-				$json_request['responseErrorText'] = $validator->messages()->all();
+				$json_request['responseErrorText'] = News::$errors;
 			endif;
 		else:
 			return App::abort(404);

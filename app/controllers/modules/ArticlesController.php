@@ -27,15 +27,14 @@ class ArticlesController extends \BaseController {
 		$this->moduleActionPermission('articles','create');
 		$json_request = array('status'=>FALSE,'responseText'=>'','redirect'=>FALSE,'responseErrorText'=>'');
 		if(Request::ajax()):
-			$validator = Validator::make(Input::all(),Article::$rules);
-			if($validator->passes()):
+			if(Article::validate(Input::all())):
 				self::savePageModel();
 				$json_request['responseText'] = 'Статья создана';
 				$json_request['redirect'] = slink::createAuthLink('articles');
 				$json_request['status'] = TRUE;
 			else:
 				$json_request['responseText'] = 'Неверно заполнены поля';
-				$json_request['responseErrorText'] = $validator->messages()->all();
+				$json_request['responseErrorText'] = Article::$errors;
 			endif;
 		else:
 			return App::abort(404);
@@ -58,8 +57,7 @@ class ArticlesController extends \BaseController {
 		$this->moduleActionPermission('articles','edit');
 		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
 		if(Request::ajax()):
-			$validator = Validator::make(Input::all(),Article::$rules);
-			if($validator->passes()):
+			if(Article::validate(Input::all())):
 				$articles = $this->articles->find($id);
 				self::savePageModel($articles);
 				$json_request['responseText'] = 'Статья сохранена';
@@ -67,7 +65,7 @@ class ArticlesController extends \BaseController {
 				$json_request['status'] = TRUE;
 			else:
 				$json_request['responseText'] = 'Неверно заполнены поля';
-				$json_request['responseErrorText'] = $validator->messages()->all();
+				$json_request['responseErrorText'] = Article::$errors;
 			endif;
 		else:
 			return App::abort(404);

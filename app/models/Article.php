@@ -1,6 +1,6 @@
 <?php
 
-class Article extends \Eloquent {
+class Article extends BaseModel {
 
 	protected $guarded = array();
 
@@ -12,10 +12,5 @@ class Article extends \Eloquent {
 		'title' => 'required',
 		'seo_url' => 'alpha_dash'
 	);
-
-	public static function getAmount($number){
-		
-		return self::paginate($number);
-	}
 
 }

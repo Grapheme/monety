@@ -1,6 +1,6 @@
 <?php
 
-class News extends Eloquent {
+class News extends BaseModel {
 	
 	protected $guarded = array();
 
@@ -10,7 +10,7 @@ class News extends Eloquent {
 
 	public static $rules = array(
 		'title' => 'required',
-		'seo_url' => 'alpha_dash'
+		'seo_url' => 'alpha_dash',
 	);
 
 }
