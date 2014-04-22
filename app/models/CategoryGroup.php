@@ -18,4 +18,10 @@ class CategoryGroup extends BaseModel {
 		return $this->hasMany('Category');
 
 	}
+	
+	public function products(){
+
+		return $this->hasMany('Product');
+
+	}
 }

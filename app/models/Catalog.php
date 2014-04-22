@@ -12,5 +12,10 @@ class Catalog extends BaseModel {
 	);
 
 	protected $fillable = array();
+	
+	public function products(){
 
+		return $this->hasMany('Product');
+
+	}
 }

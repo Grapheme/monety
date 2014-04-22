@@ -86,7 +86,7 @@ class CategoriesController extends \BaseController {
 						File::delete(public_path($category->logo));
 					endif;
 				endforeach;
-				$categories->delete();
+				Category::where('category_group_id',$id)->delete();
 			endif;
 			$this->categories_group->find($id)->delete();
 			$json_request['responseText'] = 'Группа катагорий удалена';

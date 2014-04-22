@@ -32,7 +32,7 @@ Route::group(array('before'=>'admin.auth','prefix'=>'admin'),function(){
 	Route::get('catalogs/category-group/{category_group_id}/category/{parent_category_id}/sub-categories/create', 'CategoriesController@getCategoryCreate')->where('category_group_id','\d+')->where('parent_category_id','\d+');
 	Route::get('catalogs/category-group/{category_group_id}/category/{parent_category_id}/sub-categories/edit/{category_id}', 'CategoriesController@getSubCategoryEdit')->where('category_group_id','\d+')->where('parent_category_id','\d+')->where('category_id','\d+');
 	
-	
+	Route::controller('catalogs/products', 'ProductsController');
 	
 	Route::controller('catalogs', 'CatalogsController');
 });
