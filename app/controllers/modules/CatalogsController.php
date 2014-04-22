@@ -90,7 +90,6 @@ class CatalogsController extends \BaseController {
 				$json_request['responseText'] = 'Каталог удален';
 				$json_request['status'] = TRUE;
 			endif;
-			
 		else:
 			return App::abort(404);
 		endif;

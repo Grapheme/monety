@@ -25,7 +25,7 @@
 				<tbody>
 				@foreach($categories as $category)
 					<tr>
-						<td>{{ $category->title }}</td>
+						<td><a href="{{slink::createAuthLink('catalogs/category-group/'.$category->id.'/categories')}}">{{ $category->title }}</a></td>
 						@if(Allow::valid_action_permission('catalogs','publication'))
 						<td class="wigth-100">
 							<div class="smart-form">
@@ -36,7 +36,10 @@
 							</div>
 						</td>
 						@endif
-						<td class="wigth-250">
+						<td class="wigth-350">
+							<a class="btn btn-labeled btn-success pull-left margin-right-10" href="{{slink::createAuthLink('catalogs/category-group/'.$category->id.'/categories')}}">
+								<span class="btn-label"><i class="fa fa-th-list"></i></span> Управ.
+							</a>
 						@if(Allow::valid_action_permission('catalogs','edit'))
 							<a class="btn btn-labeled btn-success pull-left margin-right-10" href="{{slink::createAuthLink('catalogs/categories/edit/'.$category->id)}}">
 								<span class="btn-label"><i class="fa fa-edit"></i></span> Ред.
@@ -44,7 +47,7 @@
 						@endif
 						@if(Allow::valid_action_permission('catalogs','delete'))
 							<form method="POST" action="{{slink::createAuthLink('catalogs/categories/destroy/'.$category->id)}}">
-								<button type="button" class="btn btn-labeled btn-danger remove-catalog-category">
+								<button type="button" class="btn btn-labeled btn-danger remove-catalog-category-group">
 									<span class="btn-label"><i class="fa fa-trash-o"></i></span> Удал.
 								</button>
 							</form>

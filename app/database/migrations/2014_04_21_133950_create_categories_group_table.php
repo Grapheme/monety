@@ -3,10 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateCategoriesTable extends Migration {
+class CreateCategoriesGroupTable extends Migration {
 
 	public function up(){
-		Schema::create('categories', function(Blueprint $table){
+		Schema::create('categories_group', function(Blueprint $table){
 			$table->increments('id');
 			$table->string('title',100)->nullable();
 			$table->text('description')->nullable();
@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration {
 
 	public function down(){
 		
-		Schema::drop('categories');
+		Schema::drop('categories_group');
 	}
 
 }

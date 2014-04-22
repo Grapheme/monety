@@ -1,13 +1,13 @@
-{{ Form::model($category,array('url'=>slink::createAuthLink('catalogs/categories/update/'.$category->id),'class'=>'smart-form','id'=>'catalog-caterory-form','role'=>'form','method'=>'post')) }}
+{{ Form::open(array('url'=>slink::createAuthLink('catalogs/categories/store'),'role'=>'form','class'=>'smart-form','id'=>'catalog-category-group-form','method'=>'post')) }}
 	<div class="row margin-top-10">
 		<section class="col col-6">
 			<div class="well">
-				<header>Для изменения группы категории воспользуйтесь формой:</header>
+				<header>Для создания группы категории заполните форму:</header>
 				<fieldset>
 					<section>
 						<label class="label">Название</label>
 						<label class="input"> <i class="icon-append fa fa-list-alt"></i>
-							{{ Form::text('title',NULL) }}
+							{{ Form::text('title','') }}
 						</label>
 					</section>
 				@if(Allow::valid_access('languages') && !empty($languages))
@@ -28,14 +28,14 @@
 							@foreach($templates as $template)
 								<?php $temps[$template->name] = $template->name;?>
 							@endforeach
-							{{ Form::select('template', $temps,NULL, array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
+							{{ Form::select('template', $temps,'category', array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
 						</label>
 					</section>
 				@endif
 					<section>
-						<label class="label">Содержание</label>
+						<label class="label">Описание</label>
 						<label class="textarea">
-							{{ Form::textarea('description',NULL,array('class'=>'redactor')) }}
+							{{ Form::textarea('description','',array('class'=>'redactor')) }}
 						</label>
 					</section>
 				</fieldset>
@@ -44,7 +44,7 @@
 						<i class="fa fa-arrow-left hidden"></i> <span class="btn-response-text">Назад</span>
 					</a>
 					<button type="submit" autocomplete="off" class="btn btn-success no-margin regular-10 uppercase btn-form-submit">
-						<i class="fa fa-spinner fa-spin hidden"></i> <span class="btn-response-text">Сохранить</span>
+						<i class="fa fa-spinner fa-spin hidden"></i> <span class="btn-response-text">Создать</span>
 					</button>
 				</footer>
 			</div>

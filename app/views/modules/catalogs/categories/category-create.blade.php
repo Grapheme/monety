@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{slink::path('css/redactor.css')}}" />
 @stop
 @section('content')
-	@include('modules.catalogs.categories.forms.create')
+	@include('modules.catalogs.categories.forms.category-create')
 @stop
 @section('scripts')
 	{{HTML::script('js/modules/catalogs.js')}}

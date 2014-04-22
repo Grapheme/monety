@@ -46,7 +46,7 @@ $(function(){
 			$("#catalog-fields-list li:last").remove();
 		}
 	});
-	$(".remove-catalog-category").click(function() {
+	$(".remove-catalog-category-group").click(function() {
 		var $this = this;
 		$.SmartMessageBox({
 			title : "Удалить группу категорий продукции?",
@@ -72,6 +72,39 @@ $(function(){
 					error: function(xhr,textStatus,errorThrown){
 						$($this).elementDisabled(false);
 						showMessage.constructor('Удаление группы категорий','Возникла ошибка.Повторите снова');
+						showMessage.smallError();
+					}
+				});
+			}
+		});
+		return false;
+	});
+	$(".remove-catalog-category").click(function() {
+		var $this = this;
+		$.SmartMessageBox({
+			title : "Удалить категорию продукции?",
+			content : "",
+			buttons : '[Нет][Да]'
+		},function(ButtonPressed) {
+			if(ButtonPressed == "Да") {
+				$.ajax({
+					url: $($this).parent('form').attr('action'),
+					type: 'DELETE',dataType: 'json',
+					beforeSend: function(){$($this).elementDisabled(true);},
+					success: function(response,textStatus,xhr){
+						if(response.status == true){
+							showMessage.constructor('Удаление категории',response.responseText);
+							showMessage.smallSuccess();
+							$($this).parents('tr').fadeOut(500,function(){$(this).remove();});
+						}else{
+							$($this).elementDisabled(false);
+							showMessage.constructor('Удаление категории','Возникла ошибка.Обновите страницу и повторите снова');
+							showMessage.smallError();
+						}
+					},
+					error: function(xhr,textStatus,errorThrown){
+						$($this).elementDisabled(false);
+						showMessage.constructor('Удаление категории','Возникла ошибка.Повторите снова');
 						showMessage.smallError();
 					}
 				});
@@ -112,12 +145,41 @@ function runFormValidation() {
 			$(form).ajaxSubmit(options);
 		}
 	});
-	var editingCategoryGroup = $("#catalog-caterory-form").validate({
+	var editingCategoryGroup = $("#catalog-category-group-form").validate({
 		rules:{
 			title: {required : true},
 		},
 		messages : {
 			title : {required : 'Укажите название группы категорий'},
+		},
+		errorPlacement : function(error, element){error.insertAfter(element.parent());},
+		submitHandler: function(form) {
+			var options = {target: null,dataType:'json',type:'post'};
+			options.beforeSubmit = function(formData,jqForm,options){
+				$(form).find('.btn-form-submit').elementDisabled(true);
+			},
+			options.success = function(response,status,xhr,jqForm){
+				$(form).find('.btn-form-submit').elementDisabled(false);
+				if(response.status){
+					if(response.redirect !== false){
+						BASIC.RedirectTO(response.redirect);
+					}
+					showMessage.constructor(response.responseText,'');
+					showMessage.smallSuccess();
+				}else{
+					showMessage.constructor(response.responseText,response.responseErrorText);
+					showMessage.smallError();
+				}
+			}
+			$(form).ajaxSubmit(options);
+		}
+	});
+	var editingCategory = $("#catalog-category-form").validate({
+		rules:{
+			title: {required : true},
+		},
+		messages : {
+			title : {required : 'Укажите название категории'},
 		},
 		errorPlacement : function(error, element){error.insertAfter(element.parent());},
 		submitHandler: function(form) {

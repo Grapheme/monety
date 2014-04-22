@@ -20,6 +20,20 @@ Route::group(array('before'=>'admin.auth','prefix'=>'admin'),function(){
 	Route::controller('groups', 'GroupsController');
 	Route::controller('settings', 'SettingsController');
 	Route::controller('catalogs/categories', 'CategoriesController');
+	
+	Route::get('catalogs/category-group/{category_group_id}/categories', 'CategoriesController@getCategoryList')->where('category_group_id','\d+');
+	Route::get('catalogs/category-group/{category_group_id}/categories/create', 'CategoriesController@getCategoryCreate')->where('category_group_id','\d+');
+	Route::post('catalogs/category-group/{category_group_id}/categories/store', 'CategoriesController@postCategoryStore')->where('category_group_id','\d+');
+	Route::get('catalogs/category-group/{category_group_id}/categories/edit/{category_id}', 'CategoriesController@getCategoryEdit')->where('category_group_id','\d+')->where('category_id','\d+');
+	Route::post('catalogs/category-group/{category_group_id}/categories/update/{category_id}', 'CategoriesController@postCategoryUpdate')->where('category_group_id','\d+')->where('category_id','\d+');
+	Route::delete('catalogs/category-group/{category_group_id}/categories/destroy/{category_id}', 'CategoriesController@postCategoryDestroy')->where('category_group_id','\d+')->where('category_id','\d+');
+	
+	Route::get('catalogs/category-group/{category_group_id}/category/{parent_category_id}/sub-categories', 'CategoriesController@getCategoryList')->where('category_group_id','\d+')->where('parent_category_id','\d+');
+	Route::get('catalogs/category-group/{category_group_id}/category/{parent_category_id}/sub-categories/create', 'CategoriesController@getCategoryCreate')->where('category_group_id','\d+')->where('parent_category_id','\d+');
+	Route::get('catalogs/category-group/{category_group_id}/category/{parent_category_id}/sub-categories/edit/{category_id}', 'CategoriesController@getSubCategoryEdit')->where('category_group_id','\d+')->where('parent_category_id','\d+')->where('category_id','\d+');
+	
+	
+	
 	Route::controller('catalogs', 'CatalogsController');
 });
 	
