@@ -99,4 +99,49 @@ class DownloadsController extends BaseController {
 		endif;
 	}
 	
+	public function postUploadCatalogProductImages($product_id = NULL){
+		
+		if(Input::hasFile('file')):
+			$this->moduleActionPermission('catalogs','download');
+			if(!is_null($product_id)):
+				$product = Product::find($product_id)->user()->where('id',Auth::user()->id)-first();
+			else:
+				$product = NULL;
+			endif;
+			
+			if(AuthAccount::isAdminLoggined()):
+				$dirPath = 'uploads/catalogs';
+				$dirFullPath = public_path($dirPath);
+			elseif(AuthAccount::isUserLoggined()):
+				$dirPath = 'usersfiles/account-'.Auth::user()->id.'/catalogs';
+				$dirFullPath = base_path($dirPath);
+			else:
+				$dirPath = 'usersfiles/temporary/catalogs';
+				$dirFullPath = base_path($dirPath);
+			endif;
+			
+			if(!File::isDirectory($dirFullPath.'/thumbnail')):
+				File::makeDirectory($dirFullPath.'/thumbnail',0777,TRUE);
+			endif;
+			$fileName = str_random(24).'.'.Input::file('file')->getClientOriginalExtension();
+			ImageManipulation::make(Input::file('file')->getRealPath())->resize(100,100,TRUE)->save($dirFullPath.'/thumbnail/'.$fileName);
+			Input::file('file')->move($dirFullPath,$fileName);
+			
+			$productID = (!is_null($product)) ? $product->id : 0;
+			$module = Modules::where('url','catalogs')->first();
+			$maxSortValue = (int)Image::where('item_id',$productID)->where('module_id',$module->id)->max('sort')+1;
+			
+			$newImageData = array('module_id' => $module->id,'item_id' => $productID,'sort' => $maxSortValue,'title' => '','description' => '','attributes' => '[]','publication' => 1,
+				'paths' => json_encode(array('image' => $dirPath.'/'.$fileName,'thumbnail'=> $dirPath.'/thumbnail/'.$fileName)));
+			$newImage = Image::create($newImageData);
+			if(is_null($product)):
+				Session::push($module->url.'.images',$newImage->id);
+			endif;
+			return Response::json(array('status'=>TRUE,'responseText'=>'Файл загружен'),200);
+		else:
+			return Response::json(array('status'=>FALSE,'responseText'=>'Файл не загружен'),400);
+		endif;
+		
+	}
+	
 }

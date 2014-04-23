@@ -828,6 +828,9 @@ margin-left: 0;
 .wigth-100 {
 	width: 100px !important;
 }
+.wigth-120 {
+	width: 120px !important;
+}
 .wigth-250 {
 	width: 250px !important;
 }
@@ -851,4 +854,8 @@ margin-left: 0;
 }
 .redactor_box.redactor_box_fullscreen {
 	max-width: none;
+}
+#advanced .redactor_redactor{
+	
+	height: 150px !important;
 }

@@ -17,4 +17,5 @@
 	</script>
 	<script src="{{slink::path('js/vendor/redactor.min.js')}}"></script>
 	<script src="{{slink::path('js/system/redactor-config.js')}}"></script>
+	<script src="{{slink::path('js/vendor/dropzone.min.js')}}"></script>
 @stop

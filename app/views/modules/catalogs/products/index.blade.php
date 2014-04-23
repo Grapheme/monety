@@ -19,11 +19,13 @@
 	@endif
 	@if($products->count())
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
+						<th class="text-center">Изображения</th>
 						<th class="text-center">Название</th>
+						<th class="text-center">Цена</th>
 					@if(Allow::valid_action_permission('catalogs','publication'))
 						<th class="text-center">Публикация</th>
 					@endif
@@ -31,9 +33,17 @@
 					</tr>
 				</thead>
 				<tbody>
-				@foreach($catalogs as $catalog)
+				@foreach($products as $product)
 					<tr>
-						<td>{{ $catalog->title }}</td>
+						<td class="wigth-120">
+						@if(!empty($product->image))
+							<figure class="avatar-container">
+								<img src="{{url('image/catalog-product-thumbnail/'.$product->id)}}" alt="{{ $product->title }}" class="avatar bordered circle">
+							</figure>
+						@endif
+						</td>
+						<td>{{ $product->title }}</td>
+						<td class="wigth-100 text-center">{{ $product->price }}</td>
 						@if(Allow::valid_action_permission('catalogs','publication'))
 						<td class="wigth-100">
 							<div class="smart-form">
@@ -45,7 +55,18 @@
 						</td>
 						@endif
 						<td class="wigth-250">
-						
+						@if(Allow::valid_action_permission('catalogs','edit'))
+							<a class="btn btn-labeled btn-success pull-left margin-right-10" href="{{slink::createAuthLink('catalogs/products/edit/'.$product->id)}}">
+								<span class="btn-label"><i class="fa fa-edit"></i></span> Ред.
+							</a>
+						@endif
+						@if(Allow::valid_action_permission('catalogs','delete'))
+							<form method="POST" action="{{slink::createAuthLink('catalogs/products/destroy/'.$product->id)}}">
+								<button type="button" class="btn btn-labeled btn-danger remove-catalog-product">
+									<span class="btn-label"><i class="fa fa-trash-o"></i></span> Удал.
+								</button>
+							</form>
+						@endif
 						</td>
 					</tr>
 				@endforeach

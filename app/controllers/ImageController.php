@@ -37,6 +37,17 @@ class ImageController extends \BaseController {
 			case 'avatar-female-thumbnail':$filePath = User::find($id)->thumbnail; break;
 			case 'avatar-male':$filePath = User::find($id)->avatar; break;
 			case 'avatar-male-thumbnail':$filePath = User::find($id)->thumbnail; break;
+			
+			case 'catalog-product-thumbnail':
+				if($productImage = json_decode(Product::find($id)->image,TRUE)):
+					$filePath = $productImage['thumbnail'];
+				endif;
+				break;
+			case 'catalog-product':
+				if($productImage = json_decode(Product::find($id)->image,TRUE)):
+					$filePath = $productImage['image'];
+				endif;
+				break;
 		endswitch;
 		if(!is_null($filePath) && File::exists(getcwd().'/'.$filePath)):
 			$filePath = getcwd().'/'.$filePath;

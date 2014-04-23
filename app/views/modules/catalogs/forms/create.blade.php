@@ -49,18 +49,18 @@
 				</fieldset>
 				<fieldset>
 					<section>
-						<label class="label">Поля для продуктов</label>
+						<label class="label">Дополнительные поля для продуктов</label>
 					</section>
 					<ul id="catalog-fields-list" class="list-unstyled ">
 						<li class="row">
 							<section class="col col-4">
 								<label class="input">
-									<input type="text" value="title" name="fields[title][]" placeholder="Название поля [name]">
+									<input type="text" value="" name="fields[title][]" placeholder="Название поля [name]">
 								</label>
 							</section>
 							<section class="col col-4">
 								<label class="input">
-									<input type="text" value="Название товара" name="fields[label][]" placeholder="Подпись поля [label]">
+									<input type="text" value="" name="fields[label][]" placeholder="Подпись поля [label]">
 								</label>
 							</section>
 							<section class="col col-3">
@@ -69,7 +69,6 @@
 										<option value="input"selected="">Input</option>
 										<option value="textarea">Textarea</option>
 										<option value="checkbox">Checkbox</option>
-										<option value="file">File</option>
 									</select> <i></i>
 								</label>
 							</section>

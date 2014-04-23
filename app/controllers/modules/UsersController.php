@@ -28,7 +28,7 @@ class UsersController extends BaseController {
 		$input = array(
 				'user' => $user,
 				'password' => $password
-				);
+			);
 
 		$v = Validator::make($input, User::$rules);
 		if($v->passes()):

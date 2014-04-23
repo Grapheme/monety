@@ -203,4 +203,34 @@ function runFormValidation() {
 			$(form).ajaxSubmit(options);
 		}
 	});
+	var editingProduct = $("#catalog-product-form").validate({
+		rules:{
+			title: {required : true},
+		},
+		messages : {
+			title : {required : 'Укажите название продукта'},
+		},
+		errorPlacement : function(error, element){error.insertAfter(element.parent());},
+		submitHandler: function(form) {
+			var options = {target: null,dataType:'json',type:'post'};
+			options.beforeSubmit = function(formData,jqForm,options){
+				$(form).find('.btn-form-submit').elementDisabled(true);
+			},
+			options.success = function(response,status,xhr,jqForm){
+				$(form).find('.btn-form-submit').elementDisabled(false);
+				if(response.status){
+					if(response.redirect !== false){
+						BASIC.RedirectTO(response.redirect);
+					}
+					showMessage.constructor(response.responseText,'');
+					showMessage.smallSuccess();
+				}else{
+					showMessage.constructor(response.responseText,response.responseErrorText);
+					showMessage.smallError();
+				}
+			}
+			$(form).ajaxSubmit(options);
+		}
+	});
+
 }

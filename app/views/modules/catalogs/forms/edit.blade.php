@@ -49,7 +49,7 @@
 				</fieldset>
 				<fieldset>
 					<section>
-						<label class="label">Поля для продуктов</label>
+						<label class="label">Дополнительные поля для продуктов</label>
 					</section>
 					<ul id="catalog-fields-list" class="list-unstyled ">
 					@if(!empty($catalog['fields']))
@@ -91,7 +91,6 @@
 										<option value="input"selected="">Input</option>
 										<option value="textarea">Textarea</option>
 										<option value="checkbox">Checkbox</option>
-										<option value="file">File</option>
 									</select> <i></i>
 								</label>
 							</section>

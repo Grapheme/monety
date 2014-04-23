@@ -9,11 +9,17 @@ class CreateProductsTable extends Migration {
 		
 		Schema::create('products', function(Blueprint $table){
 			$table->increments('id');
+			$table->integer('user_id')->unsigned()->default(0)->index();
 			$table->integer('catalog_id')->unsigned()->default(0)->index();
 			$table->integer('category_group_id')->unsigned()->default(0)->index();
 			
 			$table->integer('sort')->default(0)->unsigned()->nullable();
-			$table->text('data_fields')->nullable();
+			$table->string('title',100)->nullable();
+			$table->text('description')->nullable();
+			$table->text('image')->nullable();
+			$table->string('price',100)->nullable();
+			
+			$table->text('attributes')->nullable();
 			$table->string('tags',255)->nullable();
 			
 			$table->string('seo_url',255)->nullable();
@@ -23,6 +29,10 @@ class CreateProductsTable extends Migration {
 			$table->string('seo_h1')->nullable();
 			$table->boolean('publication')->default(1)->unsigned()->nullable();
 			$table->timestamps();
+			
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+			$table->foreign('catalog_id')->references('id')->on('catalogs')->onDelete('cascade');
+			$table->foreign('category_group_id')->references('id')->on('categories_group')->onDelete('cascade');
 		});
 	}
 
