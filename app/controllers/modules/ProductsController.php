@@ -55,12 +55,12 @@ class ProductsController extends \BaseController {
 		return Response::json($json_request,200);
 	}
 
-	public function getEdit($id){
+	public function getEdit($product_id){
 		
 		$this->moduleActionPermission('catalogs','edit');
 		$catalogs = Catalog::all();
 		$category_groups = CategoryGroup::all();
-		$product = $this->product->find($id);
+		$product = $this->product->find($product_id);
 		if(is_null($product)):
 			return App::abort(404);
 		endif;
@@ -76,11 +76,9 @@ class ProductsController extends \BaseController {
 		if($product->tags = json_decode($product->tags)):
 			$product->tags = implode($product->tags,', ');
 		endif;
-		
+		ImageController::deleteImages('catalogs',0);
 		$module = Modules::where('url','catalogs')->first();
-		if($loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->lists('id')):
-			Session::put($module->url.'_product', $loadProductImages);
-			$loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->whereIn('id',Session::get($module->url.'_product'))->get();
+		if($loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',$product_id)->get()):
 			foreach($loadProductImages as $key => $image):
 				if($sliderImage = json_decode($image->paths)):
 					if(File::exists(base_path($sliderImage->image))):
@@ -91,10 +89,7 @@ class ProductsController extends \BaseController {
 					endif;
 				endif;
 			endforeach;
-		else:
-			Session::forget($module->url.'_product');
 		endif;
-		
 		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields','loadProductImages'));
 	}
 

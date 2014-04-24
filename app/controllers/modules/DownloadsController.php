@@ -104,11 +104,10 @@ class DownloadsController extends BaseController {
 		if(Input::hasFile('file')):
 			$this->moduleActionPermission('catalogs','download');
 			if(!is_null($product_id)):
-				$product = Product::find($product_id)->user()->where('id',Auth::user()->id)-first();
+				$product = Product::where('user_id',Auth::user()->id)->find($product_id);
 			else:
 				$product = NULL;
 			endif;
-			
 			if(AuthAccount::isAdminLoggined()):
 				$dirPath = 'public/uploads/catalogs';
 			elseif(AuthAccount::isUserLoggined()):

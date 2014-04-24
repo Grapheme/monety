@@ -126,22 +126,6 @@
 					@if(Allow::valid_access('downloads'))
 						<div id="images" class="tab-pane fade">
 							<div action="{{slink::createAuthLink('catalogs/products/upload-product-photo')}}" class="dropzone dz-clickable" id="ProductImageDropZone"></div>
-						@if(!empty($loadProductImages))
-							<table id="table-free-images" class="table table-bordered table-striped">
-								<tbody>
-								@foreach($loadProductImages as $image)
-									<tr data-action="{{ slink::createAuthLink('image/destroy/'.$image->id) }}">
-										<td>
-											<a href="{{ url('image/slider-image/'.$image->id) }}" alt="{{ $image->title }}">
-												<i class="fa fa-picture-o"></i> {{ $image->filename }} <span>({{ $image->filesize }} KB)</span>
-											</a>
-											<button  data-image-id="{{ $image->id }}" class="close remove-free-image" title="Удалить изображение">&times;</button>
-										</td>
-									</tr>
-								@endforeach
-								</tbody>
-							</table>
-						@endif
 						</div>
 					@endif
 					</div>
