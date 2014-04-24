@@ -23,8 +23,7 @@ class ProductsController extends \BaseController {
 		$category_groups = CategoryGroup::all();
 		if(!$catalogs->count()):
 			return Redirect::to(slink::createAuthLink('catalogs/products'))
-				->with('message','Для добавления продукта предварительно нужно создать каталог продуктов!<p class="margin-top-10"><a class="btn btn-primary" href="'.slink::createAuthLink('catalogs/create').'">Добавить каталог</a>
-				</p>');
+				->with('message','Для добавления продукта предварительно нужно создать каталог продуктов!<p class="margin-top-10"><a class="btn btn-primary" href="'.slink::createAuthLink('catalogs/create').'">Добавить каталог</a></p>');
 		endif;
 		$data_fields = array();
 		if($catalogs->count() == 1):
@@ -32,7 +31,24 @@ class ProductsController extends \BaseController {
 				$data_fields = json_decode($catalogs->first()->fields);
 			endif;
 		endif;
-		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields'));
+		$module = Modules::where('url','catalogs')->first();
+		if($freeProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->lists('id')):
+			Session::put($module->url.'_product', $freeProductImages);
+			$freeProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->whereIn('id',Session::get($module->url.'_product'))->get();
+			foreach($freeProductImages as $key => $image):
+				if($sliderImage = json_decode($image->paths)):
+					if(File::exists(base_path($sliderImage->image))):
+						$freeProductImages[$key]->filename = 'Загруженное изображение '.$image->id.'.'.File::extension(base_path($sliderImage->image));
+						$freeProductImages[$key]->filesize = round(File::size(base_path($sliderImage->image))/1024, 2);
+					else:
+						$freeProductImages[$key]->filename = 'Файл отсутствует на диске';
+					endif;
+				endif;
+			endforeach;
+		else:
+			Session::forget($module->url.'_product');
+		endif;
+		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields','freeProductImages'));
 	}
 
 	public function postStore(){

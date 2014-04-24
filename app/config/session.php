@@ -1,14 +1,14 @@
 <?php
 
 return array(
-	'driver' => 'file',
+	'driver' => 'database',
 	'lifetime' => 120,
 	'expire_on_close' => false,
 	'files' => storage_path().'/sessions',
 	'connection' => null,
 	'table' => 'sessions',
 	'lottery' => array(2, 100),
-	'cookie' => 'laravel_session',
+	'cookie' => 'monety_session',
 	'path' => '/',
 	'domain' => null,
 	'secure' => false,

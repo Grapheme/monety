@@ -42,6 +42,16 @@ class ImageController extends \BaseController {
 					$filePath = $productImage['image'];
 				endif;
 				break;
+			case 'slider-image-thumbnail':
+				if($sliderImage = json_decode(Image::find($id)->paths,TRUE)):
+					$filePath = $sliderImage['thumbnail'];
+				endif;
+				break;
+			case 'slider-image':
+				if($sliderImage = json_decode(Image::find($id)->paths,TRUE)):
+					$filePath = $sliderImage['image'];
+				endif;
+				break;
 		endswitch;
 		if(!is_null($filePath) && File::exists(base_path($filePath))):
 			$image = File::get(base_path($filePath));
@@ -62,5 +72,31 @@ class ImageController extends \BaseController {
 		header('Content-type: '.$MimeType);
 		echo $image;
 	}
-
+	
+	public function deleteImage($id){
+	
+		if(Allow::valid_access('downloads')):
+			$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
+			if(Request::ajax()):
+				if($image = Image::where('user_id',Auth::user()->id)->find($id)):
+					if($jsonImageData = json_decode($image->paths)):
+						if(File::exists(base_path($jsonImageData->image))):
+							File::delete(base_path($jsonImageData->image));
+						endif;
+						if(File::exists(base_path($jsonImageData->thumbnail))):
+							File::delete(base_path($jsonImageData->thumbnail));
+						endif;
+					endif;
+					$image->delete();
+					$json_request['responseText'] = 'Изображение удалено';
+					$json_request['status'] = TRUE;
+				endif;
+			else:
+				return App::abort(404);
+			endif;
+			return Response::json($json_request,200);
+		else:
+			return App::abort(404);
+		endif;
+	}
 }

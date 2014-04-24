@@ -12,6 +12,7 @@ class CreateImagesTable extends Migration {
 			$table->increments('id');
 			$table->integer('module_id')->unsigned()->default(0)->index();
 			$table->integer('item_id')->unsigned()->default(0)->index();
+			$table->integer('user_id')->unsigned()->default(0)->index();
 			
 			$table->integer('sort')->default(0)->unsigned()->nullable();
 			$table->string('title',255)->nullable();

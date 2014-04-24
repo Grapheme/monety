@@ -145,6 +145,39 @@ $(function(){
 		});
 		return false;
 	});
+	$(".remove-free-image").click(function() {
+		var $this = this;
+		$.SmartMessageBox({
+			title : "Удалить изображение?",
+			content : "",
+			buttons : '[Нет][Да]'
+		},function(ButtonPressed) {
+			if(ButtonPressed == "Да") {
+				$.ajax({
+					url: $($this).parents('tr').attr('data-action'),
+					type: 'DELETE',dataType: 'json',
+					beforeSend: function(){$($this).elementDisabled(true);},
+					success: function(response,textStatus,xhr){
+						if(response.status == true){
+							showMessage.constructor('Удаление изображения',response.responseText);
+							showMessage.smallSuccess();
+							$($this).parents('tr').fadeOut(500,function(){$(this).remove();});
+						}else{
+							$($this).elementDisabled(false);
+							showMessage.constructor('Удаление изображения','Возникла ошибка.Обновите страницу и повторите снова');
+							showMessage.smallError();
+						}
+					},
+					error: function(xhr,textStatus,errorThrown){
+						$($this).elementDisabled(false);
+						showMessage.constructor('Удаление изображения','Возникла ошибка.Повторите снова');
+						showMessage.smallError();
+					}
+				});
+			}
+		});
+		return false;
+	});
 });
 
 function runFormValidation() {

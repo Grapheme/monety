@@ -21,6 +21,13 @@
 						<li>
 							<a data-toggle="tab" href="#images">Изображения</a>
 						</li>
+						@if(Session::has('catalogs_product'))
+						<li class="pull-right">
+							<a class="margin-top-7 margin-right-5 no-padding" href="javascript:void(0);">
+								<span class="label bg-color-red txt-color-white padding-2"> Есть загруженные изображения </span>
+							</a>
+						</li>
+						@endif
 					@endif
 					</ul>
 					<div class="tab-content padding-10" id="productTabContent">
@@ -126,6 +133,22 @@
 					@if(Allow::valid_access('downloads'))
 						<div id="images" class="tab-pane fade">
 							<div action="{{slink::createAuthLink('catalogs/products/upload-product-photo')}}" class="dropzone dz-clickable" id="ProductImageDropZone"></div>
+						@if(!empty($freeProductImages))
+							<table class="table table-bordered table-striped">
+								<tbody>
+								@foreach($freeProductImages as $image)
+									<tr data-action="{{ slink::createAuthLink('image/destroy/'.$image->id) }}">
+										<td>
+											<a href="{{ url('image/slider-image/'.$image->id) }}" alt="{{ $image->title }}">
+												<i class="fa fa-picture-o"></i> {{ $image->filename }} <span>({{ $image->filesize }} KB)</span>
+											</a>
+											<button  data-image-id="{{ $image->id }}" class="close remove-free-image" title="Удалить изображение">&times;</button>
+										</td>
+									</tr>
+								@endforeach
+								</tbody>
+							</table>
+						@endif
 						</div>
 					@endif
 					</div>

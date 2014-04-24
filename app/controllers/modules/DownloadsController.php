@@ -110,15 +110,13 @@ class DownloadsController extends BaseController {
 			endif;
 			
 			if(AuthAccount::isAdminLoggined()):
-				$dirPath = 'uploads/catalogs';
-				$dirFullPath = public_path($dirPath);
+				$dirPath = 'public/uploads/catalogs';
 			elseif(AuthAccount::isUserLoggined()):
 				$dirPath = 'usersfiles/account-'.Auth::user()->id.'/catalogs';
-				$dirFullPath = base_path($dirPath);
 			else:
 				$dirPath = 'usersfiles/temporary/catalogs';
-				$dirFullPath = base_path($dirPath);
 			endif;
+			$dirFullPath = base_path($dirPath);
 			
 			if(!File::isDirectory($dirFullPath.'/thumbnail')):
 				File::makeDirectory($dirFullPath.'/thumbnail',0777,TRUE);
@@ -131,11 +129,12 @@ class DownloadsController extends BaseController {
 			$module = Modules::where('url','catalogs')->first();
 			$maxSortValue = (int)Image::where('item_id',$productID)->where('module_id',$module->id)->max('sort')+1;
 			
-			$newImageData = array('module_id' => $module->id,'item_id' => $productID,'sort' => $maxSortValue,'title' => '','description' => '','attributes' => '[]','publication' => 1,
+			$newImageData = array('module_id' => $module->id,'item_id' => $productID,'user_id'=>Auth::user()->id,'sort' => $maxSortValue,'title' => '','description' => '','attributes' => '[]','publication' => 1,
 				'paths' => json_encode(array('image' => $dirPath.'/'.$fileName,'thumbnail'=> $dirPath.'/thumbnail/'.$fileName)));
 			$newImage = Image::create($newImageData);
 			if(is_null($product)):
-				Session::push($module->url.'.images',$newImage->id);
+				$FreeImagesIDs = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->lists('id');
+				Session::put($module->url.'_product', $FreeImagesIDs);
 			endif;
 			return Response::json(array('status'=>TRUE,'responseText'=>'Файл загружен'),200);
 		else:

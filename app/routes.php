@@ -9,7 +9,7 @@ endif;
 	| Общие роутеры независящие от условий
 	*/
 
-Route::get('image/{image_group}/{id}', 'ImageController@showImage');
+Route::get('image/{image_group}/{id}', 'ImageController@showImage')->where('id','\d+');
 Route::get('redactor/get-uploaded-images', 'DownloadsController@redactorUploadedImages');
 Route::post('redactor/upload','DownloadsController@redactorUploadImage');
 
@@ -25,7 +25,7 @@ Route::group(array('before'=>'auth','prefix'=>$prefix),function(){
 	Route::controller('news', 'NewsController');
 	Route::controller('articles','ArticlesController');
 	
-	
+	Route::delete('image/destroy/{id}', 'ImageController@deleteImage')->where('id','\d+');
 	Route::post('catalogs/products/upload-product-photo', 'DownloadsController@postUploadCatalogProductImages');
 	Route::post('catalogs/products/upload-product-photo/product/{product_id}', 'DownloadsController@postUploadCatalogProductImages')->where('product_id','\d+');
 	Route::controller('catalogs/products', 'ProductsController');
