@@ -161,7 +161,13 @@ $(function(){
 						if(response.status == true){
 							showMessage.constructor('Удаление изображения',response.responseText);
 							showMessage.smallSuccess();
-							$($this).parents('tr').fadeOut(500,function(){$(this).remove();});
+							$($this).parents('tr').fadeOut(500,function(){
+								$(this).remove();
+								if($("#table-free-images tr").length == 0){
+									$("#table-free-images").remove();
+									$("#li-free-images").remove();
+								}
+							});
 						}else{
 							$($this).elementDisabled(false);
 							showMessage.constructor('Удаление изображения','Возникла ошибка.Обновите страницу и повторите снова');

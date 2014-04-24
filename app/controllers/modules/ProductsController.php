@@ -32,23 +32,21 @@ class ProductsController extends \BaseController {
 			endif;
 		endif;
 		$module = Modules::where('url','catalogs')->first();
-		if($freeProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->lists('id')):
-			Session::put($module->url.'_product', $freeProductImages);
-			$freeProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->whereIn('id',Session::get($module->url.'_product'))->get();
-			foreach($freeProductImages as $key => $image):
-				if($sliderImage = json_decode($image->paths)):
-					if(File::exists(base_path($sliderImage->image))):
-						$freeProductImages[$key]->filename = 'Загруженное изображение '.$image->id.'.'.File::extension(base_path($sliderImage->image));
-						$freeProductImages[$key]->filesize = round(File::size(base_path($sliderImage->image))/1024, 2);
-					else:
-						$freeProductImages[$key]->filename = 'Файл отсутствует на диске';
+		if($loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->get()):
+			foreach($loadProductImages as $key => $image):
+				if($jsonImageData = json_decode($image->paths)):
+					if(File::exists(base_path($jsonImageData->image))):
+						File::delete(base_path($jsonImageData->image));
+					endif;
+					if(File::exists(base_path($jsonImageData->thumbnail))):
+						File::delete(base_path($jsonImageData->thumbnail));
 					endif;
 				endif;
 			endforeach;
-		else:
-			Session::forget($module->url.'_product');
+			Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->delete();
 		endif;
-		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields','freeProductImages'));
+		
+		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields'));
 	}
 
 	public function postStore(){
@@ -92,7 +90,26 @@ class ProductsController extends \BaseController {
 		if($product->tags = json_decode($product->tags)):
 			$product->tags = implode($product->tags,', ');
 		endif;
-		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields'));
+		
+		$module = Modules::where('url','catalogs')->first();
+		if($loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->lists('id')):
+			Session::put($module->url.'_product', $loadProductImages);
+			$loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->whereIn('id',Session::get($module->url.'_product'))->get();
+			foreach($loadProductImages as $key => $image):
+				if($sliderImage = json_decode($image->paths)):
+					if(File::exists(base_path($sliderImage->image))):
+						$loadProductImages[$key]->filename = 'Загруженное изображение '.$image->id.'.'.File::extension(base_path($sliderImage->image));
+						$loadProductImages[$key]->filesize = round(File::size(base_path($sliderImage->image))/1024, 2);
+					else:
+						$loadProductImages[$key]->filename = 'Файл отсутствует на диске';
+					endif;
+				endif;
+			endforeach;
+		else:
+			Session::forget($module->url.'_product');
+		endif;
+		
+		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields','loadProductImages'));
 	}
 
 	public function postUpdate($id){
