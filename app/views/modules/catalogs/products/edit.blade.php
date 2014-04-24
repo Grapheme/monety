@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{slink::path('css/redactor.css')}}" />
 @stop
 @section('content')
-	@include('modules.catalogs.forms.edit')
+	@include('modules.catalogs.products.forms.edit')
 @stop
 @section('scripts')
 	{{HTML::script('js/modules/catalogs.js')}}
@@ -17,4 +17,5 @@
 	</script>
 	<script src="{{slink::path('js/vendor/redactor.min.js')}}"></script>
 	<script src="{{slink::path('js/system/redactor-config.js')}}"></script>
+	<script src="{{slink::path('js/vendor/dropzone.min.js')}}"></script>
 @stop

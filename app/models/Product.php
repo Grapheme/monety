@@ -10,6 +10,7 @@ class Product extends BaseModel {
 	
 		'title' => 'required|between:3,255',
 		'year' => 'digits:4',
+		'price' => 'numeric',
 		
 		'seo_url' => 'alpha_dash',
 		'catalog_id' => 'required|integer',
@@ -26,6 +27,7 @@ class Product extends BaseModel {
 		'category_group_id.required' => 'Номер группы категории товаров должен быть определен',
 		'category_group_id.integer' => 'Номер группы категории товаров должен быть числом',
 		'year.digits' => 'Год выпуска должен быть числом и иметь 4 знака',
+		'price.numeric' => 'Цена должена быть числом',
 	);
 	
 

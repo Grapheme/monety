@@ -112,6 +112,39 @@ $(function(){
 		});
 		return false;
 	});
+	$(".remove-catalog-product").click(function() {
+		var $this = this;
+		$.SmartMessageBox({
+			title : "Удалить продукт?",
+			content : "",
+			buttons : '[Нет][Да]'
+		},function(ButtonPressed) {
+			if(ButtonPressed == "Да") {
+				$.ajax({
+					url: $($this).parent('form').attr('action'),
+					type: 'DELETE',dataType: 'json',
+					beforeSend: function(){$($this).elementDisabled(true);},
+					success: function(response,textStatus,xhr){
+						if(response.status == true){
+							showMessage.constructor('Удаление категории',response.responseText);
+							showMessage.smallSuccess();
+							$($this).parents('tr').fadeOut(500,function(){$(this).remove();});
+						}else{
+							$($this).elementDisabled(false);
+							showMessage.constructor('Удаление продукта','Возникла ошибка.Обновите страницу и повторите снова');
+							showMessage.smallError();
+						}
+					},
+					error: function(xhr,textStatus,errorThrown){
+						$($this).elementDisabled(false);
+						showMessage.constructor('Удаление продукта','Возникла ошибка.Повторите снова');
+						showMessage.smallError();
+					}
+				});
+			}
+		});
+		return false;
+	});
 });
 
 function runFormValidation() {

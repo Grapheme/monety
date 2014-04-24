@@ -1,109 +1,132 @@
-{{ Form::model($catalog,array('url'=>slink::createAuthLink('catalogs/update/'.$catalog->id),'class'=>'smart-form','id'=>'catalog-form','role'=>'form','method'=>'post')) }}
+{{ Form::model($product,array('url'=>slink::createAuthLink('catalogs/products/update/'.$product->id),'class'=>'smart-form','id'=>'catalog-product-form','role'=>'form','method'=>'post','files' => true)) }}
+	{{ Form::hidden('sort',NULL) }}
 	<div class="row margin-top-10">
 		<section class="col col-6">
 			<div class="well">
-				<header>Для изменения каталога воспользуйтесь формой:</header>
+				<header>Для изменения продукта воспользуйтесь формой:</header>
 				<fieldset>
-					<section>
-						<label class="label">Название</label>
-						<label class="input"> <i class="icon-append fa fa-list-alt"></i>
-							{{ Form::text('title',NULL) }}
-						</label>
-					</section>
-				@if(Allow::valid_access('downloads'))
-					<section>
-						<label class="label">Логотип</label>
-						<label class="input input-file" for="file">
-							<div class="button"><input type="file" onchange="this.parentNode.nextSibling.value = this.value" name="file">Выбрать</div><input type="text" readonly="" placeholder="Выбирите файл">
-						</label>
-					</section>
-				@endif
-				@if(Allow::valid_access('languages') && !empty($languages))
-					<section>
-						<label class="label">Язык:</label>
-						<label class="select">
-							@foreach($languages as $language)
-								<?php $langs[$language->code] = $language->name;?>
-							@endforeach
-							{{ Form::select('language', $langs,NULL, array('class'=>'lang-change','autocomplete'=>'off')) }} <i></i>
-						</label>
-					</section>
-				@endif
-				@if(Allow::valid_access('templates'))
-					<section>
-						<label class="label">Шаблон:</label>
-						<label class="select">
-							@foreach($templates as $template)
-								<?php $temps[$template->name] = $template->name;?>
-							@endforeach
-							{{ Form::select('template', $temps,NULL, array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
-						</label>
-					</section>
-				@endif
-					<section>
-						<label class="label">Содержание</label>
-						<label class="textarea">
-							{{ Form::textarea('description',NULL,array('class'=>'redactor')) }}
-						</label>
-					</section>
-				</fieldset>
-				<fieldset>
-					<section>
-						<label class="label">Поля для продуктов</label>
-					</section>
-					<ul id="catalog-fields-list" class="list-unstyled ">
-					@if(!empty($catalog['fields']))
-						@foreach($catalog['fields'] as $field)
-						<li class="row">
-							<section class="col col-4">
-								<label class="input">
-									<input type="text" value="{{{ $field->name }}}" name="fields[title][]" placeholder="Название поля [name]">
-								</label>
-							</section>
-							<section class="col col-4">
-								<label class="input">
-									<input type="text" value="{{{ $field->label }}}" name="fields[label][]" placeholder="Подпись поля [label]">
-								</label>
-							</section>
-							<section class="col col-3">
-								<label class="select">
-									<?php $types = array('input' => 'Input','textarea'=>'Textarea','checkbox'=>'Checkbox','file'=>'File');?>
-									{{ Form::select('fields[type][]', $types, $field->type, array('autocomplete'=>'off')) }} <i></i>
-								</label>
-							</section>
+					<ul class="nav nav-tabs bordered" id="myTab1">
+						<li class="active">
+							<a data-toggle="tab" href="#data">Данные</a>
 						</li>
-						@endforeach
-					@else
-						<li class="row">
-							<section class="col col-4">
-								<label class="input">
-									<input type="text" value="title" name="fields[title][]" placeholder="Название поля [name]">
-								</label>
-							</section>
-							<section class="col col-4">
-								<label class="input">
-									<input type="text" value="Название товара" name="fields[label][]" placeholder="Подпись поля [label]">
-								</label>
-							</section>
-							<section class="col col-3">
-								<label class="select">
-									<select name="fields[type][]" autocomplete="off" >
-										<option value="input"selected="">Input</option>
-										<option value="textarea">Textarea</option>
-										<option value="checkbox">Checkbox</option>
-										<option value="file">File</option>
-									</select> <i></i>
-								</label>
-							</section>
+					@if(!empty($data_fields))
+						<li>
+							<a data-toggle="tab" href="#advanced">Дополнительные данные</a>
+						</li>
+					@endif
+						<li>
+							<a data-toggle="tab" href="#options">Опции</a>
+						</li>
+					@if(Allow::valid_access('downloads'))
+						<li>
+							<a data-toggle="tab" href="#images">Изображения</a>
 						</li>
 					@endif
 					</ul>
-					<section>
-						<div class="row pull-right margin-right-5">
-							<button type="button" id="add-catalog-field"><i class="fa fa-plus"></i></button>
-							<button type="button" id="remove-catalog-field"><i class="fa fa-trash-o"></i></button>
+					<div class="tab-content padding-10" id="productTabContent">
+						<div id="data" class="tab-pane fade active in">
+							<section>
+								<label class="label">Название</label>
+								<label class="input">
+									{{ Form::text('title',NULL) }}
+								</label>
+							</section>
+						@if(Allow::valid_access('downloads'))
+							<section>
+								<label class="label">Основное изображение</label>
+								<label class="input input-file" for="file">
+									<div class="button"><input type="file" onchange="this.parentNode.nextSibling.value = this.value" name="file">Выбрать</div><input type="text" readonly="" placeholder="Выбирите файл">
+								</label>
+							</section>
+						@endif
+							<section>
+								<label class="label">Описание</label>
+								<label class="textarea">
+									{{ Form::textarea('description',NULL,array('class'=>'redactor')) }}
+								</label>
+							</section>
 						</div>
-					</section>
+						<div id="advanced" class="tab-pane fade">
+					@if(!empty($data_fields))
+						@foreach($data_fields as $field)
+							<section>
+							@if(!empty($field->name))
+								@if($field->type == 'input')
+									<label class="label">{{ $field->label }}</label>
+									<label class="input">
+										{{ Form::text('attribute['.$field->name.']',$product->attributes[$field->name]) }}
+									</label>
+								@elseif($field->type == 'textarea')
+									<label class="label">{{ $field->label }}</label>
+									<label class="textarea">
+										{{ Form::textarea('attribute['.$field->name.']',$product->attributes[$field->name],array('class'=>'redactor')) }}
+									</label>
+								@elseif($field->type == 'checkbox')
+									<div class="row">
+										<div class="col col-10">
+											<label class="checkbox">
+												<input type="checkbox" name="{{ 'attribute['.$field->name.']' }}">
+												<i></i>{{ $field->label }}
+											</label>
+										</div>
+									</div>
+								@endif
+							@endif
+							</section>
+						@endforeach
+					@else
+							<section>
+								<div class="alert alert-danger alert-block padding-10"><i class="fa-fw fa fa-warning"></i> Отсутствуют информационные поля</div>
+							</section>
+					@endif
+						</div>
+						<div id="options" class="tab-pane fade">
+						@if($catalogs->count() > 1)
+							<section>
+								<label class="label">Каталог продукции:</label>
+								<label class="select">
+									@foreach($catalogs as $catalog)
+										<?php $catalogList[$catalog->id] = $catalog->title;?>
+									@endforeach
+									{{ Form::select('catalog_id', $catalogList,NULL, array('autocomplete'=>'off')) }} <i></i>
+								</label>
+							</section>
+						@else
+							{{ Form::hidden('catalog_id',$catalogs->first()->id) }}
+						@endif
+						@if($category_groups->count() > 1)
+							<section>
+								<label class="label">Группа категорий:</label>
+								<label class="select">
+									@foreach($category_groups as $category_group)
+										<?php $categoryGroupList[$category_group->id] = $category_group->title;?>
+									@endforeach
+									{{ Form::select('category_group_id', $categoryGroupList,NULL, array('autocomplete'=>'off')) }} <i></i>
+								</label>
+							</section>
+						@else
+							{{ Form::hidden('category_group_id',NULL) }}
+						@endif
+							<section>
+								<label class="label">Цена</label>
+								<label class="input"> <i class="icon-append fa fa-credit-card"></i>
+									{{ Form::text('price',NULL) }}
+								</label>
+							</section>
+							<section>
+								<label class="label">Теги</label>
+								<label class="input">
+									{{ Form::text('tags',NULL) }}
+								</label>
+								<div class="note">разделяются запятой</div>
+							</section>
+						</div>
+					@if(Allow::valid_access('downloads'))
+						<div id="images" class="tab-pane fade">
+							<div action="{{slink::createAuthLink('catalogs/products/upload-product-photo')}}" class="dropzone dz-clickable" id="ProductImageDropZone"></div>
+						</div>
+					@endif
+					</div>
 				</fieldset>
 				<footer>
 					<a class="btn btn-default no-margin regular-10 uppercase pull-left btn-spinner" href="{{URL::previous()}}">
@@ -115,5 +138,12 @@
 				</footer>
 			</div>
 		</section>
+	@if(Allow::enabled_module('seo'))
+		<section class="col col-6">
+			<div class="well">
+				@include('modules.seo.catalog-product')
+			</div>
+		</section>
+	@endif
 	</div>
 {{ Form::close() }}

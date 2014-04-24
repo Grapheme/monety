@@ -1,4 +1,5 @@
 {{ Form::open(array('url'=>slink::createAuthLink('catalogs/products/store'),'role'=>'form','class'=>'smart-form','id'=>'catalog-product-form','method'=>'post','files' => true)) }}
+	{{ Form::hidden('sort',0) }}
 	<div class="row margin-top-10">
 		<section class="col col-6">
 			<div class="well">
@@ -22,7 +23,7 @@
 						</li>
 					@endif
 					</ul>
-					<div class="tab-content padding-10" id="myTabContent1">
+					<div class="tab-content padding-10" id="productTabContent">
 						<div id="data" class="tab-pane fade active in">
 							<section>
 								<label class="label">Название</label>
@@ -124,7 +125,7 @@
 						</div>
 					@if(Allow::valid_access('downloads'))
 						<div id="images" class="tab-pane fade">
-							<div action="{{slink::createAuthLink('catalogs/products/upload-product-photo')}}" class="dropzone dz-clickable" id="mydropzone"></div>
+							<div action="{{slink::createAuthLink('catalogs/products/upload-product-photo')}}" class="dropzone dz-clickable" id="ProductImageDropZone"></div>
 						</div>
 					@endif
 					</div>

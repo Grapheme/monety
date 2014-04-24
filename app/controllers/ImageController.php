@@ -9,13 +9,7 @@ class ImageController extends \BaseController {
 		
 		parent::__construct();
 		
-		$this->defaultImages = array(
-			'defaul' => getcwd().'/img/no-photo.jpg',
-			'avatar-female' => getcwd().'/img/avatars/female.png',
-			'avatar-male'=> getcwd().'/img/avatars/male.png',
-			'avatar-female-thumbnail' => getcwd().'/img/avatars/female.png',
-			'avatar-male-thumbnail' => getcwd().'/img/avatars/male.png'
-		);
+		$this->defaultImages = array('default' => 'public/img/no-photo.jpg','avatar-female' => 'public/img/avatars/female.png','avatar-male'=>'public/img/avatars/male.png','avatar-female-thumbnail' => 'public/img/avatars/female.png','avatar-male-thumbnail' => 'public/img/avatars/male.png');
 		
 		$this->acceptedTypes = array(
 			'text/plain' => asset('img/icons/txt.png'),'application/pdf' => asset('img/icons/pdf.png'),'application/zip' => asset('img/icons/zip.png'),
@@ -49,22 +43,21 @@ class ImageController extends \BaseController {
 				endif;
 				break;
 		endswitch;
-		if(!is_null($filePath) && File::exists(getcwd().'/'.$filePath)):
-			$filePath = getcwd().'/'.$filePath;
-			$image = File::get($filePath);
+		if(!is_null($filePath) && File::exists(base_path($filePath))):
+			$image = File::get(base_path($filePath));
 		endif;
 		if(empty($image)):
 			if(isset($this->defaultImages[$image_group])):
-				$image = File::get($this->defaultImages[$image_group]);
+				$image = File::get(base_path($this->defaultImages[$image_group]));
 				$filePath = $this->defaultImages[$image_group];
 			else:
-				$image = File::get($this->defaultImages['defaul']);
-				$filePath = $this->defaultImages['defaul'];
+				$image = File::get(base_path($this->defaultImages['default']));
+				$filePath = $this->defaultImages['default'];
 			endif;
 		endif;
 		$MimeType = 'image/png';
 		if(File::exists($filePath)):
-			$MimeType = ImageManipulation::open($filePath)->mime;
+			$MimeType = ImageManipulation::open(base_path($filePath))->mime;
 		endif;
 		header('Content-type: '.$MimeType);
 		echo $image;

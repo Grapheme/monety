@@ -55,39 +55,79 @@ class ProductsController extends \BaseController {
 		return Response::json($json_request,200);
 	}
 
-	public function show($id){
-		$product = Product::findOrFail($id);
-
-		return View::make('products.show', compact('product'));
-	}
-
-	public function edit($id){
-		$product = Product::find($id);
-
-		return View::make('products.edit', compact('product'));
-	}
-
-	public function update($id){
+	public function getEdit($id){
 		
-		$product = Product::findOrFail($id);
-
-		$validator = Validator::make($data = Input::all(), Product::$rules);
-
-		if ($validator->fails()){
-			
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		$product->update($data);
-
-		return Redirect::route('products.index');
+		$this->moduleActionPermission('catalogs','edit');
+		$catalogs = Catalog::all();
+		$category_groups = CategoryGroup::all();
+		$product = $this->product->find($id);
+		if(is_null($product)):
+			return App::abort(404);
+		endif;
+		$data_fields = array();
+		if($catalogs->count() == 1):
+			if(!empty($catalogs->first()->fields)):
+				$data_fields = json_decode($catalogs->first()->fields);
+			endif;
+		endif;
+		if(!empty($product->attributes)):
+			$product->attributes = json_decode($product->attributes,TRUE);
+		endif;
+		if($product->tags = json_decode($product->tags)):
+			$product->tags = implode($product->tags,', ');
+		endif;
+		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields'));
 	}
 
-	public function destroy($id){
+	public function postUpdate($id){
 		
-		Product::destroy($id);
+		$this->moduleActionPermission('catalogs','create');
+		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
+		if(Request::ajax()):
+			if(Product::validate(Input::all(),Product::$rules,Product::$rules_messages)):
+				$product = $this->product->find($id);
+				self::saveProductModel($product);
+				$json_request['responseText'] = 'Продукт сохранен';
+				$json_request['redirect'] = slink::createAuthLink('catalogs/products');
+				$json_request['status'] = TRUE;
+			else:
+				$json_request['responseText'] = 'Неверно заполнены поля';
+				$json_request['responseErrorText'] = implode(Product::$errors,'<br />');
+			endif;
+		else:
+			return App::abort(404);
+		endif;
+		return Response::json($json_request,200);
+	}
 
-		return Redirect::route('products.index');
+	public function deleteDestroy($product_id){
+		
+		$this->moduleActionPermission('catalogs','delete');
+		$json_request = array('status'=>FALSE,'responseText'=>'');
+		if(Request::ajax()):
+			$product = $this->product->where('id',$product_id)->where('user_id',Auth::user()->id)->first();
+			if(!is_null($product) && $product->delete()):
+				if($productImages = json_decode($product->image)):
+					if(!empty($productImages->image) && File::exists(base_path($productImages->image))):
+						File::delete(base_path($productImages->image));
+					endif;
+					if(!empty($productImages->thumbnail) && File::exists(base_path($productImages->thumbnail))):
+						File::delete(base_path($productImages->thumbnail));
+					endif;
+				endif;
+				/**
+				* 
+				* ВЫЗВАТЬ МЕТОД УДАЛЕНИЯ ФОТОГРАФИЙ ТОВАРА
+				* 
+				*/
+				$json_request['responseText'] = 'Продукт удален';
+				$json_request['status'] = TRUE;
+			endif;
+		else:
+			return App::abort(404);
+		endif;
+		return Response::json($json_request,200);
+		
 	}
 	
 	private function saveProductModel($product = NULL){
@@ -100,7 +140,7 @@ class ProductsController extends \BaseController {
 		$product->catalog_id = Input::get('catalog_id');
 		$product->category_group_id = Input::get('category_group_id');
 		
-		$product->sort = (int)Product::max('sort')+1;
+		$product->sort = Input::get('sort');
 		$product->title = Input::get('title');
 		$product->description = Input::get('description');
 		$product->price = Input::get('price');
@@ -111,29 +151,26 @@ class ProductsController extends \BaseController {
 		if(Allow::valid_access('downloads')):
 			if(Input::hasFile('file')):
 				if(AuthAccount::isAdminLoggined()):
-					$dirPath = 'uploads/catalogs';
-					$dirFullPath = public_path($dirPath);
+					$dirPath = 'public/uploads/catalogs';
 				elseif(AuthAccount::isUserLoggined()):
 					$dirPath = 'usersfiles/account-'.Auth::user()->id.'/catalogs';
-					$dirFullPath = base_path($dirPath);
 				else:
 					$dirPath = 'usersfiles/temporary/catalogs';
-					$dirFullPath = base_path($dirPath);
 				endif;
 				if($productImages = json_decode($product->image)):
-					if(!empty($productImages->image) && File::exists($dirFullPath.'/'.$productImages->image)):
-						File::delete($dirFullPath.'/'.$productImages->image);
+					if(!empty($productImages->image) && File::exists(base_path($productImages->image))):
+						File::delete(base_path($productImages->image));
 					endif;
-					if(!empty($productImages->thumbnail) && File::exists($dirFullPath.'/thumbnail/'.$productImages->thumbnail)):
-						File::delete($dirFullPath.'/'.$productImages->thumbnail);
+					if(!empty($productImages->thumbnail) && File::exists(base_path($productImages->thumbnail))):
+						File::delete(base_path($productImages->thumbnail));
 					endif;
 				endif;
-				if(!File::isDirectory($dirFullPath.'/thumbnail')):
-					File::makeDirectory($dirFullPath.'/thumbnail',0777,TRUE);
+				if(!File::isDirectory(base_path($dirPath.'/thumbnail'))):
+					File::makeDirectory(base_path($dirPath.'/thumbnail'),0777,TRUE);
 				endif;
 				$fileName = str_random(24).'.'.Input::file('file')->getClientOriginalExtension();
-				ImageManipulation::make(Input::file('file')->getRealPath())->resize(100,100,TRUE)->save($dirFullPath.'/thumbnail/'.$fileName);
-				Input::file('file')->move($dirFullPath,$fileName);
+				ImageManipulation::make(Input::file('file')->getRealPath())->resize(100,100,TRUE)->save(base_path($dirPath.'/thumbnail/'.$fileName));
+				Input::file('file')->move(base_path($dirPath),$fileName);
 				$product->image = json_encode(array('image' => $dirPath.'/'.$fileName,'thumbnail'=> $dirPath.'/thumbnail/'.$fileName));
 			endif;
 		endif;
