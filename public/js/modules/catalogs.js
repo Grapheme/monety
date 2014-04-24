@@ -291,6 +291,7 @@ function runFormValidation() {
 			options.success = function(response,status,xhr,jqForm){
 				$(form).find('.btn-form-submit').elementDisabled(false);
 				if(response.status){
+					BASIC.inputChanged = false;
 					if(response.redirect !== false){
 						BASIC.RedirectTO(response.redirect);
 					}

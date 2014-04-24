@@ -15,7 +15,11 @@
 			loadScript("{{asset('js/vendor/jquery-form.min.js');}}");
 		}
 		window.onbeforeunload = function(){
-			return "Покинуть страницу? Все не сохраненные данные будут утеряны! Продоолжить?";
+			if(BASIC.inputChanged === true){
+				return "Покинуть страницу? Все не сохраненные данные будут утеряны! Продоолжить?";
+			}else{
+				return null;
+			}
 		};
 	</script>
 	<script src="{{slink::path('js/vendor/redactor.min.js')}}"></script>

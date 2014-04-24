@@ -99,4 +99,27 @@ class ImageController extends \BaseController {
 			return App::abort(404);
 		endif;
 	}
+	
+	public static function deleteImages($module_name,$item_id){
+	
+		if(Allow::valid_access('downloads')):
+			$module = Modules::where('url',$module_name)->first();
+			if($loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',$item_id)->get()):
+				foreach($loadProductImages as $key => $image):
+					if($jsonImageData = json_decode($image->paths)):
+						if(File::exists(base_path($jsonImageData->image))):
+							File::delete(base_path($jsonImageData->image));
+						endif;
+						if(File::exists(base_path($jsonImageData->thumbnail))):
+							File::delete(base_path($jsonImageData->thumbnail));
+						endif;
+					endif;
+				endforeach;
+				Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',$item_id)->delete();
+			endif;
+			return TRUE;
+		else:
+			return FALSE;
+		endif;
+	}
 }

@@ -31,21 +31,7 @@ class ProductsController extends \BaseController {
 				$data_fields = json_decode($catalogs->first()->fields);
 			endif;
 		endif;
-		$module = Modules::where('url','catalogs')->first();
-		if($loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->get()):
-			foreach($loadProductImages as $key => $image):
-				if($jsonImageData = json_decode($image->paths)):
-					if(File::exists(base_path($jsonImageData->image))):
-						File::delete(base_path($jsonImageData->image));
-					endif;
-					if(File::exists(base_path($jsonImageData->thumbnail))):
-						File::delete(base_path($jsonImageData->thumbnail));
-					endif;
-				endif;
-			endforeach;
-			Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',0)->delete();
-		endif;
-		
+		ImageController::deleteImages('catalogs',0);
 		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields'));
 	}
 
@@ -148,11 +134,7 @@ class ProductsController extends \BaseController {
 						File::delete(base_path($productImages->thumbnail));
 					endif;
 				endif;
-				/**
-				* 
-				* ВЫЗВАТЬ МЕТОД УДАЛЕНИЯ ФОТОГРАФИЙ ТОВАРА
-				* 
-				*/
+				ImageController::deleteImages('catalogs',$product_id);
 				$json_request['responseText'] = 'Продукт удален';
 				$json_request['status'] = TRUE;
 			endif;
@@ -230,6 +212,13 @@ class ProductsController extends \BaseController {
 		endif;
 		$product->save();
 		$product->touch();
+		
+		$module = Modules::where('url','catalogs')->first();
+		if(Session::has($module->url.'_product')):
+			Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->whereIn('id',Session::get($module->url.'_product'))->update(array('item_id' => $product->id));
+			Session::forget($module->url.'_product');
+		endif;
+		
 		return $product->id;
 	}
 	
