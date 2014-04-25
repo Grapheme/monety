@@ -74,7 +74,6 @@ class CatalogsController extends \BaseController {
 			return App::abort(404);
 		endif;
 		return Response::json($json_request,200);
-		
 	}
 	
 	public function deleteDestroy($id){

@@ -113,6 +113,7 @@ class TempsController extends BaseController {
 			$content = '@if(isset($content)){{ $content }}@endif';
 		endif;
 		$template->content = $content;
+		$template->static = 0;
 		$template->save();
 		$template->touch();
 		File::put(app_path('views/templates/'.$this->stringTranslite($template->name).'.blade.php'),$template->content);

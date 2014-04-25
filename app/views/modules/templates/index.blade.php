@@ -31,7 +31,7 @@
 								<span class="btn-label"><i class="fa fa-edit"></i></span> Ред.
 							</a>
 						@endif
-					@if($template->id > 1)
+					@if(!$template->static)
 						@if(Allow::valid_action_permission('templates','delete'))
 							<form method="POST" action="{{slink::createAuthLink('templates/destroy/'.$template->id)}}">
 								<button type="button" class="btn btn-labeled btn-danger remove-template">

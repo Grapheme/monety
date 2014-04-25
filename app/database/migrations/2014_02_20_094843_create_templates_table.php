@@ -5,28 +5,17 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateTemplatesTable extends Migration {
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+	public function up(){
 		Schema::create('templates', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
 			$table->text('content');
+			$table->boolean('static')->default(0)->unsigned()->nullable();
 			$table->timestamps();
 		});
 	}
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
+	
+	public function down(){
 		Schema::drop('templates');
 	}
 
