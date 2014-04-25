@@ -79,6 +79,39 @@ $(function(){
 		});
 		return false;
 	});
+	$(".remove-catalog-manufacturer").click(function() {
+		var $this = this;
+		$.SmartMessageBox({
+			title : "Удалить производителя продукции?",
+			content : "",
+			buttons : '[Нет][Да]'
+		},function(ButtonPressed) {
+			if(ButtonPressed == "Да") {
+				$.ajax({
+					url: $($this).parent('form').attr('action'),
+					type: 'DELETE',dataType: 'json',
+					beforeSend: function(){$($this).elementDisabled(true);},
+					success: function(response,textStatus,xhr){
+						if(response.status == true){
+							showMessage.constructor('Удаление производителя продукции',response.responseText);
+							showMessage.smallSuccess();
+							$($this).parents('tr').fadeOut(500,function(){$(this).remove();});
+						}else{
+							$($this).elementDisabled(false);
+							showMessage.constructor('Удаление производителя продукции','Возникла ошибка.Обновите страницу и повторите снова');
+							showMessage.smallError();
+						}
+					},
+					error: function(xhr,textStatus,errorThrown){
+						$($this).elementDisabled(false);
+						showMessage.constructor('Удаление производителя продукции','Возникла ошибка.Повторите снова');
+						showMessage.smallError();
+					}
+				});
+			}
+		});
+		return false;
+	});
 	$(".remove-catalog-category").click(function() {
 		var $this = this;
 		$.SmartMessageBox({
@@ -305,5 +338,34 @@ function runFormValidation() {
 			$(form).ajaxSubmit(options);
 		}
 	});
-
+	var editingManufacturer = $("#catalog-manufacturer-form").validate({
+		rules:{
+			title: {required : true},
+		},
+		messages : {
+			title : {required : 'Укажите название производителя'},
+		},
+		errorPlacement : function(error, element){error.insertAfter(element.parent());},
+		submitHandler: function(form) {
+			var options = {target: null,dataType:'json',type:'post'};
+			options.beforeSubmit = function(formData,jqForm,options){
+				$(form).find('.btn-form-submit').elementDisabled(true);
+			},
+			options.success = function(response,status,xhr,jqForm){
+				$(form).find('.btn-form-submit').elementDisabled(false);
+				if(response.status){
+					BASIC.inputChanged = false;
+					if(response.redirect !== false){
+						BASIC.RedirectTO(response.redirect);
+					}
+					showMessage.constructor(response.responseText,'');
+					showMessage.smallSuccess();
+				}else{
+					showMessage.constructor(response.responseText,response.responseErrorText);
+					showMessage.smallError();
+				}
+			}
+			$(form).ajaxSubmit(options);
+		}
+	});
 }

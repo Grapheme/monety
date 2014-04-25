@@ -28,6 +28,10 @@ Route::group(array('before'=>'auth','prefix'=>$prefix),function(){
 	Route::delete('image/destroy/{id}', 'ImageController@deleteImage')->where('id','\d+');
 	Route::post('catalogs/products/upload-product-photo', 'DownloadsController@postUploadCatalogProductImages');
 	Route::post('catalogs/products/upload-product-photo/product/{product_id}', 'DownloadsController@postUploadCatalogProductImages')->where('product_id','\d+');
+	
+	Route::get('catalogs/products/search-catalog-category/{category_group_id}', 'CategoriesController@getSugestSearchCategory')->where('category_group_id','\d+');
+	
+	
 	Route::controller('catalogs/products', 'ProductsController');
 });
 
@@ -43,6 +47,7 @@ Route::group(array('before'=>'admin.auth','prefix'=>'admin'),function(){
 	Route::controller('groups', 'GroupsController');
 	Route::controller('settings', 'SettingsController');
 	Route::controller('catalogs/categories', 'CategoriesController');
+	Route::controller('catalogs/manufacturers', 'ManufacturersController');
 	
 	Route::get('catalogs/category-group/{category_group_id}/categories', 'CategoriesController@getCategoryList')->where('category_group_id','\d+');
 	Route::get('catalogs/category-group/{category_group_id}/categories/create', 'CategoriesController@getCategoryCreate')->where('category_group_id','\d+');

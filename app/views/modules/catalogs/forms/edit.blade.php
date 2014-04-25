@@ -1,4 +1,4 @@
-{{ Form::model($catalog,array('url'=>slink::createAuthLink('catalogs/update/'.$catalog->id),'class'=>'smart-form','id'=>'catalog-form','role'=>'form','method'=>'post')) }}
+{{ Form::model($catalog,array('url'=>slink::createAuthLink('catalogs/update/'.$catalog->id),'class'=>'smart-form','id'=>'catalog-form','role'=>'form','method'=>'post','files' => true)) }}
 	<div class="row margin-top-10">
 		<section class="col col-6">
 			<div class="well">

@@ -1,12 +1,16 @@
 @extends('templates.'.AuthAccount::getStartPage())
 @section('style')
 <link rel="stylesheet" href="{{slink::path('css/redactor.css')}}" />
+<link rel="stylesheet" href="{{ slink::path('css/tokenizing/token-input.css') }}"/>
+<link rel="stylesheet" href="{{ slink::path('css/tokenizing/token-input-facebook.css') }}"/>
 @stop
 @section('content')
 	@include('modules.catalogs.products.forms.create')
 @stop
 @section('scripts')
-	{{HTML::script('js/modules/catalogs.js')}}
+	<script src="{{ slink::path('js/modules/catalogs.js') }}"></script>
+	<script src="{{ slink::path('js/vendor/jquery.tokeninput.js') }}"></script>
+	<script src="{{ slink::path('js/vendor/jquery.fancybox.pack.js') }}"></script>
 	<script type="text/javascript">
 		if(typeof pageSetUp === 'function'){pageSetUp();}
 		if(typeof runFormValidation === 'function'){
@@ -21,6 +25,13 @@
 				return null;
 			}
 		};
+		$("#set-product-categories").tokenInput($("#select-product-categories").attr('data-action')+'/'+$("#select-product-categories").attr("data-category-group"),{
+			theme: "facebook",
+			hintText: "Введите название категории",
+			noResultsText: "Ничего не найдено",
+			searchingText: "Поиск...",
+			tokenDelimiter: ','
+		});
 	</script>
 	<script src="{{slink::path('js/vendor/redactor.min.js')}}"></script>
 	<script src="{{slink::path('js/system/redactor-config.js')}}"></script>

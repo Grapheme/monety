@@ -37,25 +37,25 @@ class Product extends BaseModel {
 	public function catalogProducts(){
 
 		return $this->belongsTo('Catalog');
-
 	}
 	
 	public function categoryGroup(){
 
 		return $this->belongsTo('CategoryGroup');
-
 	}
 	
 	public function user(){
 
 		return $this->belongsTo('User');
-
 	}
 	
 	public function images(){
 
 		return $this->hasMany('Image','item_id','id');
-
 	}
 	
+	public function categories(){
+		
+		return $this->belongsToMany('Category');
+	}
 }

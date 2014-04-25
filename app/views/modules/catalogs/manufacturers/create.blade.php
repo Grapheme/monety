@@ -1,11 +1,9 @@
 @extends('templates.'.AuthAccount::getStartPage())
 @section('style')
 <link rel="stylesheet" href="{{ slink::path('css/redactor.css') }}" />
-<link rel="stylesheet" href="{{ slink::path('css/tokenizing/token-input.css') }}"/>
-<link rel="stylesheet" href="{{ slink::path('css/tokenizing/token-input-facebook.css') }}"/>
 @stop
 @section('content')
-	@include('modules.catalogs.forms.create')
+	@include('modules.catalogs.manufacturers.forms.create')
 @stop
 @section('scripts')
 	<script src="{{ slink::path('js/modules/catalogs.js') }}"></script>

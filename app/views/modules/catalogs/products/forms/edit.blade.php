@@ -81,6 +81,28 @@
 					@endif
 						</div>
 						<div id="options" class="tab-pane fade">
+						@if(Allow::valid_access('languages') && !empty($languages))
+							<section>
+								<label class="label">Язык:</label>
+								<label class="select">
+									@foreach($languages as $language)
+										<?php $langs[$language->code] = $language->name;?>
+									@endforeach
+									{{ Form::select('language', $langs,NULL, array('class'=>'lang-change','autocomplete'=>'off')) }} <i></i>
+								</label>
+							</section>
+						@endif
+						@if(Allow::valid_access('templates'))
+							<section>
+								<label class="label">Шаблон:</label>
+								<label class="select">
+									@foreach($templates as $template)
+										<?php $temps[$template->name] = $template->name;?>
+									@endforeach
+									{{ Form::select('template', $temps,NULL, array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
+								</label>
+							</section>
+						@endif
 						@if($catalogs->count() > 1)
 							<section>
 								<label class="label">Каталог продукции:</label>
@@ -107,6 +129,15 @@
 						@else
 							{{ Form::hidden('category_group_id',NULL) }}
 						@endif
+						@if($category_groups->count())
+							<section id="select-product-categories" data-category-group="{{ $product->category_group_id }}" data-action="{{ slink::createAuthLink('catalogs/products/search-catalog-category') }}">
+								<section>
+									<label class="label">Показывать в категориях:</label>
+									{{ Form::text('categories','',array('id'=>'set-product-categories')) }}
+									<div class="note">Воспользуйтесь поиском для указания категорий к которым относится продукт</div>
+								</section>
+							</section>
+						@endif
 							<section>
 								<label class="label">Цена</label>
 								<label class="input"> <i class="icon-append fa fa-credit-card"></i>
@@ -130,8 +161,8 @@
 								@foreach($loadProductImages as $image)
 									<tr data-action="{{ slink::createAuthLink('image/destroy/'.$image->id) }}">
 										<td>
-											<a href="{{ url('image/slider-image/'.$image->id) }}" alt="{{ $image->title }}">
-												<i class="fa fa-picture-o"></i> {{ $image->filename }} <span>({{ $image->filesize }} KB)</span>
+											<a class="fancybox" rel="group" data-fancybox-type="image" href="{{ url('image/slider-image/'.$image->id) }}" alt="{{ $image->title }}">
+												<i class="fa fa-picture-o"></i> {{ $image->filename }} <span>({{ $image->filesize }} Кбайт)</span>
 											</a>
 											<button  data-image-id="{{ $image->id }}" class="close remove-free-image" title="Удалить изображение">&times;</button>
 										</td>

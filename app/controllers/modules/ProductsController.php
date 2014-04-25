@@ -32,7 +32,9 @@ class ProductsController extends \BaseController {
 			endif;
 		endif;
 		ImageController::deleteImages('catalogs',0);
-		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields'));
+		$templates = Template::all();
+		$languages = Language::all();
+		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields','templates','languages'));
 	}
 
 	public function postStore(){
@@ -76,13 +78,14 @@ class ProductsController extends \BaseController {
 		if($product->tags = json_decode($product->tags)):
 			$product->tags = implode($product->tags,', ');
 		endif;
+		$product->categories = $product->categories()->get()->toArray();
 		ImageController::deleteImages('catalogs',0);
 		$module = Modules::where('url','catalogs')->first();
 		if($loadProductImages = Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->where('item_id',$product_id)->get()):
 			foreach($loadProductImages as $key => $image):
 				if($sliderImage = json_decode($image->paths)):
 					if(File::exists(base_path($sliderImage->image))):
-						$loadProductImages[$key]->filename = 'Загруженное изображение '.$image->id.'.'.File::extension(base_path($sliderImage->image));
+						$loadProductImages[$key]->filename = 'Загруженное изображение';
 						$loadProductImages[$key]->filesize = round(File::size(base_path($sliderImage->image))/1024, 2);
 					else:
 						$loadProductImages[$key]->filename = 'Файл отсутствует на диске';
@@ -90,7 +93,9 @@ class ProductsController extends \BaseController {
 				endif;
 			endforeach;
 		endif;
-		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields','loadProductImages'));
+		$templates = Template::all();
+		$languages = Language::all();
+		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields','loadProductImages','templates','languages'));
 	}
 
 	public function postUpdate($id){
@@ -184,6 +189,16 @@ class ProductsController extends \BaseController {
 				$product->image = json_encode(array('image' => $dirPath.'/'.$fileName,'thumbnail'=> $dirPath.'/thumbnail/'.$fileName));
 			endif;
 		endif;
+		if(Allow::enabled_module('languages')):
+			$product->language = Input::get('language');
+		else:
+			$product->language = App::getLocale();
+		endif;
+		if(Allow::enabled_module('templates')):
+			$product->template = Input::get('template');
+		else:
+			$product->template = 'product';
+		endif;
 		if(Allow::enabled_module('seo')):
 			if(is_null(Input::get('seo_url'))):
 				$product->seo_url = '';
@@ -207,12 +222,23 @@ class ProductsController extends \BaseController {
 		endif;
 		$product->save();
 		$product->touch();
+
+		/*
+		* Присвоение ранее загруженных файлов к товару
+		*/
 		
 		$module = Modules::where('url','catalogs')->first();
 		if(Session::has($module->url.'_product')):
-			Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->whereIn('id',Session::get($module->url.'_product'))->update(array('item_id' => $product->id));
+			Image::where('user_id',Auth::user()->id)->where('module_id',$module->id)->whereIn('id',Session::get($module->url.'_product'))->update(array('item_id' => $product->id,'title' => $product->title));
 			Session::forget($module->url.'_product');
 		endif;
+		
+		/*
+		* Присвоение ранее загруженных файлов к товару
+		*/
+		
+		$categoriesIDs = explode(',',Input::get('categories'));
+		$product->categories()->sync($categoriesIDs);
 		
 		return $product->id;
 	}

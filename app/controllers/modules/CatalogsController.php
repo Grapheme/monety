@@ -84,8 +84,8 @@ class CatalogsController extends \BaseController {
 		if(Request::ajax()):
 			$catalog = $this->catalog->find($id);
 			if(!is_null($catalog) && $catalog->delete()):
-				if(!empty($catalog->logo) && File::exists(public_path($catalog->logo))):
-					File::delete(public_path($catalog->logo));
+				if(!empty($catalog->logo) && File::exists(base_path($catalog->logo))):
+					File::delete(base_path($catalog->logo));
 				endif;
 				$json_request['responseText'] = 'Каталог удален';
 				$json_request['status'] = TRUE;
@@ -126,15 +126,15 @@ class CatalogsController extends \BaseController {
 		endif;
 		if(Allow::valid_access('downloads')):
 			if(Input::hasFile('file')):
-				if(!empty($catalog->logo) && File::exists(public_path($catalog->logo))):
-					File::delete(public_path($catalog->logo));
+				if(!empty($catalog->logo) && File::exists(base_path($catalog->logo))):
+					File::delete(base_path($catalog->logo));
 				endif;
-				if(!File::isDirectory(public_path('uploads/catalogs'))):
-					File::makeDirectory(public_path('uploads/catalogs'),777,TRUE);
+				if(!File::isDirectory(base_path('public/uploads/catalogs'))):
+					File::makeDirectory(base_path('public/uploads/catalogs'),777,TRUE);
 				endif;
 				$fileName = str_random(16).'.'.Input::file('file')->getClientOriginalExtension();
-				ImageManipulation::make(Input::file('file')->getRealPath())->resize(250,250,TRUE)->save(public_path('uploads/catalogs/'.$fileName));
-				$catalog->logo = 'uploads/catalogs/'.$fileName;
+				ImageManipulation::make(Input::file('file')->getRealPath())->resize(250,250,TRUE)->save(base_path('public/uploads/catalogs/'.$fileName));
+				$catalog->logo = 'public/uploads/catalogs/'.$fileName;
 			endif;
 		endif;
 		$catalog->save();

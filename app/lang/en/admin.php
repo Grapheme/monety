@@ -19,4 +19,5 @@ return array(
 	'catalogs' => 'Catalogs',
 	'categories' => 'Categories products',
 	'products' => 'Products',
+	'manufacturers' => 'Manufacturers',
 );

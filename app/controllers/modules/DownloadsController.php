@@ -125,10 +125,11 @@ class DownloadsController extends BaseController {
 			Input::file('file')->move($dirFullPath,$fileName);
 			
 			$productID = (!is_null($product)) ? $product->id : 0;
+			$productTitle = (!is_null($product)) ? $product->title : '';
 			$module = Modules::where('url','catalogs')->first();
 			$maxSortValue = (int)Image::where('item_id',$productID)->where('module_id',$module->id)->max('sort')+1;
 			
-			$newImageData = array('module_id' => $module->id,'item_id' => $productID,'user_id'=>Auth::user()->id,'sort' => $maxSortValue,'title' => '','description' => '','attributes' => '[]','publication' => 1,
+			$newImageData = array('module_id' => $module->id,'item_id' => $productID,'user_id'=>Auth::user()->id,'sort' => $maxSortValue,'title' => $productTitle,'description' => '','attributes' => '[]','publication' => 1,
 				'paths' => json_encode(array('image' => $dirPath.'/'.$fileName,'thumbnail'=> $dirPath.'/thumbnail/'.$fileName)));
 			$newImage = Image::create($newImageData);
 			if(is_null($product)):

@@ -15,7 +15,8 @@ class SystemModules {
 				array(
 					$start_page.'/catalogs'=>array(trans('admin.catalog'),'fa-truck','catalogs'),
 					$start_page.'/catalogs/categories'=>array(trans('admin.categories'),'fa-list','categories'),
-					$start_page.'/catalogs/products'=>array(trans('admin.products'),'fa-th-large','products')
+					$start_page.'/catalogs/products'=>array(trans('admin.products'),'fa-th-large','products'),
+					$start_page.'/catalogs/manufacturers'=>array(trans('admin.manufacturers'),'fa-linux','manufacturers')
 				)
 			),
 			$start_page.'/templates'=>array(trans('admin.templates'),'fa-edit','templates'),

@@ -28,6 +28,8 @@ class CreateProductsTable extends Migration {
 			$table->text('seo_keywords')->nullable();
 			$table->string('seo_h1')->nullable();
 			$table->boolean('publication')->default(1)->unsigned()->nullable();
+			$table->string('template',100)->nullable();
+			$table->string('language',10)->nullable();
 			$table->timestamps();
 			
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

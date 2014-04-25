@@ -1,28 +1,36 @@
 <?php
 
-class GroupsTableSeeder extends Seeder{
+class TemplatesSeeder extends Seeder{
 
 	public function run(){
 		
 		DB::table('templates')->truncate();
-		Group::create(array(
+		Template::create(array(
 			'name' => 'default',
 			'content' => '',
 		));
-		Group::create(array(
+		Template::create(array(
 			'name' => 'catalog',
 			'content' => '',
 		));
-		Group::create(array(
+		Template::create(array(
 			'name' => 'news',
 			'content' => '',
 		));
-		Group::create(array(
+		Template::create(array(
 			'name' => 'articles',
 			'content' => '',
 		));
-		Group::create(array(
+		Template::create(array(
 			'name' => 'category',
+			'content' => '',
+		));
+		Template::create(array(
+			'name' => 'product',
+			'content' => '',
+		));
+		Template::create(array(
+			'name' => 'manufacturer',
 			'content' => '',
 		));
 	}

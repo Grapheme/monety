@@ -19,5 +19,6 @@ return array(
 	'catalogs' => 'Каталоги',
 	'categories' => 'Категории продукции',
 	'products' => 'Продукция',
+	'manufacturers' => 'Производители',
 
 );

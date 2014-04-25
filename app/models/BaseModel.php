@@ -4,7 +4,7 @@ class BaseModel extends Eloquent {
 	
 	public static $errors = array();
 
-	public static function validate($data,$rules = NULL,$messages = NULL){
+	public static function validate($data,$rules = NULL,$messages = array()){
 		
 		if(is_null($rules)):
 			$rules = static::$rules;

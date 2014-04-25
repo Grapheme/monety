@@ -27,28 +27,29 @@ class ImageController extends \BaseController {
 		
 		$image = ''; $filePath = NULL;
 		switch($image_group):
-			case 'avatar-female':$filePath = User::find($id)->avatar; break;
-			case 'avatar-female-thumbnail':$filePath = User::find($id)->thumbnail; break;
-			case 'avatar-male':$filePath = User::find($id)->avatar; break;
-			case 'avatar-male-thumbnail':$filePath = User::find($id)->thumbnail; break;
+			case 'avatar-female':$filePath = User::findOrFail($id)->avatar; break;
+			case 'avatar-female-thumbnail':$filePath = User::findOrFail($id)->thumbnail; break;
+			case 'avatar-male':$filePath = User::findOrFail($id)->avatar; break;
+			case 'avatar-male-thumbnail':$filePath = User::findOrFail($id)->thumbnail; break;
+			case 'catalog-manufacturer':$filePath = Manufacturer::findOrFail($id)->logo; break;
 			
 			case 'catalog-product-thumbnail':
-				if($productImage = json_decode(Product::find($id)->image,TRUE)):
+				if($productImage = json_decode(Product::findOrFail($id)->image,TRUE)):
 					$filePath = $productImage['thumbnail'];
 				endif;
 				break;
 			case 'catalog-product':
-				if($productImage = json_decode(Product::find($id)->image,TRUE)):
+				if($productImage = json_decode(Product::findOrFail($id)->image,TRUE)):
 					$filePath = $productImage['image'];
 				endif;
 				break;
 			case 'slider-image-thumbnail':
-				if($sliderImage = json_decode(Image::find($id)->paths,TRUE)):
+				if($sliderImage = json_decode(Image::findOrFail($id)->paths,TRUE)):
 					$filePath = $sliderImage['thumbnail'];
 				endif;
 				break;
 			case 'slider-image':
-				if($sliderImage = json_decode(Image::find($id)->paths,TRUE)):
+				if($sliderImage = json_decode(Image::findOrFail($id)->paths,TRUE)):
 					$filePath = $sliderImage['image'];
 				endif;
 				break;
@@ -78,7 +79,7 @@ class ImageController extends \BaseController {
 		if(Allow::valid_access('downloads')):
 			$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
 			if(Request::ajax()):
-				if($image = Image::where('user_id',Auth::user()->id)->find($id)):
+				if($image = Image::where('user_id',Auth::user()->id)->findOrFail($id)):
 					if($jsonImageData = json_decode($image->paths)):
 						if(File::exists(base_path($jsonImageData->image))):
 							File::delete(base_path($jsonImageData->image));

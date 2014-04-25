@@ -81,6 +81,28 @@
 					@endif
 						</div>
 						<div id="options" class="tab-pane fade">
+						@if(Allow::valid_access('languages') && !empty($languages))
+							<section>
+								<label class="label">Язык:</label>
+								<label class="select">
+									@foreach($languages as $language)
+										<?php $langs[$language->code] = $language->name;?>
+									@endforeach
+									{{ Form::select('language', $langs,NULL, array('class'=>'lang-change','autocomplete'=>'off')) }} <i></i>
+								</label>
+							</section>
+						@endif
+						@if(Allow::valid_access('templates'))
+							<section>
+								<label class="label">Шаблон:</label>
+								<label class="select">
+									@foreach($templates as $template)
+										<?php $temps[$template->name] = $template->name;?>
+									@endforeach
+									{{ Form::select('template', $temps,'product', array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
+								</label>
+							</section>
+						@endif
 						@if($catalogs->count() > 1)
 							<section>
 								<label class="label">Каталог продукции:</label>
@@ -109,6 +131,15 @@
 						@else
 							{{ Form::hidden('category_group_id',0) }}
 						@endif
+						@if($category_groups->count())
+							<section id="select-product-categories" data-category-group="{{ $category_groups->first()->id }}" data-action="{{ slink::createAuthLink('catalogs/products/search-catalog-category') }}">
+								<section>
+									<label class="label">Показывать в категориях:</label>
+									{{ Form::text('categories',NULL,array('id'=>'set-product-categories')) }}
+									<div class="note">Воспользуйтесь поиском для указания категорий к которым относится продукт</div>
+								</section>
+							</section>
+						@endif
 							<section>
 								<label class="label">Цена</label>
 								<label class="input"> <i class="icon-append fa fa-credit-card"></i>
@@ -125,7 +156,7 @@
 						</div>
 					@if(Allow::valid_access('downloads'))
 						<div id="images" class="tab-pane fade">
-							<div action="{{slink::createAuthLink('catalogs/products/upload-product-photo')}}" class="dropzone dz-clickable" id="ProductImageDropZone"></div>
+							<div action="{{ slink::createAuthLink('catalogs/products/upload-product-photo') }}" class="dropzone dz-clickable" id="ProductImageDropZone"></div>
 						</div>
 					@endif
 					</div>

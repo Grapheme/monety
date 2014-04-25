@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('RolesTableSeeder');
 		$this->call('ModulesTableSeeder');
 		$this->call('PermissionsTableSeeder');
+		$this->call('TemplatesSeeder');
 		$this->call('TablesSeeder');
 	}
 

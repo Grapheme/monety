@@ -121,6 +121,26 @@ class CategoriesController extends \BaseController {
 	}
 
 	/*
+	* Поиск категориий
+	*/
+		
+	public function getSugestSearchCategory($category_group_id){
+		
+		$found_categories = array();
+		if(Request::ajax()):
+			if($categoriesList = Category::where('title','LIKE','%'.Input::get('q').'%')->where('category_group_id',$category_group_id)->orderBy('sort')->get()->toArray()):
+				for($i=0;$i<count($categoriesList);$i++):
+					$found_categories[$i]['id'] = $categoriesList[$i]['id'];
+					$found_categories[$i]['name'] = $categoriesList[$i]['title'];
+				endfor;
+			endif;
+		else:
+			return App::abort(404);
+		endif;
+		return Response::json($found_categories,200);
+	}
+	
+	/*
 	* Категории и подкатегории
 	*/
 	
