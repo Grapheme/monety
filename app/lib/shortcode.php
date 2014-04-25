@@ -19,14 +19,14 @@ class shortcode {
 		endif;
 	}
 
-	public static function news($options){
+	public static function news($options = NULL, $data = NULL){
 		
 		//Настройки по-умолчанию
 		$config['view'] = Config::get('app-default.news_template');
 		$config['limit'] = Config::get('app-default.news_count_on_page');
 		$config['order'] = BaseController::stringToArray(News::$order_by);
 		//Настройки переданные пользователем
-		if(!empty($options)):
+		if(!is_null($options) && !empty($options)):
 			if(isset($options['field']) && !empty($options['field'])):
 				$config['order'] = array();
 				$config['order'][0] = array($options['field'],'asc');
@@ -64,7 +64,7 @@ class shortcode {
 		endif;
 	}
 	
-	public static function articles($options){
+	public static function articles($options = NULL, $data = NULL){
 		
 		//Настройки по-умолчанию
 		$config['view'] = Config::get('app-default.articles_template');
@@ -109,7 +109,7 @@ class shortcode {
 		endif;
 	}
 
-	public static function gallery($options){
+	public static function gallery($options = NULL, $data = NULL){
 		
 		if(isset($options['name'])){
 			$name = $options['name'];

@@ -55,7 +55,8 @@ class sPage {
 				endif;
 			endfor;
 		endif;
-		if(!is_null($options) && method_exists('shortcode',$type)):
+			
+		if(method_exists('shortcode',$type)):
 			return shortcode::$type($options,$data);
 		else:
 			return '['.$clear.']';

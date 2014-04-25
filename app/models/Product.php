@@ -34,7 +34,7 @@ class Product extends BaseModel {
 	protected $fillable = array();
 	
 	
-	public function catalogProducts(){
+	public function catalog(){
 
 		return $this->belongsTo('Catalog');
 	}

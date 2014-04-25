@@ -66,12 +66,7 @@ class ProductsController extends \BaseController {
 		if(is_null($product)):
 			return App::abort(404);
 		endif;
-		$data_fields = array();
-		if($catalogs->count() == 1):
-			if(!empty($catalogs->first()->fields)):
-				$data_fields = json_decode($catalogs->first()->fields);
-			endif;
-		endif;
+		$data_fields = json_decode($product->catalog->fields);
 		if(!empty($product->attributes)):
 			$product->attributes = json_decode($product->attributes,TRUE);
 		endif;

@@ -28,10 +28,7 @@ Route::group(array('before'=>'auth','prefix'=>$prefix),function(){
 	Route::delete('image/destroy/{id}', 'ImageController@deleteImage')->where('id','\d+');
 	Route::post('catalogs/products/upload-product-photo', 'DownloadsController@postUploadCatalogProductImages');
 	Route::post('catalogs/products/upload-product-photo/product/{product_id}', 'DownloadsController@postUploadCatalogProductImages')->where('product_id','\d+');
-	
 	Route::get('catalogs/products/search-catalog-category/{category_group_id}', 'CategoriesController@getSugestSearchCategory')->where('category_group_id','\d+');
-	
-	
 	Route::controller('catalogs/products', 'ProductsController');
 });
 
@@ -89,5 +86,7 @@ Route::get('logout',array('before'=>'auth','as'=>'logout','uses'=>'GlobalControl
 
 Route::get('/news/{news_url}','HomeController@showNews');
 Route::get('/articles/{article_url}','HomeController@showArticle');
+
+Route::get('catalog/{url}','HomeController@showProduct');
 Route::get('/{url}','HomeController@showPage');
 Route::get('/','HomeController@showPage');
