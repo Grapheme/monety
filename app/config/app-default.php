@@ -9,6 +9,8 @@ return array(
 	'news_template' => 'news-list',
 	'articles_count_on_page' => 5,
 	'articles_template' => 'articles-list',
+	'catalog_count_on_page' => 20,
+	'catalog_template' => 'catalog',
 	
 	
 	'upload_dir' => '/uploads',

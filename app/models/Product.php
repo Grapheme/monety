@@ -5,7 +5,9 @@ class Product extends BaseModel {
 	protected $guarded = array();
 
 	protected $table = 'products';
-
+	
+	public static $order_by = 'sort ASC, created_at DESC';
+	
 	public static $rules = array(
 	
 		'title' => 'required|between:3,255',

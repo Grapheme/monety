@@ -42,7 +42,7 @@
 							</figure>
 						@endif
 						</td>
-						<td><a href="{{slink::createLink('catalog/'.$product->seo_url.'-'.$product->id)}}" target="_blank">{{ $product->title }}</a></td>
+						<td><a href="{{ slink::createLink('catalog/'.$product->seo_url.'-'.$product->id) }}" target="_blank">{{ $product->title }}</a></td>
 						<td class="wigth-100 text-center">{{ $product->price }}</td>
 						@if(Allow::valid_action_permission('catalogs','publication'))
 						<td class="wigth-100">
