@@ -12,7 +12,7 @@ class ProductsController extends \BaseController {
 	
 	public function getIndex(){
 		
-		$products = $this->product->all();
+		$products = $this->product->where('user_id',Auth::user()->id)->orderBy('sort','asc')->orderBy('created_at','desc')->get();
 		return View::make('modules.catalogs.products.index', compact('products'));
 	}
 
@@ -192,12 +192,12 @@ class ProductsController extends \BaseController {
 				$product->image = json_encode(array('image' => $dirPath.'/'.$fileName,'thumbnail'=> $dirPath.'/thumbnail/'.$fileName));
 			endif;
 		endif;
-		if(Allow::enabled_module('languages')):
+		if(Allow::enabled_module('languages') && !is_null(Input::get('language'))):
 			$product->language = Input::get('language');
 		else:
 			$product->language = App::getLocale();
 		endif;
-		if(Allow::enabled_module('templates')):
+		if(Allow::enabled_module('templates') && !is_null(Input::get('template'))):
 			$product->template = Input::get('template');
 		else:
 			$product->template = 'product';

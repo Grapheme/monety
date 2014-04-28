@@ -45,7 +45,9 @@ class GlobalController extends \BaseController {
 				if(is_null($account)):
 					if($account = self::getRegisterAccount(Input::all())):
 						if(Allow::enabled_module('downloads')):
-							File::makeDirectory(base_path('usersfiles/account-').$account->id,777,TRUE);
+							if(!File::exists(base_path('usersfiles/account-').$account->id)):
+								File::makeDirectory(base_path('usersfiles/account-').$account->id,777,TRUE);
+							endif;
 						endif;
 						Mail::send('emails.auth.signup',array('account'=>$account),function($message){
 							$message->from('noreply@monety.pro','Monety.pro');

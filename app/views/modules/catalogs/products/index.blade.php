@@ -5,7 +5,9 @@
 			<div class="pull-right margin-bottom-25 margin-top-10 ">
 			@if(Allow::valid_action_permission('catalogs','create'))
 				<a class="btn btn-primary" href="{{slink::createAuthLink('catalogs/products/create')}}">Добавить продукт</a>
+				@if(AuthAccount::isAdminLoggined())
 				<a class="btn btn-primary" href="{{slink::createAuthLink('catalogs/categories')}}"><i class="fa fa-lg fa-fw fa-list"></i> Категории продуктов</a>
+				@endif
 			@endif
 			</div>
 		</div>

@@ -20,5 +20,4 @@ return array(
 	'categories' => 'Категории продукции',
 	'products' => 'Продукция',
 	'manufacturers' => 'Производители',
-
 );
