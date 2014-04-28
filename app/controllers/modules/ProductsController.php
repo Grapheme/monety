@@ -34,7 +34,11 @@ class ProductsController extends \BaseController {
 		ImageController::deleteImages('catalogs',0);
 		$templates = Template::all();
 		$languages = Language::all();
-		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields','templates','languages'));
+		$productsExtendedAttributes = array();
+		foreach(Products_attributes_groups::all() as $key => $value):
+			$productsExtendedAttributes[$value->title] = Products_attributes_groups::find($value->id)->productAttributes()->get();
+		endforeach;
+		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields','productsExtendedAttributes','templates','languages'));
 	}
 
 	public function postStore(){
@@ -90,7 +94,11 @@ class ProductsController extends \BaseController {
 		endif;
 		$templates = Template::all();
 		$languages = Language::all();
-		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields','loadProductImages','templates','languages'));
+		$productsExtendedAttributes = array();
+		foreach(Products_attributes_groups::all() as $key => $value):
+			$productsExtendedAttributes[$value->title] = Products_attributes_groups::find($value->id)->productAttributes()->get();
+		endforeach;
+		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields','productsExtendedAttributes','loadProductImages','templates','languages'));
 	}
 
 	public function postUpdate($id){

@@ -14,6 +14,10 @@ class TablesSeeder extends Seeder{
 		
 		DB::table('templates')->truncate();
 		DB::table('languages')->truncate();
+		DB::table('languages')->truncate();
+		
+		DB::table('products_attributes_group')->truncate();
+		DB::table('products_attributes')->truncate();
 		
 		Language::create(array(
 			'code' => 'ru',

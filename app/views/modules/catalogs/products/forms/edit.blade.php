@@ -74,10 +74,20 @@
 							@endif
 							</section>
 						@endforeach
-					@else
+					@endif
+					@if(!empty($productsExtendedAttributes))
+						@foreach($productsExtendedAttributes as $attrName => $attributes)
 							<section>
-								<div class="alert alert-danger alert-block padding-10"><i class="fa-fw fa fa-warning"></i> Отсутствуют информационные поля</div>
+								<?php $productAttr = array();?>
+								<label class="label">{{ $attrName }}</label>
+								<label class="select">
+									@foreach($attributes as $attribute)
+										<?php $productAttr[$attribute->title] = $attribute->title;?>
+									@endforeach
+									{{ Form::select('attribute['.$attrName.']', $productAttr,$product->attributes[$attrName], array('autocomplete'=>'off')) }} <i></i>
+								</label>
 							</section>
+						@endforeach
 					@endif
 						</div>
 						<div id="options" class="tab-pane fade">

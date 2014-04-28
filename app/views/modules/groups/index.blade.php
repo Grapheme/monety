@@ -3,7 +3,9 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<div class="pull-right margin-bottom-25 margin-top-10 ">
-			<a class="btn btn-primary" href="{{slink::createAuthLink('groups/create')}}">Добавить группу</a>
+		@if(Allow::valid_action_permission('users','create'))
+			<!--<a class="btn btn-primary" href="{{slink::createAuthLink('groups/create')}}">Добавить группу</a>-->
+		@endif
 		</div>
 	</div>
 </div>

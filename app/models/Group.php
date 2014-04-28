@@ -1,6 +1,6 @@
 <?php
 
-class group extends Eloquent {
+class Group extends Eloquent {
 	
 	protected $guarded = array();
 
@@ -12,6 +12,7 @@ class group extends Eloquent {
 
 	public function roles(){
 		
-		return $this->belongsToMany('role');
+		return $this->belongsToMany('Role');
 	}
+	
 }
