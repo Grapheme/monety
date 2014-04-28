@@ -95,11 +95,11 @@ class shortcode {
 		if(is_null($catalog)):
 			return "Отсутствуют каталоги продукции!";
 		endif;
-		$config['name'] = $catalog->title;
+		static::$config['name'] = $catalog->title;
 		//Настройки переданные пользователем
 		self::setUserConfig($options);
 		if(Allow::enabled_module('catalog')):
-			$catalog = Catalog::where('language',Config::get('app.locale'))->where('title',$options['name'])->first();
+			$catalog = Catalog::where('language',Config::get('app.locale'))->where('title',static::$config['name'])->first();
 			if(is_null($catalog)):
 				return "Отсутсвует каталоги продукции: ".static::$config['name'];
 			endif;
