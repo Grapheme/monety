@@ -4,7 +4,6 @@ class PermissionsTableSeeder extends Seeder{
 
 	public function run(){
 		
-		DB::table('permissions')->truncate();
 		Permission::create(array(
 			'name' => 'create',
 			'desc' => 'Создание',

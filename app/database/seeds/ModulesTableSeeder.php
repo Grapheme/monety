@@ -4,7 +4,6 @@ class ModulesTableSeeder extends Seeder{
 
 	public function run(){
 		
-		DB::table('modules')->truncate();
 		Modules::create(array(
 			'url' => 'seo',
 			'on' => 0,

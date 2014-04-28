@@ -4,7 +4,6 @@ class TemplatesSeeder extends Seeder{
 
 	public function run(){
 		
-		DB::table('templates')->truncate();
 		Template::create(array(
 			'name' => 'default',
 			'static' => 1,

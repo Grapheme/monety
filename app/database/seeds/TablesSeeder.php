@@ -4,9 +4,17 @@ class TablesSeeder extends Seeder{
 
 	public function run(){
 		
+		DB::table('users')->truncate();
+		DB::table('groups')->truncate();
+		DB::table('roles')->truncate();
 		DB::table('group_role')->truncate();
 		DB::table('group_user')->truncate();
+		DB::table('modules')->truncate();
+		DB::table('permissions')->truncate();
+		
+		DB::table('templates')->truncate();
 		DB::table('languages')->truncate();
+		
 		Language::create(array(
 			'code' => 'ru',
 			'name' => 'Русский',

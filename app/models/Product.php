@@ -6,7 +6,7 @@ class Product extends BaseModel {
 
 	protected $table = 'products';
 	
-	public static $order_by = 'sort ASC, created_at DESC';
+	public static $order_by = 'sort ASC,created_at DESC';
 	
 	public static $rules = array(
 	
