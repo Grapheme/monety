@@ -4,9 +4,6 @@ class TablesSeeder extends Seeder{
 
 	public function run(){
 		
-		DB::table('users')->truncate();
-		DB::table('groups')->truncate();
-		DB::table('roles')->truncate();
 		DB::table('group_role')->truncate();
 		DB::table('group_user')->truncate();
 		DB::table('modules')->truncate();
