@@ -15,7 +15,6 @@ Route::get('image/{image_group}/{id}', 'ImageController@showImage')->where('id',
 Route::get('redactor/get-uploaded-images', 'DownloadsController@redactorUploadedImages');
 Route::post('redactor/upload','DownloadsController@redactorUploadImage');
 
-
 	/*
 	| Роутеры доступные для всех групп авторизованных пользователей
 	*/

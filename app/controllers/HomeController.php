@@ -56,14 +56,10 @@ class HomeController extends BaseController {
 	*/
 	public function getShowProduct($product_url){
 		
-		$url = explode('-',$product_url);
-		$product_id = array_pop($url);
-		if(!is_numeric($product_id)):
-			return App::abort(404,'Запрашиваемый продукт не найден');
-		endif;
 		if(!Allow::enabled_module('catalogs')):
 			return App::abort(404);
 		endif;
+		$product_id = getItemIDforURL($product_url);
 		if(!$product = Product::where('publication',1)->where('language',Config::get('app.locale'))->find($product_id)):
 			return App::abort(404,'Запрашиваемый продукт не найден');
 		endif;
@@ -96,11 +92,7 @@ class HomeController extends BaseController {
 		if(!Allow::enabled_module('catalogs')):
 			return App::abort(404);
 		endif;
-		$url = explode('-',$category_url);
-		$category_id = array_pop($url);
-		if(!is_numeric($category_id)):
-			return App::abort(404,'Запрашиваемая категория не найдена');
-		endif;
+		$category_id = getItemIDforURL($category_url);
 		if($catalogs = Catalog::where('language',Config::get('app.locale'))->where('publication',1)->get()):
 			$productsCatalog = NULL;
 			foreach($catalogs as $catalog):

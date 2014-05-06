@@ -1,21 +1,42 @@
 <?
 	$catalogTranslit = BaseController::stringTranslite(Catalog::findOrFail(1)->title);
 	$categoryGroup = CategoryGroup::findorFail(1);
+	$sub_categories_ids = array(0,0);
+	if(!is_null(Request::segment(2))):
+		$sub_categories_ids[0] = getItemIDforURL(Request::segment(2));
+		if($parent_category = Category::getParentCategory($categoryGroup->id,Request::segment(2))):
+			$sub_categories_ids[1] = $parent_category->id;
+		endif;
+	endif;
+	
+//	print_r($sub_categories_ids);exit;
+	
 ?>
 
 <aside class="aside col-xs-2 col-sm-2 col-md-2 col-lg-2">
 	<h2 class="aside-header">{{ $categoryGroup->title }}</h2>
 	<ul class="aside-list list-unstyled">
-@if(!is_null(Request::segment(2)))
-	@if($parent_category = Category::getParentCategory($categoryGroup->id,Request::segment(2)))
-	<li class="aside-item">
-		<a href="{{ url(($parent_category->category_parent_id == 0) ? '/' : $catalogTranslit.'/'.$parent_category->seo_url.'-'.$parent_category->id) }}"><i class="fa fa-reply"></i> <strong>{{ $parent_category->title }}</strong></a>
-	</li>
-	@endif
-@endif
-	@foreach(Category::getCategories($categoryGroup->id,Request::segment(2)) as $categories)
+	@foreach(Category::getCategories($categoryGroup->id) as $categories)
 		<li class="aside-item">
-			<a href="{{ url($catalogTranslit.'/'.$categories->seo_url.'-'.$categories->id) }}">{{ $categories->title }}</a>
+			<a href="{{ url($catalogTranslit.'/'.$categories->seo_url.'-'.$categories->id) }}">
+			@if(!is_null(Request::segment(2)) && in_array($categories->id,$sub_categories_ids))
+				<i class="fa fa-folder-open-o"></i>
+			@else
+				<i class="fa fa-folder-o"></i>
+			@endif
+				{{ $categories->title }}
+			</a>
+		@if(!is_null(Request::segment(2)) && in_array($categories->id,$sub_categories_ids))
+			<ul class="aside-list list-unstyled margin-left-10">
+			@foreach(Category::getCategories($categoryGroup->id,Request::segment(2)) as $sub_categories)
+			<li class="aside-item">
+				<a href="{{ url($catalogTranslit.'/'.$sub_categories->seo_url.'-'.$sub_categories->id) }}">
+					{{ in_array($sub_categories->id,$sub_categories_ids) ? '<i class="fa fa-check-circle-o"></i>' : '<i class="fa fa-circle-o"></i>' }} {{ $sub_categories->title }}
+				</a>
+			</li>
+			@endforeach
+			</ul>
+		@endif
 		</li>
 	@endforeach
 	</ul>

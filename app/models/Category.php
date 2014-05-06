@@ -22,32 +22,21 @@ class Category extends BaseModel {
 		if(is_null($category_url)):
 			$categories = DB::table('categories')->select('id','title','seo_url')->where('category_group_id',$category_group_id)->where('category_parent_id',0)->where('publication',1)->orderBy('sort','asc')->orderBy('title','asc')->get();
 		else:
-			$url = explode('-',$category_url);
-			$parent_category_id = array_pop($url);
-			if(!is_numeric($parent_category_id)):
-				return App::abort(404,'Запрашиваемая категория не найдена');
+			$parent_category_id = getItemIDforURL($category_url);
+			if(!$categories = DB::table('categories')->select('id','title','seo_url')->where('category_group_id',$category_group_id)->where('category_parent_id',$parent_category_id)->where('publication',1)->orderBy('sort','asc')->orderBy('title','asc')->get()):
+				if($parent_category = self::getParentCategory($category_group_id,$category_url)):
+					$categories = DB::table('categories')->select('id','title','seo_url')->where('category_group_id',$category_group_id)->where('category_parent_id',$parent_category->id)->where('publication',1)->orderBy('sort','asc')->orderBy('title','asc')->get();
+				endif;
 			endif;
-			$categories = DB::table('categories')->select('id','title','seo_url')->where('category_group_id',$category_group_id)->where('category_parent_id',$parent_category_id)->where('publication',1)->orderBy('sort','asc')->orderBy('title','asc')->get();
 		endif;
 		return $categories;
 	}
 	
 	public static function getParentCategory($category_group_id,$sub_category_url){
 		
-		$url = explode('-',$sub_category_url);
-		$category_id = array_pop($url);
-		if(!is_numeric($category_id)):
-			return App::abort(404,'Запрашиваемая категория не найдена');
-		endif;
+		$category_id = getItemIDforURL($sub_category_url);
 		if($current_category = Category::find($category_id)):
-			if($current_category->category_parent_id == 0):
-				return $current_category;
-			else:
-				$parent_category = Category::find($current_category->category_parent_id);
-				$parent_category->category_parent_id = $current_category->id;
-				$parent_category->title = $current_category->title;
-				return $parent_category;
-			endif;
+			return Category::find($current_category->category_parent_id);
 		else:
 			return NULL;
 		endif;
