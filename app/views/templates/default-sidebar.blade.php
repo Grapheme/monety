@@ -8,9 +8,9 @@
 	<ul class="aside-list list-unstyled">
 @if(!is_null(Request::segment(2)))
 	@if($parent_category = Category::getParentCategory($categoryGroup->id,Request::segment(2)))
-		<li class="aside-item">
-			<a href="{{ url(($parent_category->category_parent_id == 0) ? '/' : $catalogTranslit.'/'.$parent_category->seo_url.'-'.$parent_category->id) }}"><i class="fa fa-reply"></i> <strong>{{ $parent_category->title }}</strong></a>
-		</li>
+	<li class="aside-item">
+		<a href="{{ url(($parent_category->category_parent_id == 0) ? '/' : $catalogTranslit.'/'.$parent_category->seo_url.'-'.$parent_category->id) }}"><i class="fa fa-reply"></i> <strong>{{ $parent_category->title }}</strong></a>
+	</li>
 	@endif
 @endif
 	@foreach(Category::getCategories($categoryGroup->id,Request::segment(2)) as $categories)

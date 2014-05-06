@@ -36,7 +36,7 @@
 							@foreach($templates as $template)
 								<?php $temps[$template->name] = $template->name;?>
 							@endforeach
-							{{ Form::select('template', $temps,'catalog', array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
+							{{ Form::select('template', $temps,'full-catalog', array('class'=>'template-change','autocomplete'=>'off')) }} <i></i>
 						</label>
 					</section>
 				@endif
