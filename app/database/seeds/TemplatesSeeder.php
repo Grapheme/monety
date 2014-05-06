@@ -15,6 +15,11 @@ class TemplatesSeeder extends Seeder{
 			'content' => '',
 		));
 		Template::create(array(
+			'name' => 'full-catalog',
+			'static' => 1,
+			'content' => '',
+		));
+		Template::create(array(
 			'name' => 'news',
 			'static' => 1,
 			'content' => '',

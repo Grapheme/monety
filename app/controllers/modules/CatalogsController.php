@@ -52,7 +52,7 @@ class CatalogsController extends \BaseController {
 		if(!empty($catalog['fields'])):
 			$catalog['fields'] = json_decode($catalog['fields']);
 		endif;
-		return View::make('modules.catalogs.edit',array('catalog'=>$catalog,'templates'=>Template::all(),'languages'=>Language::retArray()));
+		return View::make('modules.catalogs.edit',array('catalog'=>$catalog,'templates'=>Template::all(),'languages'=>Language::all()));
 	}
 	
 	public function postUpdate($id){

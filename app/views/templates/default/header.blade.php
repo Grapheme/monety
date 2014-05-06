@@ -69,7 +69,7 @@
 			<li class="nav-item"><a href="{{ url('news') }}">Новости</a>
 			<li class="nav-item"><a href="#">Выставки</a>
 			<li class="nav-item"><a href="#">Бизнес</a>
-			<li class="nav-item"><a href="#">Публикации</a>
+			<li class="nav-item"><a href="{{ url('articles') }}">Публикации</a>
 			<li class="nav-item"><a href="#">Карьера</a>
 			<li class="nav-item"><a href="#">Организации</a>
 			<li class="nav-item"><a href="#">Продукция</a>

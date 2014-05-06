@@ -9,13 +9,13 @@ class GalleriesController extends BaseController {
 	
 	public function getIndex(){
 		
-		$galleries = gallery::all();
+		$galleries = Gallery::all();
 		return View::make('modules.galleries.index', compact('galleries'));
 	}
 
 	public function getEdit($id){
 		
-		$gall = gallery::findOrFail($id);
+		$gall = Gallery::findOrFail($id);
 		$bread = $gall->name;
 		return View::make('modules.galleries.edit', compact('gall', 'bread'));
 	}
@@ -77,12 +77,12 @@ class GalleriesController extends BaseController {
 	public function postCreate(){
 		
 		$input = Input::all();
-		$validation = Validator::make($input, gallery::getRules());
+		$validation = Validator::make($input, Gallery::getRules());
 		if($validation->fails())
 		{
 			return Response::json($validation->messages()->toJson(), 400);
 		} else {
-			$id = gallery::create($input)->id;
+			$id = Gallery::create($input)->id;
 			$href = slink::createLink('admin/galleries/edit/'.$id);
 			return Response::json($href, 200);
 		}
@@ -91,7 +91,7 @@ class GalleriesController extends BaseController {
 	public function postDelete(){
 		
 		$id = Input::get('id');
-		$model = gallery::find($id);
+		$model = Gallery::find($id);
 
 		if($model->delete())
 		{

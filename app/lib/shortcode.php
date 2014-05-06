@@ -131,8 +131,8 @@ class shortcode {
 		
 		if(isset($options['name'])){
 			$name = $options['name'];
-	        if(gallery::where('name', $name)->exists()){
-	        	$gall = gallery::where('name', $name)->first();
+	        if(Gallery::where('name', $name)->exists()){
+	        	$gall = Gallery::where('name', $name)->first();
 	        	$photos = $gall->photos;
 	        	$str = "";
 	        	foreach($photos as $photo)

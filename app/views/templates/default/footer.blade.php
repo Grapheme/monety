@@ -9,7 +9,7 @@
 			<li class="footer-top-item"><a href="{{ url('news') }}">Новости</a>
 			<li class="footer-top-item"><a href="#">Выставки</a>
 			<li class="footer-top-item"><a href="#">Бизнес</a>
-			<li class="footer-top-item"><a href="#">Публикации</a>
+			<li class="footer-top-item"><a href="{{ url('articles') }}">Публикации</a>
 			<li class="footer-top-item"><a href="#">Карьера</a>
 			<li class="footer-top-item"><a href="#">Организации</a>
 			<li class="footer-top-item"><a href="#">Продукция</a>

@@ -19,7 +19,7 @@ class ArticlesController extends \BaseController {
 	public function getCreate(){
 
 		$this->moduleActionPermission('articles','create');
-		return View::make('modules.articles.create',array('templates'=>Template::all(),'languages'=>Language::retArray()));
+		return View::make('modules.articles.create',array('templates'=>Template::all(),'languages'=>Language::all()));
 	}
 
 	public function postStore(){
@@ -49,7 +49,7 @@ class ArticlesController extends \BaseController {
 		if(is_null($articles)):
 			return App::abort(404);
 		endif;
-		return View::make('modules.articles.edit',array('articles'=>$articles,'templates'=>Template::all(),'languages'=>Language::retArray()));
+		return View::make('modules.articles.edit',array('articles'=>$articles,'templates'=>Template::all(),'languages'=>Language::all()));
 	}
 
 	public function postUpdate($id){

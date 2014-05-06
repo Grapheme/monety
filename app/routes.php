@@ -1,5 +1,7 @@
 <?php
 
+//Event::listen ('illuminate.query',function($query){var_dump($query);});
+
 $prefix = 'guest';
 if(Auth::check()):
 	$prefix = AuthAccount::getStartPage();
@@ -87,6 +89,7 @@ Route::get('logout',array('before'=>'auth','as'=>'logout','uses'=>'GlobalControl
 Route::get('/news/{news_url}','HomeController@showNews');
 Route::get('/articles/{article_url}','HomeController@showArticle');
 
-Route::get('catalog/{url}','HomeController@showProduct');
+Route::get('catalog/{url}','HomeController@getShowProduct');
+Route::get('{catalog_title_translit}/{category_url}','HomeController@getShowCatalogProduct');
 Route::get('/{url}','HomeController@showPage');
 Route::get('/','HomeController@showPage');

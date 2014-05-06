@@ -19,7 +19,7 @@ class CategoriesController extends \BaseController {
 	public function getCreate(){
 		
 		$this->moduleActionPermission('catalogs','create');
-		return View::make('modules.catalogs.categories.group-create',array('templates'=>Template::all(),'languages'=>Language::retArray()));
+		return View::make('modules.catalogs.categories.group-create',array('templates'=>Template::all(),'languages'=>Language::all()));
 	}
 	
 	public function postStore(){
@@ -49,7 +49,7 @@ class CategoriesController extends \BaseController {
 		if(is_null($category)):
 			return App::abort(404);
 		endif;
-		return View::make('modules.catalogs.categories.group-edit',array('category'=>$category,'templates'=>Template::all(),'languages'=>Language::retArray()));
+		return View::make('modules.catalogs.categories.group-edit',array('category'=>$category,'templates'=>Template::all(),'languages'=>Language::all()));
 	}
 	
 	public function postUpdate($id){

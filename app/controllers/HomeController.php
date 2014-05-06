@@ -26,7 +26,7 @@ class HomeController extends BaseController {
 		else:
 			return App::abort(404,'Отсутсвует шаблон: templates/'.$news->template);
 		endif;
-	}  // Функция для просмата одной новости
+	}  // Функция для просмотра одной новости
 	
 	/*
 	|--------------------------------------------------------------------------
@@ -47,14 +47,14 @@ class HomeController extends BaseController {
 		else:
 			return App::abort(404,'Отсутсвует шаблон: templates/'.$article->template);
 		endif;
-	}  // Функция для просмата одной новости
+	}  // Функция для просмотра одной новости
 	
 	/*
 	|--------------------------------------------------------------------------
 	| Раздел "Каталог"
 	|--------------------------------------------------------------------------
 	*/
-	public function showProduct($product_url){
+	public function getShowProduct($product_url){
 		
 		$url = explode('-',$product_url);
 		$product_id = array_pop($url);
@@ -85,10 +85,46 @@ class HomeController extends BaseController {
 			$module = Modules::where('url','catalogs')->first();
 			$product->images = Image::where('module_id',$module->id)->where('item_id',$product->id)->get();
 			return View::make('templates.'.$product->template,array('product'=>$product,'page_title'=>$product->seo_title,'page_description'=>$product->seo_description,
-					'pege_keywords'=>$product->seo_keywords,'page_author'=>'','page_h1'=>$product->seo_h1,'menu'=> Page::getMenu('news')));
+					'pege_keywords'=>$product->seo_keywords,'page_author'=>'','page_h1'=>$product->seo_h1,'menu'=> Page::getMenu()));
 		else:
 			return App::abort(404,'Отсутсвует шаблон: templates/'.$product->template);
 		endif;
-	}  // Функция для просмата одного товара
+	}  // Функция для просмотра одного товара
+	
+	public function getShowCatalogProduct($catalog_title_translit,$category_url){
+		
+		if(!Allow::enabled_module('catalogs')):
+			return App::abort(404);
+		endif;
+		$url = explode('-',$category_url);
+		$category_id = array_pop($url);
+		if(!is_numeric($category_id)):
+			return App::abort(404,'Запрашиваемая категория не найдена');
+		endif;
+		if($catalogs = Catalog::where('language',Config::get('app.locale'))->where('publication',1)->get()):
+			$productsCatalog = NULL;
+			foreach($catalogs as $catalog):
+				if($this->stringTranslite($catalog->title) == $catalog_title_translit):
+					$productsCatalog = $catalog;
+				endif;
+			endforeach;
+			if(!is_null($catalog)):
+				$products = array();
+				if($productsCategory = Category::where('publication',1)->findOrFail($category_id)):
+					$products = Product::where('category_group_id',$productsCategory->id)->where('catalog_id',$productsCatalog->id)->where('publication',1)->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->get();
+					if(!empty($productsCatalog->template) && View::exists('templates.'.$productsCatalog->template)):
+						return View::make('templates.'.$productsCatalog->template,array('products'=>$products,'page_title'=>$productsCategory->seo_title,'page_description'=>$productsCategory->seo_description,
+								'pege_keywords'=>$productsCategory->seo_keywords,'page_author'=>'','page_h1'=>$productsCategory->seo_h1,'menu'=> Page::getMenu()));
+					else:
+						return App::abort(404,'Отсутсвует шаблон: templates/'.$productsCategory->template);
+					endif;
+				endif;
+			else:
+				return App::abort(404);
+			endif;
+		else:
+				return App::abort(404);
+		endif;
+	}  // Функция для просмотра каталога товаров
 
 }

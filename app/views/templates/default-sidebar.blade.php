@@ -1,26 +1,23 @@
+<?
+	$catalogTranslit = BaseController::stringTranslite(Catalog::findOrFail(1)->title);
+	$categoryGroup = CategoryGroup::findorFail(1);
+?>
+
 <aside class="aside col-xs-2 col-sm-2 col-md-2 col-lg-2">
-	<h2 class="aside-header">Магазин монет</h2>
+	<h2 class="aside-header">{{ $categoryGroup->title }}</h2>
 	<ul class="aside-list list-unstyled">
-		<li class="aside-item"><a href="#">Австралия и Океания(19099)</a></li>
-		<li class="aside-item"><a href="#">Азия(60000)</a></li>
-		<li class="aside-item"><a href="#">Аксессуары и литература(8990)</a></li>
-		<li class="aside-item"><a href="#">Америка(65353)</a></li>
-		<li class="aside-item"><a href="#">Античные(6035)</a></li>
-		<li class="aside-item"><a href="#">Африка(38402)</a></li>
-		<li class="aside-item"><a href="#">Велибритания(20938)</a></li>
-		<li class="aside-item"><a href="#">Германия и Австрия(48063)</a></li>
-		<li class="aside-item"><a href="#">Европа(154038)</a></li>
-		<li class="aside-item"><a href="#">Золотая Орда(2693)</a></li>
-		<li class="aside-item"><a href="#">Золотые инвестиционные монеты(199)</a></li>
-		<li class="aside-item"><a href="#">Россия до 1917 года(114464)</a></li>
-		<li class="aside-item"><a href="#">Россия и СССР 1917-1991 года(119302)</a></li>
-		<li class="aside-item"><a href="#">Россия после 1991 года(90575)</a></li>
-		<li class="aside-item"><a href="#">Специальные выпуски, коллекции(5987)</a></li>
-		<li class="aside-item"><a href="#">Страны СНГ и Балтии(19203)</a></li>
-		<li class="aside-item"><a href="#">Копии, реплики(10809)</a></li>
-		<li class="aside-item"><a href="#">Платежные жетоны(1881)</a></li>
-		<li class="aside-item"><a href="#">Сувенирные монеты(766)</a></li>
-		<li class="aside-item"><a href="#">Разное в монетах</a></li>
+@if(!is_null(Request::segment(2)))
+	@if($parent_category = Category::getParentCategory($categoryGroup->id,Request::segment(2)))
+		<li class="aside-item">
+			<a href="{{ url(($parent_category->category_parent_id == 0) ? '/' : $catalogTranslit.'/'.$parent_category->seo_url.'-'.$parent_category->id) }}"><i class="fa fa-reply"></i> <strong>{{ $parent_category->title }}</strong></a>
+		</li>
+	@endif
+@endif
+	@foreach(Category::getCategories($categoryGroup->id,Request::segment(2)) as $categories)
+		<li class="aside-item">
+			<a href="{{ url($catalogTranslit.'/'.$categories->seo_url.'-'.$categories->id) }}">{{ $categories->title }}</a>
+		</li>
+	@endforeach
 	</ul>
 	<h2 class="aside-header">Каталог монет</h2>
 	<ul class="aside-list list-unstyled">

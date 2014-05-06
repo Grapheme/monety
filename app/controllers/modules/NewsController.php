@@ -19,7 +19,7 @@ class NewsController extends BaseController {
 	public function getCreate(){
 		
 		$this->moduleActionPermission('news','create');
-		return View::make('modules.news.create',array('templates'=>Template::all(),'languages'=>Language::retArray()));
+		return View::make('modules.news.create',array('templates'=>Template::all(),'languages'=>Language::all()));
 	}
 	
 	public function postStore(){
@@ -49,7 +49,7 @@ class NewsController extends BaseController {
 		if(is_null($news)):
 			return App::abort(404);
 		endif;
-		return View::make('modules.news.edit',array('news'=>$news,'templates'=>Template::all(),'languages'=>Language::retArray()));
+		return View::make('modules.news.edit',array('news'=>$news,'templates'=>Template::all(),'languages'=>Language::all()));
 	}
 
 	public function postUpdate($id){

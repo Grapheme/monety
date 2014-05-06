@@ -1,4 +1,4 @@
-<header>Поисковая оптимизаци (SEO)</header>
+<header>Поисковая оптимизация (SEO)</header>
 <fieldset>
 	<section>
 		@if(Page::count() || isset($page) && !$page->start_page)

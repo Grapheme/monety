@@ -1,4 +1,4 @@
-<header>Поисковая оптимизаци (SEO)</header>
+<header>Поисковая оптимизация (SEO)</header>
 <fieldset>
 	<section>
 		<label class="label">Адрес страницы продукта (URL)</label>
