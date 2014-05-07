@@ -1,4 +1,4 @@
-{{ Form::open(array('url'=>slink::createAuthLink('news/store'),'role'=>'form','class'=>'smart-form','id'=>'news-form','method'=>'post')) }}
+{{ Form::open(array('url'=>slink::createAuthLink('news/store'),'role'=>'form','class'=>'smart-form','id'=>'news-form','method'=>'post','files'=>TRUE)) }}
 	<div class="row margin-top-10">
 		<section class="col col-6">
 			<div class="well">
@@ -8,6 +8,20 @@
 						<label class="label">Название</label>
 						<label class="input"> <i class="icon-append fa fa-list-alt"></i>
 							{{ Form::text('title','') }}
+						</label>
+					</section>
+				@if(Allow::valid_access('downloads'))
+					<section>
+						<label class="label">Изображение</label>
+						<label class="input input-file" for="file">
+							<div class="button"><input type="file" onchange="this.parentNode.nextSibling.value = this.value" name="file">Выбрать</div><input type="text" readonly="" placeholder="Выбирите файл">
+						</label>
+					</section>
+				@endif
+					<section>
+						<label class="label">Дата публикации новости</label>
+						<label class="input"> <i class="icon-append fa fa-calendar"></i>
+							{{ Form::text('date_publication',myDateTime::getConvertCurrentDate(),array('data-dateformat'=>'dd.mm.yy','class'=>'datepicker','id'=>'date_publication','data-mask'=>'99.99.9999')) }}
 						</label>
 					</section>
 					<section>

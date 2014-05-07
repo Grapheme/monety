@@ -12,7 +12,7 @@ class NewsController extends BaseController {
 
 	public function getIndex(){
 		
-		$news = $this->news->all();
+		$news = $this->news->orderBy('sort','desc')->orderBy('date_publication','desc')->paginate(15);
 		return View::make('modules.news.index',compact('news'));
 	}
 
@@ -28,7 +28,7 @@ class NewsController extends BaseController {
 		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
 		if(Request::ajax()):
 			if(News::validate(Input::all())):
-				self::savePageModel();
+				self::saveNewsModel();
 				$json_request['responseText'] = 'Новость создана';
 				$json_request['redirect'] = slink::createAuthLink('news');
 				$json_request['status'] = TRUE;
@@ -59,7 +59,7 @@ class NewsController extends BaseController {
 		if(Request::ajax()):
 			if(News::validate(Input::all())):
 				$news = $this->news->find($id);
-				self::savePageModel($news);
+				self::saveNewsModel($news);
 				$json_request['responseText'] = 'Новость сохранена';
 				$json_request['redirect'] = slink::createAuthLink('news');
 				$json_request['status'] = TRUE;
@@ -73,12 +73,22 @@ class NewsController extends BaseController {
 		return Response::json($json_request,200);
 	}
 	
-	public function deleteDestroy($id){
+	public function deleteDestroy($news_id){
 		
 		$this->moduleActionPermission('news','delete');
 		$json_request = array('status'=>FALSE,'responseText'=>'');
 		if(Request::ajax()):
-			if($this->news->find($id)->delete()):
+			$news = $this->news->find($news_id);
+			if(!is_null($news) && $news->delete()):
+				if($newsImages = json_decode($news->image)):
+					if(!empty($newsImages->image) && File::exists(base_path($newsImages->image))):
+						File::delete(base_path($newsImages->image));
+					endif;
+					if(!empty($newsImages->thumbnail) && File::exists(base_path($newsImages->thumbnail))):
+						File::delete(base_path($newsImages->thumbnail));
+					endif;
+				endif;
+				ImageController::deleteImages('news',$news_id);
 				$json_request['responseText'] = 'Новость удалена';
 				$json_request['status'] = TRUE;
 			endif;
@@ -88,7 +98,7 @@ class NewsController extends BaseController {
 		return Response::json($json_request,200);
 	}
 	
-	private function savePageModel($news = NULL){
+	private function saveNewsModel($news = NULL){
 		
 		if(is_null($news)):
 			$news = $this->news;
@@ -98,6 +108,7 @@ class NewsController extends BaseController {
 		$news->preview = Input::get('preview');
 		$news->content = Input::get('content');
 		$news->publication = 1;
+		$news->date_publication = myDateTime::convertDateFormat(Input::get('date_publication'));
 		if(Allow::enabled_module('languages')):
 			$news->language = Input::get('language');
 		else:
@@ -107,6 +118,25 @@ class NewsController extends BaseController {
 			$news->template = Input::get('template');
 		else:
 			$news->template = 'news';
+		endif;
+		if(Allow::valid_access('downloads')):
+			if(Input::hasFile('file')):
+				if($newsImages = json_decode($news->image)):
+					if(!empty($newsImages->image) && File::exists(base_path($newsImages->image))):
+						File::delete(base_path($newsImages->image));
+					endif;
+					if(!empty($newsImages->thumbnail) && File::exists(base_path($newsImages->thumbnail))):
+						File::delete(base_path($newsImages->thumbnail));
+					endif;
+				endif;
+				if(!File::isDirectory(base_path('public/uploads/news/thumbnail'))):
+					File::makeDirectory(base_path('public/uploads/news/thumbnail'),777,TRUE);
+				endif;
+				$fileName = str_random(16).'.'.Input::file('file')->getClientOriginalExtension();
+				ImageManipulation::make(Input::file('file')->getRealPath())->resize(250,250,TRUE)->save(public_path('uploads/news/thumbnail/'.$fileName));
+				Input::file('file')->move(base_path('public/uploads/news'),$fileName);
+				$news->image = json_encode(array('image' => 'public/uploads/news/'.$fileName,'thumbnail'=> 'public/uploads/news/thumbnail/'.$fileName));
+			endif;
 		endif;
 		if(Allow::enabled_module('seo')):
 			if(is_null(Input::get('seo_url'))):

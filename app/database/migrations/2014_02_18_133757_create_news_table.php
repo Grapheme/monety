@@ -11,6 +11,7 @@ class CreateNewsTable extends Migration {
 			$table->integer('sort')->default(0)->unsigned()->nullable();
 			$table->string('template',100)->nullable();
 			$table->string('title',200)->nullable();
+			$table->text('image')->nullable();
 			$table->string('language',10)->nullable();
 			$table->text('preview')->nullable();
 			$table->text('content')->nullable();
@@ -20,6 +21,7 @@ class CreateNewsTable extends Migration {
 			$table->text('seo_keywords')->nullable();
 			$table->string('seo_h1')->nullable();
 			$table->boolean('publication')->default(1)->unsigned()->nullable();
+			$table->date('date_publication')->nullable();
 			$table->timestamps();
 		});
 	}

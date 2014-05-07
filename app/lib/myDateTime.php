@@ -1,6 +1,18 @@
 <?php
 class myDateTime {
 	
+	public static function swapDotDateWithoutTime($date_string,$zerro = FALSE){
+			
+		$list = explode("-",$date_string);
+		if(!$zerro):
+			$list[2] = (int)$list[2];
+		endif;
+		$date_string = implode("-",$list);
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
+		$replacement = "\$5.$3.\$1";
+		return preg_replace($pattern, $replacement,$date_string);
+	}
+	
 	public static function SwapDotDateWithTime($date_time) {
 		$list = preg_split("/-/",$date_time);
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
@@ -44,5 +56,15 @@ class myDateTime {
 		else:
 			return (strtotime($date)+($days*24*60*60));
 		endif;
+	}
+	
+	public static function getConvertCurrentDate($diffDay = 0) {
+		
+		return date("d.m.Y",mktime(0,0,0,date("m"),date("d")-$diffDay,date("Y")));
+	}
+	
+	public static function convertDateFormat($date_string) {
+		
+		return preg_replace("/(\d+)\.(\w+)\.(\d+)/i","\$3-\$2-\$1",$date_string);
 	}
 }

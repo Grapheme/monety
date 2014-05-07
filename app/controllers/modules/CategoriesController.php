@@ -275,15 +275,15 @@ class CategoriesController extends \BaseController {
 		
 		if(Allow::valid_access('downloads')):
 			if(Input::hasFile('file')):
-				if(!empty($category->logo) && File::exists(public_path($category->logo))):
-					File::delete(public_path($category->logo));
+				if(!empty($category->logo) && File::exists(base_path($category->logo))):
+					File::delete(base_path($category->logo));
 				endif;
-				if(!File::isDirectory(public_path('uploads/catalogs'))):
-					File::makeDirectory(public_path('uploads/catalogs'),777,TRUE);
+				if(!File::isDirectory(base_path('public/uploads/catalogs'))):
+					File::makeDirectory(base_path('public/uploads/catalogs'),777,TRUE);
 				endif;
 				$fileName = str_random(16).'.'.Input::file('file')->getClientOriginalExtension();
-				ImageManipulation::make(Input::file('file')->getRealPath())->resize(250,250,TRUE)->save(public_path('uploads/catalogs/'.$fileName));
-				$category->logo = 'uploads/catalogs/'.$fileName;
+				ImageManipulation::make(Input::file('file')->getRealPath())->resize(250,250,TRUE)->save(base_path('public/uploads/catalogs/'.$fileName));
+				$category->logo = 'public/uploads/catalogs/'.$fileName;
 			endif;
 		endif;
 		if(Allow::enabled_module('seo')):

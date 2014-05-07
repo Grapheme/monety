@@ -15,10 +15,12 @@
 	@if($news->count())
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			{{ $news->links() }}
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
 						<th class="text-center">Название новости</th>
+						<th class="text-center">Дата публикации</th>
 						<th class="text-center">URL</th>
 					@if(Allow::valid_action_permission('news','publication'))
 						<th class="text-center">Публикация</th>
@@ -30,6 +32,7 @@
 				@foreach($news as $new)
 					<tr>
 						<td>{{ $new->title }}</td>
+						<td class="wigth-100">{{  myDateTime::swapDotDateWithoutTime($new->date_publication,TRUE) }}</td>
 						<td class="wigth-250 text-center">
 							<a href="{{slink::createLink('news/'.$new->seo_url)}}" target="_blank">Ссылка на новость</a>
 						</td>
@@ -61,6 +64,7 @@
 				@endforeach
 				</tbody>
 			</table>
+			{{ $news->links() }}
 		</div>
 	</div>
 	@else

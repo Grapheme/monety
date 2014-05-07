@@ -17,4 +17,14 @@
 	</script>
 	<script src="{{slink::path('js/vendor/redactor.min.js')}}"></script>
 	<script src="{{slink::path('js/system/redactor-config.js')}}"></script>
+	<script src="{{slink::path('js/vendor/jquery.ui.datepicker-ru.js')}}"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("#date_publication").datepicker({
+				dateFormat: 'dd.mm.yyyy',
+				prevText: '<i class="fa fa-chevron-left"></i>',
+				nextText: '<i class="fa fa-chevron-right"></i>',
+			});
+		});
+	</script>
 @stop

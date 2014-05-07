@@ -6,7 +6,7 @@ class News extends BaseModel {
 
 	protected $table = 'news';
 	
-	public static $order_by = 'created_at DESC,updated_at DESC';
+	public static $order_by = 'sort DESC,date_publication DESC';
 
 	public static $rules = array(
 		'title' => 'required',
