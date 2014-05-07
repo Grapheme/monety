@@ -10,7 +10,7 @@
 			<div class="row">
 				<div class="margin-top-10">
 					<hr>
-					<h3><a href="{{ slink::createLink('catalog/'.$product->seo_url.'-'.$product->id) }}">{{$product->title}}</a></h3>
+					<h3><a href="{{ slink::createLink('product/'.$product->seo_url.'-'.$product->id) }}">{{$product->title}}</a></h3>
 					<div>
 					@if(!empty($product->image))
 						<figure class="avatar-container">
@@ -18,7 +18,7 @@
 						</figure>
 					@endif
 					</div>
-					<a href="{{ slink::createLink('catalog/'.$product->seo_url.'-'.$product->id) }}" class="btn btn-primary no-margin regular-10 uppercase pull-left btn-spinner">
+					<a href="{{ slink::createLink('product/'.$product->seo_url.'-'.$product->id) }}" class="btn btn-primary no-margin regular-10 uppercase pull-left btn-spinner">
 						<span class="btn-response-text">Просмотр</span><i class="glyphicon glyphicon-chevron-right hidden"></i>
 					</a>
 				</div>

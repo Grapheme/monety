@@ -27,7 +27,7 @@ class Catalog extends BaseModel {
 	
 	public static function getCatalogsTranslitNames(){
 		
-		$catalogsNames = array('catalog');
+		$catalogsNames = array('product');
 		if($catalogs = Catalog::select('title')->where('language',Config::get('app.locale'))->where('publication',1)->get()):
 			foreach($catalogs as $key => $value):
 				$catalogsNames[] = BaseController::stringTranslite($value->title);

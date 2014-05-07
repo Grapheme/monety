@@ -8,8 +8,13 @@
 	if(in_array(Request::segment(1),$catalogValidNames)):
 		$isCatalog = TRUE;
 	endif;
-	
 	if($isCatalog && !is_null(Request::segment(2))):
+	
+		if(Request::segment(1) == 'product'):
+			$product_id = getItemIDforURL(Request::segment(2));
+			print_r(Product::find($product_id)->categories()->get()->toArray());exit;
+		endif;
+	
 		$sub_categories_ids[0] = getItemIDforURL(Request::segment(2));
 		if($parent_category = Category::getParentCategory($categoryGroup->id,Request::segment(2))):
 			$sub_categories_ids[1] = $parent_category->id;

@@ -47,4 +47,9 @@ class Category extends BaseModel {
 		return $this->belongsTo('CategoryGroup');
 
 	}
+
+	public function products(){
+		
+		return $this->belongsToMany('Product','category_product');
+	}
 }

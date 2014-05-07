@@ -113,14 +113,16 @@ class HomeController extends BaseController {
 			endforeach;
 			if(!is_null($catalog)):
 				$products = array();
-				if($productsCategory = Category::where('publication',1)->findOrFail($category_id)):
-					$products = Product::where('category_group_id',$productsCategory->id)->where('catalog_id',$productsCatalog->id)->where('publication',1)->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->get();
+				if($productsCategory = Category::where('publication',1)->find($category_id)):
+					$products = Category::where('publication',1)->find($category_id)->products()->paginate(Config::get('app-default.catalog_count_on_page'));
 					if(!empty($productsCatalog->template) && View::exists('templates.'.$productsCatalog->template)):
 						return View::make('templates.'.$productsCatalog->template,array('products'=>$products,'page_title'=>$productsCategory->seo_title,'page_description'=>$productsCategory->seo_description,
 								'pege_keywords'=>$productsCategory->seo_keywords,'page_author'=>'','page_h1'=>$productsCategory->seo_h1,'menu'=> Page::getMenu()));
 					else:
 						return App::abort(404,'Отсутсвует шаблон: templates/'.$productsCategory->template);
 					endif;
+				else:
+					return App::abort(404);
 				endif;
 			else:
 				return App::abort(404);
