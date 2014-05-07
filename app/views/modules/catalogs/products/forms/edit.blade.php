@@ -9,7 +9,7 @@
 						<li class="active">
 							<a data-toggle="tab" href="#data">Данные</a>
 						</li>
-					@if(!empty($data_fields))
+					@if(!empty($data_fields) || !empty($productsExtendedAttributes))
 						<li>
 							<a data-toggle="tab" href="#advanced">Дополнительные данные</a>
 						</li>

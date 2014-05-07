@@ -43,6 +43,16 @@ class ImageController extends \BaseController {
 					$filePath = $productImage['image'];
 				endif;
 				break;
+			case 'news-thumbnail':
+				if($newsImage = json_decode(News::findOrFail($id)->image,TRUE)):
+					$filePath = $newsImage['thumbnail'];
+				endif;
+				break;
+			case 'news':
+				if($newsImage = json_decode(News::findOrFail($id)->image,TRUE)):
+					$filePath = $newsImage['image'];
+				endif;
+				break;
 			case 'slider-image-thumbnail':
 				if($sliderImage = json_decode(Image::findOrFail($id)->paths,TRUE)):
 					$filePath = $sliderImage['thumbnail'];

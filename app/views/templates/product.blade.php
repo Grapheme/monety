@@ -34,8 +34,8 @@
 			<ul class="artcl-list list-unstyled regular-12 margin-bottom-10">
 			@foreach($product->images as $image)
 				<li class="news-item margin-bottom-10">
-					<a class="fancybox" rel="group" data-fancybox-type="image" href="{{ url('image/slider-image/'.$image->id) }}" alt="{{ $image->title }}">
-						<img alt="" src="{{ url('image/slider-image-thumbnail/'.$image->id) }}">
+					<a class="fancybox" rel="group" data-fancybox-type="image" href="{{ url('image/slider-image/'.$image->id) }}">
+						<img alt="{{ $image->title }}" src="{{ url('image/slider-image-thumbnail/'.$image->id) }}">
 					</a>
 				</li>
 			@endforeach

@@ -103,9 +103,6 @@ class CatalogsController extends \BaseController {
 				$fields[] = array('label'=>Input::get('fields.label.'.$key),'type'=>Input::get('fields.type.'.$key),'name'=>Input::get('fields.title.'.$key));
 			endif;
 		endforeach;
-		if(empty($fields)):
-			$fields[] = array('label'=>'Название товара','type'=>'input','name'=>'title');
-		endif;
 		if(is_null($catalog)):
 			$catalog = $this->catalog;
 		endif;

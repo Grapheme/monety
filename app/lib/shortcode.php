@@ -42,6 +42,17 @@ class shortcode {
 			endif;
 			$news = $selected_news->paginate(static::$config['limit']);
 			if($news->count()):
+				foreach($news as $key => $new):
+					$news[$key]->original_image = $news[$key]->thumbnail_image = FALSE;
+					if($newsImages = json_decode($new->image)):
+						if(!empty($newsImages->image) && File::exists(base_path($newsImages->image))):
+							$news[$key]->original_image = TRUE;
+						endif;
+						if(!empty($newsImages->thumbnail) && File::exists(base_path($newsImages->thumbnail))):
+							$news[$key]->thumbnail_image = TRUE;
+						endif;
+					endif;
+				endforeach;
 				if(View::exists('templates.'.static::$config['path'])):
 					return View::make('templates.'.static::$config['path'],compact('news'));
 				else: 

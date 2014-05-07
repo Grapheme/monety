@@ -6,7 +6,12 @@
 			<div class="margin-top-10">
 				<hr>
 				<h3><a href="{{slink::createLink('news/'.$new->seo_url)}}">{{$new->title}}</a></h3>
-				<p><span class="glyphicon glyphicon-time"></span> {{ myDateTime::SwapDotDateWithTime($new->created_at) }}</p>
+				<p><span class="glyphicon glyphicon-time"></span> {{ myDateTime::SwapDotDateWithoutTime($new->date_publication,TRUE) }}</p>
+			@if($new->thumbnail_image)
+				<div>
+					<img src="{{ url('image/news-thumbnail/'.$new->id) }}" alt="{{ $new->title }}" />
+				</div>
+			@endif
 				<div>
 					{{$new->preview}}
 				</div>

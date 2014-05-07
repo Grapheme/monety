@@ -20,6 +20,17 @@ class HomeController extends BaseController {
 		if(!$news = News::where('seo_url',$url)->where('publication',1)->where('language',Config::get('app.locale'))->first()):
 			return App::abort(404);
 		endif;
+		
+		$news->original_image = $news->thumbnail_image = FALSE;
+		if($newsImages = json_decode($news->image)):
+			if(!empty($newsImages->image) && File::exists(base_path($newsImages->image))):
+				$news->original_image = TRUE;
+			endif;
+			if(!empty($newsImages->thumbnail) && File::exists(base_path($newsImages->thumbnail))):
+				$news->thumbnail_image = TRUE;
+			endif;
+		endif;
+		
 		if(!empty($news->template) && View::exists('templates.'.$news->template)):
 			return View::make('templates.'.$news->template,array('news'=>$news,'page_title'=>$news->seo_title,'page_description'=>$news->seo_description,
 					'pege_keywords'=>$news->seo_keywords,'page_author'=>'','page_h1'=>$news->seo_h1,'menu'=> Page::getMenu('news')));
