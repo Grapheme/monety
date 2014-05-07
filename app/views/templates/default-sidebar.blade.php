@@ -2,15 +2,19 @@
 	$catalogTranslit = BaseController::stringTranslite(Catalog::findOrFail(1)->title);
 	$categoryGroup = CategoryGroup::findorFail(1);
 	$sub_categories_ids = array(0,0);
-	if(!is_null(Request::segment(2))):
+	
+	$isCatalog = FALSE;
+	$catalogValidNames = Catalog::getCatalogsTranslitNames();
+	if(in_array(Request::segment(1),$catalogValidNames)):
+		$isCatalog = TRUE;
+	endif;
+	
+	if($isCatalog && !is_null(Request::segment(2))):
 		$sub_categories_ids[0] = getItemIDforURL(Request::segment(2));
 		if($parent_category = Category::getParentCategory($categoryGroup->id,Request::segment(2))):
 			$sub_categories_ids[1] = $parent_category->id;
 		endif;
 	endif;
-	
-//	print_r($sub_categories_ids);exit;
-	
 ?>
 
 <aside class="aside col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -19,14 +23,14 @@
 	@foreach(Category::getCategories($categoryGroup->id) as $categories)
 		<li class="aside-item">
 			<a href="{{ url($catalogTranslit.'/'.$categories->seo_url.'-'.$categories->id) }}">
-			@if(!is_null(Request::segment(2)) && in_array($categories->id,$sub_categories_ids))
+			@if(!is_null($isCatalog && Request::segment(2)) && in_array($categories->id,$sub_categories_ids))
 				<i class="fa fa-folder-open-o"></i>
 			@else
 				<i class="fa fa-folder-o"></i>
 			@endif
 				{{ $categories->title }}
 			</a>
-		@if(!is_null(Request::segment(2)) && in_array($categories->id,$sub_categories_ids))
+		@if(!is_null($isCatalog && Request::segment(2)) && in_array($categories->id,$sub_categories_ids))
 			<ul class="aside-list list-unstyled margin-left-10">
 			@foreach(Category::getCategories($categoryGroup->id,Request::segment(2)) as $sub_categories)
 			<li class="aside-item">

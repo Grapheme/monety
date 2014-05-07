@@ -85,10 +85,10 @@ Route::group(array('before'=>'guest','prefix'=>Config::get('app.local')),functio
 Route::get('login',array('before'=>'login','as'=>'login','uses'=>'GlobalController@loginPage'));
 Route::get('logout',array('before'=>'auth','as'=>'logout','uses'=>'GlobalController@logout'));
 
-Route::get('/news/{news_url}','HomeController@showNews');
-Route::get('/articles/{article_url}','HomeController@showArticle');
+Route::get('news/{news_url}','HomeController@showNews');
+Route::get('articles/{article_url}','HomeController@showArticle');
 
 Route::get('catalog/{url}','HomeController@getShowProduct');
 Route::get('{catalog_title_translit}/{category_url}','HomeController@getShowCatalogProduct');
-Route::get('/{url}','HomeController@showPage');
+Route::get('{url}','HomeController@showPage');
 Route::get('/','HomeController@showPage');
