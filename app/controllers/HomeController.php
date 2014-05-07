@@ -3,7 +3,7 @@
 class HomeController extends BaseController {
 	
 	public function showPage($url = ''){
-		
+
 		return sPage::show($url);
 	}
 
@@ -114,7 +114,8 @@ class HomeController extends BaseController {
 			if(!is_null($catalog)):
 				$products = array();
 				if($productsCategory = Category::where('publication',1)->find($category_id)):
-					$products = Category::where('publication',1)->find($category_id)->products()->paginate(Config::get('app-default.catalog_count_on_page'));
+					Session::put('products.active_category_url',$category_url);
+					$products = Category::where('publication',1)->find($category_id)->products()->where('publication',1)->where('catalog_id',$productsCatalog->id)->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->paginate(Config::get('app-default.catalog_count_on_page'));
 					if(!empty($productsCatalog->template) && View::exists('templates.'.$productsCatalog->template)):
 						return View::make('templates.'.$productsCatalog->template,array('products'=>$products,'page_title'=>$productsCategory->seo_title,'page_description'=>$productsCategory->seo_description,
 								'pege_keywords'=>$productsCategory->seo_keywords,'page_author'=>'','page_h1'=>$productsCategory->seo_h1,'menu'=> Page::getMenu()));

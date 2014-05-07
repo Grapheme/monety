@@ -1,23 +1,42 @@
 <?
 	$catalogTranslit = BaseController::stringTranslite(Catalog::findOrFail(1)->title);
 	$categoryGroup = CategoryGroup::findorFail(1);
-	$sub_categories_ids = array(0,0);
-	
 	$isCatalog = FALSE;
 	$catalogValidNames = Catalog::getCatalogsTranslitNames();
 	if(in_array(Request::segment(1),$catalogValidNames)):
 		$isCatalog = TRUE;
 	endif;
 	if($isCatalog && !is_null(Request::segment(2))):
-	
+		$url_category = Request::segment(2);
 		if(Request::segment(1) == 'product'):
-			$product_id = getItemIDforURL(Request::segment(2));
-			print_r(Product::find($product_id)->categories()->get()->toArray());exit;
+			$product_id = getItemIDforURL($url_category);
+			if(!Session::has('products.active_category_url')):
+				if($first_product_category = Product::find($product_id)->categories()->first()):
+					$url_category = $first_product_category->seo_url.'-'.$first_product_category->id;
+					Session::put('products.active_category_url',$url_category);
+				endif;
+			else:
+				$url_category = Session::get('products.active_category_url');
+			endif;
 		endif;
-	
-		$sub_categories_ids[0] = getItemIDforURL(Request::segment(2));
-		if($parent_category = Category::getParentCategory($categoryGroup->id,Request::segment(2))):
+		$sub_categories_ids = array(0,0);
+		$sub_categories_ids[0] = getItemIDforURL($url_category);
+		if($parent_category = Category::getParentCategory($categoryGroup->id,$url_category)):
 			$sub_categories_ids[1] = $parent_category->id;
+		endif;
+		if(Request::segment(1) == 'product' && isset($product_id)):
+			$prdIDs = Category::where('publication',1)->find($sub_categories_ids[0])->products()->where('product_id',$product_id)->lists('product_id');
+			if(!in_array($product_id,$prdIDs)):
+				if($first_product_category = Product::find($product_id)->categories()->first()):
+					$url_category = $first_product_category->seo_url.'-'.$first_product_category->id;
+					Session::put('products.active_category_url',$url_category);
+				endif;
+				$sub_categories_ids = array(0,0);
+				$sub_categories_ids[0] = getItemIDforURL($url_category);
+				if($parent_category = Category::getParentCategory($categoryGroup->id,$url_category)):
+					$sub_categories_ids[1] = $parent_category->id;
+				endif;
+			endif;
 		endif;
 	endif;
 ?>
@@ -28,16 +47,16 @@
 	@foreach(Category::getCategories($categoryGroup->id) as $categories)
 		<li class="aside-item">
 			<a href="{{ url($catalogTranslit.'/'.$categories->seo_url.'-'.$categories->id) }}">
-			@if(!is_null($isCatalog && Request::segment(2)) && in_array($categories->id,$sub_categories_ids))
+			@if($isCatalog && !is_null($url_category) && in_array($categories->id,$sub_categories_ids))
 				<i class="fa fa-folder-open-o"></i>
 			@else
 				<i class="fa fa-folder-o"></i>
 			@endif
 				{{ $categories->title }}
 			</a>
-		@if(!is_null($isCatalog && Request::segment(2)) && in_array($categories->id,$sub_categories_ids))
+		@if($isCatalog && !is_null($url_category) && in_array($categories->id,$sub_categories_ids))
 			<ul class="aside-list list-unstyled margin-left-10">
-			@foreach(Category::getCategories($categoryGroup->id,Request::segment(2)) as $sub_categories)
+			@foreach(Category::getCategories($categoryGroup->id,$url_category) as $sub_categories)
 			<li class="aside-item">
 				<a href="{{ url($catalogTranslit.'/'.$sub_categories->seo_url.'-'.$sub_categories->id) }}">
 					{{ in_array($sub_categories->id,$sub_categories_ids) ? '<i class="fa fa-check-circle-o"></i>' : '<i class="fa fa-circle-o"></i>' }} {{ $sub_categories->title }}
