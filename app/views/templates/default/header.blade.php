@@ -63,7 +63,7 @@
 			</div>
 		</div>
 	</div>
-	<nav class="navbar navbar-inverse no-margin" role="navigation">
+	<nav class="main-nav" role="navigation">
 		<!--@if(isset($menu)){{ $menu }}@endif-->
 		<ul class="nav-list list-unstyled max-width-class text-center">
 			<li class="nav-item"><a href="{{ url('news') }}">Новости</a>
@@ -78,15 +78,15 @@
 			<li class="nav-item"><a href="#">Надзор</a>
 		</ul>
 	</nav>
-	<div class="navbar navbar-default">
-		<ul class="sub-nav list-unstyled max-width-class text-center">
-			<li class="sub-nav-item"><a class="reg-color" href="#">Каталог<br>изделий</a>
-			<li class="sub-nav-item"><a class="reg-color" href="#">Каталог<br>организаций</a>
-			<li class="sub-nav-item"><a class="reg-color" href="#">Форум<br>ювелиров</a>
-			<li class="sub-nav-item"><a class="reg-color" href="#">Рейтинг<br>сайтов</a>
-			<li class="sub-nav-item"><a class="reg-color" href="#">Черный<br>список</a>
-			<li class="sub-nav-item"><a class="reg-color" href="#">Ювелирные<br>выставки</a>
-			<li class="sub-nav-item"><a class="reg-color" href="#">Ювелирные<br>мастерские</a>
-		</ul>
-	</div>
+	<div>
+        <ul class="sub-nav list-unstyled max-width-class">
+            <li class="sub-nav-item cat-items"><a href="#">Каталог<br>изделий</a>
+            <li class="sub-nav-item cat-org"><a href="#">Каталог<br>организаций</a>
+            <li class="sub-nav-item forum"><a href="#">Форум<br>ювелиров</a>
+            <li class="sub-nav-item rating"><a href="#">Рейтинг<br>сайтов</a>
+            <li class="sub-nav-item black-list"><a href="#">Черный<br>список</a>
+            <li class="sub-nav-item jew"><a href="#">Ювелирные<br>выставки</a>
+            <li class="sub-nav-item masters"><a href="#">Ювелирные<br>мастерские</a>
+        </ul>
+    </div>
 </header>

@@ -1,4 +1,4 @@
-<?
+<?php
 	$catalogTranslit = BaseController::stringTranslite(Catalog::findOrFail(1)->title);
 	$categoryGroup = CategoryGroup::findorFail(1);
 	$isCatalog = FALSE;

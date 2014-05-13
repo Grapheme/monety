@@ -20,7 +20,7 @@
 	@include('templates.default.header')
 	<main class="row content max-width-class" role="main">
 		@include('templates.default-sidebar')
-		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 main-cont">
 			@yield('content')
 			@if(isset($content))
 				{{ $content }}

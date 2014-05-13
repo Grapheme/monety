@@ -20,7 +20,7 @@
 	@include('templates.default.header')
 	<main class="row content max-width-class" role="main">
 		@include('templates.default-sidebar')
-		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 main-cont">
 <section class="ending-aucs margin-bottom-40">
 	<h2 class="margin-bottom-40 regular-24">Завершающиеся аукционы — купить лот, выставить лот</h2>
 	<ul class="lots-list list-unstyled row">
