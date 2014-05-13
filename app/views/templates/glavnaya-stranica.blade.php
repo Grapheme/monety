@@ -26,23 +26,27 @@
 	<ul class="lots-list list-unstyled row">
 	@for ($i=0;$i<8;$i++)
 		<li class="lots-item col-xs-6 col-sm-6 col-md-6 col-lg-6 margin-bottom-20">
-			<div class="row">
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-					<a class="img-cont text-center" href="#">
-						<img src="http://goldprice.org/buying-gold/uploaded_images/Australian-Lunar-Gold-Coin-Series-768203.jpg" alt="">
-					</a>
-				</div>
-				<div class="lots-desc col-xs-8 col-sm-8 col-md-8 col-lg-8 regular-14 relative">
-					<a href="#">1/2 копейки 1899 1909 1912 1913 спб древняя спарта</a>
-					<div class="margin-top-5">
-						<span class="fa fa-credit-card"></span> <span>225 руб</span>
-					</div>
-					<div class="bottom-left">
-						<span class="fa fa-clock-o margin-right-5"></span> 11:25:12
-					</div>
-				</div>
-			</div>
-		</li>
+            <div class="row">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <a class="img-cont text-center" href="#">
+                        <img src="http://goldprice.org/buying-gold/uploaded_images/Australian-Lunar-Gold-Coin-Series-768203.jpg" alt="">
+                    </a>
+                </div>
+                <div class="lots-desc col-xs-8 col-sm-8 col-md-8 col-lg-8 regular-14 relative">
+                    <a href="#">1/2 копейки 1899 1909 1912 1913 спб древняя спарта</a>
+                    <div class="margin-top-5">
+                        <span class="fa fa-credit-card"></span> <span>225 руб</span>
+                    </div>
+                    <div class="bottom-left">
+                        <span class="cat-time"><span class="fa fa-clock-o margin-right-5"></span> 11:25:12</span>
+                        <div class="buy-btns">
+                            <a href="#" class="to-cart">В корзину</a>
+                            <a href="#" class="quick-buy">Быстрая покупка</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
 	@endfor
 	</ul>
 </section>
