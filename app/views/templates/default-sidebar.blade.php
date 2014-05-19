@@ -46,21 +46,12 @@
 	<ul class="aside-list list-unstyled">
 	@foreach(Category::getCategories($categoryGroup->id) as $categories)
 		<li class="aside-item">
-			<a href="{{ url($catalogTranslit.'/'.$categories->seo_url.'-'.$categories->id) }}">
-			@if($isCatalog && !is_null($url_category) && in_array($categories->id,$sub_categories_ids))
-				<i class="fa fa-folder-open-o"></i>
-			@else
-				<i class="fa fa-folder-o"></i>
-			@endif
-				{{ $categories->title }}
-			</a>
+			<a href="{{ url($catalogTranslit.'/'.$categories->seo_url.'-'.$categories->id) }}">{{ $categories->title }}</a>
 		@if($isCatalog && !is_null($url_category) && in_array($categories->id,$sub_categories_ids))
 			<ul class="aside-list list-unstyled margin-left-10">
 			@foreach(Category::getCategories($categoryGroup->id,$url_category) as $sub_categories)
 			<li class="aside-item">
-				<a href="{{ url($catalogTranslit.'/'.$sub_categories->seo_url.'-'.$sub_categories->id) }}">
-					{{ in_array($sub_categories->id,$sub_categories_ids) ? '<i class="fa fa-check-circle-o"></i>' : '<i class="fa fa-circle-o"></i>' }} {{ $sub_categories->title }}
-				</a>
+				<a href="{{ url($catalogTranslit.'/'.$sub_categories->seo_url.'-'.$sub_categories->id) }}">{{ $sub_categories->title }}</a>
 			</li>
 			@endforeach
 			</ul>
