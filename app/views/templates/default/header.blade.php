@@ -7,13 +7,13 @@
 		@endif
 		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 margin-top-5">
 			<form class="search-form" role="form">
-                <input type="text" class="search-input" placeholder="Что ищем?">
-                <button class="search-btn"><i class="fa fa-search"></i></button>
-            </form>
-            <div class="head-actions margin-top-10 margin-bottom-10 text-center">
-                <button type="button" class="header-btn blue-btn">Купить монеты</button>
-                <button type="button" class="header-btn yel-btn">Продать монеты</button>
-            </div>
+				<input type="text" class="search-input" placeholder="Что ищем?">
+			<button class="search-btn"><i class="fa fa-search"></i></button>
+			</form>
+			<div class="head-actions margin-top-10 margin-bottom-10 text-center">
+				<button type="button" class="header-btn blue-btn">Купить монеты</button>
+				<button type="button" class="header-btn yel-btn">Продать монеты</button>
+			</div>
 		</div>
 		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 			<div class="best-good">
@@ -57,8 +57,11 @@
 					<a href="{{ url('login') }}" class="margin-right-10">Вход</a>
 					<a href="{{ url('login') }}">Регистрация</a>
 				@else
+					@if(AuthAccount::isUserLoggined())
+						<a href="{{ slink::createAuthLink('register-lot') }}" class="margin-right-10">Выставить товар</a>
+					@endif
 					<a href="{{ slink::createAuthLink() }}" class="margin-right-10">{{ (AuthAccount::isAdminLoggined())?'Администрирование':'Кабинет' }}</a>
-					<a href="{{ url('logout') }}">Выход</a>
+					<span id="logout"><a href="{{ url('logout') }}">Выход</a></span>
 				@endif
 				</div>
 			</div>
