@@ -84,7 +84,7 @@
 	</nav>
 	<div>
         <ul class="sub-nav list-unstyled max-width-class">
-            <li class="sub-nav-item cat-items"><a href="#">Каталог<br>изделий</a>
+            <li class="sub-nav-item cat-items"><a href="{{ url('katalog-izdeliiy') }}">Каталог<br>изделий</a>
             <li class="sub-nav-item cat-org"><a href="#">Каталог<br>организаций</a>
             <li class="sub-nav-item forum"><a href="#">Форум<br>ювелиров</a>
             <li class="sub-nav-item rating"><a href="#">Рейтинг<br>сайтов</a>

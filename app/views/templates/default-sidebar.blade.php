@@ -37,6 +37,9 @@
 					$sub_categories_ids[1] = $parent_category->id;
 				endif;
 			endif;
+			if(Product::find($product_id)->categories()->count() === 0):
+				$sub_categories_ids = array(0,0);
+			endif;
 		endif;
 	endif;
 ?>

@@ -239,10 +239,12 @@ class ProductsController extends \BaseController {
 		/*
 		* Присвоение ранее загруженных файлов к товару
 		*/
-		
-		$categoriesIDs = explode(',',Input::get('categories'));
-		$product->categories()->sync($categoriesIDs);
-		
+		if(Input::get('categories') != ''):
+			$categoriesIDs = explode(',',Input::get('categories'));
+			$product->categories()->sync($categoriesIDs);
+		else:
+			$product->categories()->detach();
+		endif;
 		return $product->id;
 	}
 	

@@ -19,6 +19,23 @@
 	<![endif]-->
 	@include('templates.default.header')
 	<main class="row content max-width-class" role="main">
+		<div class="special-offers">
+			<h2 class="margin-bottom-20 regular-24 text-center txt-color-white">Специальные предложения</h2>
+			<ul class="offers-list list-unstyled no-margin text-center">
+			@for($i=0;$i<5;$i++)
+				<li class="offers-item display-inline margin-bottom-20">
+					<div class="offers-head margin-bottom-10">
+						<a href="#" class="typical-link display-inline width-130">1/2 копейки 1899 1909 1912 1913 спб пол коп</a>
+					</div>
+					<div class="offers-body">
+						<figure class="ava">
+							<a href="#"><img class="circle" src="http://upload.wikimedia.org/wikipedia/commons/c/c5/Abraham_Lincoln_$1_Presidential_Coin_obverse_sketch.jpg" alt=""></a>
+						</figure>
+					</div>
+				</li>
+			@endfor
+			</ul>
+		</div>
 		@include('templates.default-sidebar')
 		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 main-cont">
 			@yield('content')
