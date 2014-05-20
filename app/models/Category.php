@@ -52,4 +52,9 @@ class Category extends BaseModel {
 		
 		return $this->belongsToMany('Product','category_product');
 	}
+
+	/*public function getChildrenCategories($parentCategoryID){
+		
+		return Category::
+	}*/
 }

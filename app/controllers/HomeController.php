@@ -112,10 +112,18 @@ class HomeController extends BaseController {
 				endif;
 			endforeach;
 			if(!is_null($catalog)):
-				$products = array();
 				if($productsCategory = Category::where('publication',1)->find($category_id)):
 					Session::put('products.active_category_url',$category_url);
-					$products = Category::where('publication',1)->find($category_id)->products()->where('publication',1)->where('catalog_id',$productsCatalog->id)->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->paginate(Config::get('app-default.catalog_count_on_page'));
+					if($productsCategory->category_parent_id == 0):
+						if($sub_categories_ids = Category::where('publication',1)->where('category_parent_id',$category_id)->orWhere('id',$category_id)->lists('id')):
+							$products = Product::select('products.*')->join('category_product','products.id','=','category_product.product_id')
+								->whereIn('category_id',$sub_categories_ids)->where('publication',1)->where('catalog_id',$productsCatalog->id)
+								->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->paginate(Config::get('app-default.catalog_count_on_page'));
+						endif;
+					else:
+						$products = Category::where('publication',1)->find($category_id)->products()->where('publication',1)->where('catalog_id',$productsCatalog->id)
+								->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->paginate(Config::get('app-default.catalog_count_on_page'));
+					endif;
 					if(!empty($productsCatalog->template) && View::exists('templates.'.$productsCatalog->template)):
 						return View::make('templates.'.$productsCatalog->template,array('products'=>$products,'page_title'=>$productsCategory->seo_title,'page_description'=>$productsCategory->seo_description,
 								'pege_keywords'=>$productsCategory->seo_keywords,'page_author'=>'','page_h1'=>$productsCategory->seo_h1,'menu'=> Page::getMenu()));

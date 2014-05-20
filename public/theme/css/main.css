@@ -656,14 +656,14 @@ header {
 }
 .pop-filters .sort {
 	display: inline-block;
-	width: 30%;
+	width: 35%;
 	font-size: 14px;
 
 	vertical-align: top
 }
 .pop-filters .pages {
 	display: inline-block;
-	width: 50%;
+	width: 25%;
 	font-size: 14px;
 
 	vertical-align: top;
@@ -671,13 +671,13 @@ header {
 }
 .pop-filters .form-control {
 	display: inline-block;
-	width: 130px;
+	width: 225px;
 	margin: 0 10px;
 
 	vertical-align: middle;
 }
 .pop-filters .pages .form-control {
-	width: 70px;
+	width: 90px;
 }
 .item-ava {
 	display: inline-block;
@@ -692,8 +692,7 @@ header {
 }
 .look-btns {
 	display: inline-block;
-	width: 20%;
-	text-align: right;
+	float: right;
 }
 .look-btn {
 	width: 48px;

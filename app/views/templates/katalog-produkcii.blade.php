@@ -38,10 +38,35 @@
 		</div>
 		@include('templates.default-sidebar')
 		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 main-cont">
-			@yield('content')
-			@if(isset($content))
-				{{ $content }}
-			@endif
+			<section class="popular margin-bottom-40">
+				<h2 class="margin-bottom-40 regular-24">Каталог изделий</h2>
+				<div class="pop-filters">
+					<div class="sort inline-block">
+						Сортировать
+						<select class="form-control inline-block">
+							<option>по названию</option>
+							<option>по цене</option>
+						</select>
+					</div>
+					<div class="pages inline-block">
+						Страница
+						<select class="form-control inline-block">
+							<option>25</option>
+						</select>
+						из 1000
+					</div>
+					<div class="look-btns inline-block">
+						<button class="look-btn"><span class="fa fa-bars"></span></button>
+						<button class="look-btn"><span class="fa fa-list"></span></button>
+						<button class="look-btn"><span class="fa fa-th-large"></span></button>
+					</div>
+				</div>
+				 <div class="pop-offers">
+					@if(isset($content))
+						{{ $content }}
+					@endif
+				</div>
+			</section>
 		</div>
 	</main>
 	@include('templates.default.footer')
