@@ -67,6 +67,8 @@ Route::group(array('before'=>'admin.auth','prefix'=>'admin'),function(){
 	
 Route::group(array('before'=>'user.auth','prefix'=>'dashboard'),function(){
 	Route::get('/','UserCabinetController@mainPage');
+	Route::get('register-lot','UserCabinetController@getRegisterLot');
+	Route::post('register-lot/store','UserCabinetController@postRegisterLot');
 });
 
 	/*

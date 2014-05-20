@@ -3,7 +3,7 @@
 	@foreach($products as $product)
 		<li class="pop-offers-item">
 		@if(!empty($product->image))
-			<a class="item-ava" href="#">
+			<a class="item-ava" href="{{ slink::createLink('product/'.$product->seo_url.'-'.$product->id) }}">
 				<img src="{{url('image/catalog-product-thumbnail/'.$product->id)}}" alt="{{ $product->title }}" class="avatar bordered circle">
 			</a>
 		@endif

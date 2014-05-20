@@ -2,7 +2,7 @@
 	<div class="row max-width-class margin-auto">
 		@if(Request::is('/'))
 			<h1 class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">monety.pro</h1>
-		@else:
+		@else
 			<a href="{{url('/');}}"><h1 class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">monety.pro</h1></a>
 		@endif
 		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 margin-top-5">
@@ -68,7 +68,6 @@
 		</div>
 	</div>
 	<nav class="main-nav" role="navigation">
-		<!--@if(isset($menu)){{ $menu }}@endif-->
 		<ul class="nav-list list-unstyled max-width-class text-center">
 			<li class="nav-item"><a href="{{ url('news') }}">Новости</a>
 			<li class="nav-item"><a href="#">Выставки</a>
