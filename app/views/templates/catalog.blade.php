@@ -1,25 +1,32 @@
-<div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-	@if(isset($products) && $products->count())
-		@foreach($products as $product)
-		<div class="row">
-			<div class="margin-top-10">
-				<hr>
-				<h3><a href="{{ slink::createLink('product/'.$product->seo_url.'-'.$product->id) }}">{{$product->title}}</a></h3>
-				<div>
-				@if(!empty($product->image))
-					<figure class="avatar-container">
-						<img src="{{url('image/catalog-product-thumbnail/'.$product->id)}}" alt="{{ $product->title }}" class="avatar bordered circle">
-					</figure>
-				@endif
+@if(isset($products) && $products->count())
+	<ul class="pop-offers-list list-unstyled">
+	@foreach($products as $product)
+		<li class="pop-offers-item">
+		@if(!empty($product->image))
+			<a class="item-ava" href="#">
+				<img src="{{url('image/catalog-product-thumbnail/'.$product->id)}}" alt="{{ $product->title }}" class="avatar bordered circle">
+			</a>
+		@endif
+			<div class="pop-item-expires">
+				<a href="{{ slink::createLink('product/'.$product->seo_url.'-'.$product->id) }}">{{ $product->title }}</a>
+				<div class="status">
+					<div class="line">
+						<span class="txt-color-red"><strong><span class="fa fa-clock-o"></span> 10 дней</strong></span> до окончания
+					</div>
+					<div class="line">
+						<strong>1 предмет</strong> доступен
+					</div>
+					<div class="line last">
+						<strong>10 пользователей</strong> сделали ставки
+					</div>
 				</div>
-				<a href="{{ slink::createLink('product/'.$product->seo_url.'-'.$product->id) }}" class="btn btn-primary no-margin regular-10 uppercase pull-left btn-spinner">
-					<span class="btn-response-text">Просмотр</span><i class="glyphicon glyphicon-chevron-right hidden"></i>
-				</a>
 			</div>
-		</div>
-		@endforeach
-		{{ $products->links() }}
-	@endif
-	</div>
-</div>
+			<div class="pop-item-price">
+				<div class="txt-color-red regular-18 margin-bottom-10">85 301.17руб</div>
+				<div class="regular-14">с доставкой<br>92 200.00 руб</div>
+			</div>
+		</li>
+	@endforeach
+	</ul>
+	{{ $products->links() }}
+@endif

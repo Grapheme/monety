@@ -125,8 +125,14 @@ class HomeController extends BaseController {
 								->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->paginate(Config::get('app-default.catalog_count_on_page'));
 					endif;
 					if(!empty($productsCatalog->template) && View::exists('templates.'.$productsCatalog->template)):
-						return View::make('templates.'.$productsCatalog->template,array('products'=>$products,'page_title'=>$productsCategory->seo_title,'page_description'=>$productsCategory->seo_description,
-								'pege_keywords'=>$productsCategory->seo_keywords,'page_author'=>'','page_h1'=>$productsCategory->seo_h1,'menu'=> Page::getMenu()));
+						
+						$view_variables = array(
+							'page_title'=>$productsCategory->seo_title,'page_description'=>$productsCategory->seo_description,'pege_keywords'=>$productsCategory->seo_keywords,
+							'page_author'=>'','page_h1'=>$productsCategory->seo_h1,'menu'=> Page::getMenu(),
+							'products'=>$products, 'category_content' => sPage::content_render($productsCategory->description),'content' => sPage::content_render($productsCatalog->description)
+						);
+					
+						return View::make('templates.'.$productsCatalog->template,$view_variables);
 					else:
 						return App::abort(404,'Отсутсвует шаблон: templates/'.$productsCategory->template);
 					endif;

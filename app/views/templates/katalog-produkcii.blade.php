@@ -40,6 +40,7 @@
 		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 main-cont">
 			<section class="popular margin-bottom-40">
 				<h2 class="margin-bottom-40 regular-24">Каталог изделий</h2>
+				{{ sPage::content_render(CategoryGroup::whereTitle('Магазин монет')->first()->description) }}
 				<div class="pop-filters">
 					<div class="sort inline-block">
 						Сортировать
