@@ -46,7 +46,8 @@ class GlobalController extends \BaseController {
 					if($account = self::getRegisterAccount(Input::all())):
 						if(Allow::enabled_module('downloads')):
 							if(!File::exists(base_path('usersfiles/account-').$account->id)):
-								File::makeDirectory(base_path('usersfiles/account-').$account->id,777,TRUE);
+								File::makeDirectory(base_path('usersfiles/account-').$account->id,0777,TRUE);
+								chmod(base_path('usersfiles/account-').$account->id,0777);
 							endif;
 						endif;
 						Mail::send('emails.auth.signup',array('account'=>$account),function($message){
@@ -57,7 +58,7 @@ class GlobalController extends \BaseController {
 						$json_request['status'] = TRUE;
 					endif;
 				else:
-					
+					$json_request['responseText'] = 'E-mail уже занят другим пользователем';
 				endif;
 			else:
 				$json_request['responseText'] = 'Неверно заполнены поля';

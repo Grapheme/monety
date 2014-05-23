@@ -1,13 +1,20 @@
 <header id="header">
-	<div id="logo-group">
-		<span id="logo"><a href="{{ url(AuthAccount::getStartPage()) }}">Панель управления</a></span>
-	</div>
-	<div class="pull-right">
-		<div id="hide-menu" class="btn-header pull-right">
-			<span> <a href="javascript:void(0);" title=""><i class="fa fa-reorder"></i></a> </span>
+	<div id="logo-group"></div>
+	<nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="navbar-header">
+			<a href="{{ url(AuthAccount::getStartPage()) }}" class="navbar-brand">Панель управления</a>
 		</div>
-		<div id="logout" class="btn-header transparent pull-right">
-			<span> <a href="{{url('logout')}}" title="Завершение сеанса"><i class="fa fa-sign-out"></i></a> </span>
+		<div class="nav navbar-top-links navbar-right margin-top-5">
+			<li class="dropdown">
+				<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+					<i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-user">
+					<li><a href="#"><i class="fa fa-user fa-fw"></i> Профиль</a></li>
+					<li class="divider"></li>
+					<li id="logout"><a href="{{url('logout')}}"><i class="fa fa-sign-out fa-fw"></i> Завершить сеанс</a></li>
+				</ul>
+			</li>
 		</div>
-	</div>
+	</nav>
 </header>

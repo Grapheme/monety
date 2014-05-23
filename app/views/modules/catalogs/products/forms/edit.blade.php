@@ -54,19 +54,30 @@
 								@if($field->type == 'input')
 									<label class="label">{{ $field->label }}</label>
 									<label class="input">
+									@if(isset($product->attributes[$field->name]))
 										{{ Form::text('attribute['.$field->name.']',$product->attributes[$field->name]) }}
+									@else
+										{{ Form::text('attribute['.$field->name.']',NULL) }}
+									@endif
 									</label>
 								@elseif($field->type == 'textarea')
 									<label class="label">{{ $field->label }}</label>
 									<label class="textarea">
+									@if(isset($product->attributes[$field->name]))
 										{{ Form::textarea('attribute['.$field->name.']',$product->attributes[$field->name],array('class'=>'redactor')) }}
+									@else
+										{{ Form::textarea('attribute['.$field->name.']',NULL,array('class'=>'redactor')) }}
+									@endif
 									</label>
 								@elseif($field->type == 'checkbox')
 									<div class="row">
 										<div class="col col-10">
 											<label class="checkbox">
-												<input type="checkbox" name="{{ 'attribute['.$field->name.']' }}">
-												<i></i>{{ $field->label }}
+											@if(isset($product->attributes[$field->name]))
+												{{ Form::checkbox('attribute['.$field->name.']',1,TRUE) }}<i></i>{{ $field->label }}
+											@else
+												{{ Form::checkbox('attribute['.$field->name.']',1) }}<i></i>{{ $field->label }}
+											@endif
 											</label>
 										</div>
 									</div>
@@ -84,7 +95,11 @@
 									@foreach($attributes as $attribute)
 										<?php $productAttr[$attribute->title] = $attribute->title;?>
 									@endforeach
-									{{ Form::select('attribute['.$attrName.']', $productAttr,$product->attributes[$attrName], array('autocomplete'=>'off')) }} <i></i>
+								@if(isset($product->attributes[$attrName]))
+									{{ Form::select('attribute['.$attrName.']',$productAttr,$product->attributes[$attrName], array('autocomplete'=>'off')) }} <i></i>
+								@else
+									{{ Form::select('attribute['.$attrName.']',$productAttr,NULL, array('autocomplete'=>'off')) }} <i></i>
+								@endif
 								</label>
 							</section>
 						@endforeach
@@ -171,7 +186,7 @@
 								@foreach($loadProductImages as $image)
 									<tr data-action="{{ slink::createAuthLink('image/destroy/'.$image->id) }}">
 										<td>
-											<a class="fancybox" rel="group" data-fancybox-type="image" href="{{ url('image/slider-image/'.$image->id) }}" alt="{{ $image->title }}">
+											<a class="fancybox" rel="group" data-fancybox-type="image" href="{{ url('image/slider-image/'.$image->id) }}">
 												<i class="fa fa-picture-o"></i> {{ $image->filename }} <span>({{ $image->filesize }} Кбайт)</span>
 											</a>
 											<button  data-image-id="{{ $image->id }}" class="close remove-free-image" title="Удалить изображение">&times;</button>
