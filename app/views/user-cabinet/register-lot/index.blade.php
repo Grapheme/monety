@@ -3,15 +3,13 @@
 <link rel="stylesheet" href="{{slink::path('css/redactor.css')}}" />
 <link rel="stylesheet" href="{{slink::path('theme/css/smart-form.css')}}" />
 <link rel="stylesheet" href="{{slink::path('theme/css/select2.css')}}" />
+<link rel="stylesheet" href="{{slink::path('theme/css/smartNotification.css')}}" />
+<link rel="stylesheet" href="{{slink::path('theme/css/dropzone.css')}}" />
 @stop
 @section('content')
-<div class="row">
-	 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 main-cont">
-	 	<section class="form-example">
-			@include('user-cabinet.forms.catalog.register-lot-form')
-		</section>
-	</div>
-</div>
+<section class="form-example">
+	@include('user-cabinet.forms.catalog.register-lot-form')
+</section>
 @stop
 @section('scripts')
 	{{HTML::script('js/account/user.js')}}
