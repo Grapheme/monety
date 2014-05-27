@@ -71,7 +71,12 @@ class HomeController extends BaseController {
 			return App::abort(404);
 		endif;
 		$product_id = getItemIDforURL($product_url);
-		if(!$product = Product::where('publication',1)->where('language',Config::get('app.locale'))->find($product_id)):
+		if(AuthAccount::isAdminLoggined()):
+			$product = Product::where('language',Config::get('app.locale'))->find($product_id);
+		else:
+			$product = Product::where('publication',1)->where('language',Config::get('app.locale'))->find($product_id);
+		endif;
+		if(!$product):
 			return App::abort(404,'Запрашиваемый продукт не найден');
 		endif;
 		if(!empty($product->template) && View::exists('templates.'.$product->template)):

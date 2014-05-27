@@ -10,6 +10,7 @@ class CreateProductsAttributesGroupTable extends Migration {
 			$table->increments('id');
 			$table->string('title',100)->nullable();
 			$table->boolean('publication')->default(1)->unsigned()->nullable();
+			$table->integer('user_group')->default(1)->unsigned()->nullable();
 		});
 	}
 

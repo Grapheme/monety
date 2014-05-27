@@ -13,6 +13,7 @@
 {{ HTML::style('css/bootstrap-theme.min.css') }}
 {{ HTML::style('css/font-awesome.min.css') }}
 {{ HTML::style('theme/css/main.css') }}
+{{ HTML::style('theme/css/smartNotification.css') }}
 <link rel="shortcut icon" href="{{asset('img/favicon/favicon.png')}}" type="image/x-icon">
 <link rel="icon" href="{{asset('img/favicon/favicon.png')}}" type="image/x-icon">
 @if(Config::get('app.use_googlefonts'))

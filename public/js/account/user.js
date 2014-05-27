@@ -18,6 +18,35 @@ $(function(){
 
 function runFormValidation(){
 	
+	var RegisterNewProduct = $("#request-product-form").validate({
+		rules:{
+			title: {required : true},
+		},
+		messages : {
+			title : {required : 'Укажите название продукта'},
+		},
+		errorPlacement : function(error, element){error.insertAfter(element.parent());},
+		submitHandler: function(form) {
+			var options = {target: null,dataType:'json',type:'post'};
+			options.beforeSubmit = function(formData,jqForm,options){
+				$(form).find('.btn-form-submit').elementDisabled(true);
+			},
+			options.success = function(response,status,xhr,jqForm){
+				$(form).find('.btn-form-submit').elementDisabled(false);
+				if(response.status){
+					$("#new-product-form").slideUp(500,function(){
+						$("#new-product-response-text").html(response.responseText);
+						$("#new-product-other-actions").show();
+					});
+				}else{
+					showMessage.constructor(response.responseText,response.responseErrorText);
+					showMessage.smallError();
+				}
+			}
+			$(form).ajaxSubmit(options);
+		}
+	});
+	
 	var RegisterLot = $("#register-lot-form").validate({
 		rules:{
 			login: {required : true, email : true},

@@ -3,6 +3,14 @@
 <link rel="stylesheet" href="{{ slink::path('css/fancybox.css') }}" />
 @stop
 @section('content')
+	@if($product->publication == 0)
+	<article class="row">
+		<div class="alert alert-warning fade in">
+			<i class="fa-fw fa fa-warning"></i>
+			<strong>Внимание!</strong> Продукт не опубликован
+		</div>
+	</article>
+	@endif
 	<article class="news row margin-bottom-40">
 		<section class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 			<h2 class="regular-20">{{ $product->title }}</h2>

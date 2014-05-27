@@ -30,6 +30,7 @@ Route::group(array('before'=>'auth','prefix'=>$prefix),function(){
 	Route::post('catalogs/products/upload-product-photo', 'DownloadsController@postUploadCatalogProductImages');
 	Route::post('catalogs/products/upload-product-photo/product/{product_id}', 'DownloadsController@postUploadCatalogProductImages')->where('product_id','\d+');
 	Route::get('catalogs/products/search-catalog-category/{category_group_id}', 'CategoriesController@getSugestSearchCategory')->where('category_group_id','\d+');
+	Route::post('catalogs/products/publication/{product_id}','ProductsController@postCatalogProductPublication')->where('product_id','\d+');
 	Route::controller('catalogs/products', 'ProductsController');
 });
 
@@ -70,6 +71,8 @@ Route::group(array('before'=>'user.auth','prefix'=>'dashboard'),function(){
 	Route::get('register-lot','UserCabinetController@getRegisterLot');
 	Route::get('register-lot/new-catalog-product','UserCabinetController@getRegisterLotNewProduct');
 	Route::post('register-lot/store','UserCabinetController@postRegisterLot');
+	Route::post('register-lot/request-new-product/store','UserCabinetController@postRegisterLotRequestNewProductStore');
+	Route::post('register-lot/new-catalog-product/upload-product-photo','UserCabinetController@postUploadCatalogProductImages');
 	Route::post('register-lot/search-products','UserCabinetController@postRegisterLotSearchProducts');
 });
 

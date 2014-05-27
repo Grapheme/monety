@@ -7,7 +7,19 @@
 @stop
 @section('content')
 <section class="form-example">
-	@include('user-cabinet.forms.catalog.register-lot-form')
+	<div id="new-product-form">
+		@include('user-cabinet.forms.catalog.request-new-product')
+	</div>
+	<div id="new-product-other-actions" style="display: none;">
+		<div class="alert alert-info fade in">
+			<i class="fa-fw fa fa-info"></i>
+			<strong id="new-product-response-text"></strong>
+			<ul>
+				<li><a href="{{ slink::createAuthLink('register-lot') }}"> Выставить товар </a></li>
+				<li><a href="{{ slink::createAuthLink('register-lot/new-catalog-product') }}"> Добавить в каталог новый товар </a></li>
+			</ul>
+		</div>
+	</div>
 </section>
 @stop
 @section('scripts')
@@ -21,6 +33,13 @@
 		}else{
 			loadScript("{{asset('js/vendor/jquery-form.min.js');}}");
 		}
+		window.onbeforeunload = function(){
+			if(BASIC.inputChanged === true){
+				return "Покинуть страницу? Все не сохраненные данные будут утеряны! Продоолжить?";
+			}else{
+				return null;
+			}
+		};
 	</script>
 	<script src="{{slink::path('js/vendor/redactor.min.js')}}"></script>
 	<script src="{{slink::path('js/system/redactor-config.js')}}"></script>

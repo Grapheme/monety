@@ -1,17 +1,17 @@
 @extends('templates.'.AuthAccount::getStartPage())
 @section('content')
+	@if(Allow::valid_action_permission('catalogs','create'))
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="pull-right margin-bottom-25 margin-top-10 ">
-			@if(Allow::valid_action_permission('catalogs','create'))
 				<a class="btn btn-primary" href="{{slink::createAuthLink('catalogs/products/create')}}">Добавить продукт</a>
 				@if(AuthAccount::isAdminLoggined())
 				<a class="btn btn-primary" href="{{slink::createAuthLink('catalogs/categories')}}"><i class="fa fa-lg fa-fw fa-list"></i> Категории продуктов</a>
 				@endif
-			@endif
 			</div>
 		</div>
 	</div>
+	@endif
 	@if(Session::get('message'))
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
@@ -48,9 +48,9 @@
 						<td class="wigth-100 text-center">{{ $product->price }}</td>
 						@if(Allow::valid_action_permission('catalogs','publication'))
 						<td class="wigth-100">
-							<div class="smart-form">
+							<div class="smart-form" data-action="{{ slink::createAuthLink('catalogs/products/publication/'.$product->id) }}">
 								<label class="toggle pull-left">
-									<input type="checkbox" name="publication" disabled="" checked="" value="1">
+									<input type="checkbox" autocomplete="off" class="publication-catalog-product" name="publication" value="1" {{ $product->publication ? 'checked="checked"' : '' }} >
 									<i data-swchon-text="да" data-swchoff-text="нет"></i>
 								</label>
 							</div>

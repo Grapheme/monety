@@ -144,3 +144,66 @@
   font-size: 13px;
   margin-top: 2px;
 }
+
+/*Messagebox */
+.divMessageBox {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+}
+/*
+.MessageIE{
+    background-image: url("@{base-url}/bg.png");
+    
+}*/
+.MessageBoxContainer {
+  top: 35%;
+  color: white;
+  position: relative;
+  width: 45%;
+  left: 25%;
+  background-color: #232323;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+}
+.MessageBoxMiddle {
+  position: relative;
+  left: 20%;
+  width: 60%;
+}
+.MessageBoxMiddle .MsgTitle {
+  letter-spacing: -1px;
+  font-size: 24px;
+  font-weight: 300;
+}
+.MessageBoxMiddle .pText {
+  font-style: 30px;
+}
+.MessageBoxContainer input {
+  width: 50%;
+  padding: 5px;
+}
+.MessageBoxContainer select {
+  width: 50%;
+  padding: 5px;
+}
+.MessageBoxButtonSection {
+  width: 100%;
+  height: 30px;
+}
+.MessageBoxButtonSection button {
+  float: right;
+  margin-right: 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.txt-color-orangeDark {
+	color: #a57225 !important;
+}
+/* End of MessageBox */

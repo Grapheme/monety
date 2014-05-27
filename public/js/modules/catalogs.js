@@ -3,7 +3,6 @@
  */
  
 $(function(){
-	
 	$(".remove-catalog").click(function() {
 		var $this = this;
 		$.SmartMessageBox({
@@ -216,6 +215,36 @@ $(function(){
 			}
 		});
 		return false;
+	});
+
+	$(".publication-catalog-product").click(function(event) {
+		event.preventDefault();
+		var message = !this.checked ? 'Отменить публикацию?' : 'Опубликовать продукт?';
+		var input_checked = this.checked;
+		var $this = this;
+		$.SmartMessageBox({
+			title : message,
+			content : "",
+			buttons : '[Нет][Да]'
+		},function(ButtonPressed) {
+			if(ButtonPressed == "Да") {
+				$.ajax({
+					url: $($this).parents('.smart-form').attr('data-action'),
+					type: 'POST',dataType: 'json',
+					beforeSend: function(){},
+					success: function(response,textStatus,xhr){},
+					error: function(xhr,textStatus,errorThrown){
+						showMessage.constructor('Публикация продукта','Возникла ошибка.Повторите снова');
+						showMessage.smallError();
+					}
+				});
+				if(input_checked === false){
+					$($this).prop('checked',false);
+				}else{
+					$($this).prop('checked',true);
+				}
+			}
+		});
 	});
 });
 

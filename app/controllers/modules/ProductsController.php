@@ -12,7 +12,11 @@ class ProductsController extends \BaseController {
 	
 	public function getIndex(){
 		
-		$products = $this->product->where('user_id',Auth::user()->id)->orderBy('sort','asc')->orderBy('created_at','desc')->get();
+		if(AuthAccount::isAdminLoggined()):
+			$products = $this->product->orderBy('sort','asc')->orderBy('created_at','desc')->get();
+		else:
+			$products = $this->product->where('user_id',Auth::user()->id)->orderBy('sort','asc')->orderBy('created_at','desc')->get();
+		endif;
 		return View::make('modules.catalogs.products.index', compact('products'));
 	}
 
@@ -35,7 +39,7 @@ class ProductsController extends \BaseController {
 		$templates = Template::all();
 		$languages = Language::all();
 		$productsExtendedAttributes = array();
-		foreach(Products_attributes_groups::all() as $key => $value):
+		foreach(Products_attributes_groups::whereUserGroup(1)->get() as $key => $value):
 			$productsExtendedAttributes[$value->title] = Products_attributes_groups::find($value->id)->productAttributes()->get();
 		endforeach;
 		return View::make('modules.catalogs.products.create',compact('catalogs','category_groups','data_fields','productsExtendedAttributes','templates','languages'));
@@ -60,7 +64,34 @@ class ProductsController extends \BaseController {
 		endif;
 		return Response::json($json_request,200);
 	}
-
+	
+	public function postCatalogProductPublication($product_id){
+		
+		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
+		if(Request::ajax()):
+			if(AuthAccount::isAdminLoggined()):
+				$product = Product::find($product_id);
+			else:
+				$product = Product::where('user_id',Auth::user()->id)->find($product_id);
+			endif;
+			if($product):
+				if($product->publication == 0):
+					$product->publication = 1;
+				else:
+					$product->publication = 0;
+				endif;
+				$product->save();
+				$product->touch();
+				$json_request['status'] = TRUE;
+			else:
+				$json_request['responseText'] = 'Продукт не найдет';
+			endif;
+		else:
+			return App::abort(404);
+		endif;
+		return Response::json($json_request,200);
+	}
+	
 	public function getEdit($product_id){
 		
 		$this->moduleActionPermission('catalogs','edit');

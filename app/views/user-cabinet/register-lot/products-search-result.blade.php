@@ -1,4 +1,12 @@
 @if(isset($products) && $products->count())
+	@if($products->count() < $products_count)
+		<div class="row">
+			<div class="alert alert-warning fade in">
+				<i class="fa-fw fa fa-warning"></i>
+				<strong>Внимание!</strong> Отобрано {{ $products->count() }} результов из {{ $products_count }} возможных. Измените условия поиска для более точного результата
+			</div>
+		</div>
+	@endif
 	<div class="row">
 		<div class="pull-right">
 			<a href="{{ slink::createAuthLink('register-lot/new-catalog-product') }}" class="btn btn-link no-padding no-margin">Не нашли свою монету в каталоге?</a>
@@ -38,10 +46,18 @@
 				</div>
 			</div>
 			<div class="pop-item-action">
-				<div class="regular-14"><button class="btn btn-link register-lot-choice-product" data-product="{{ $product->id }}">Да, это моя монета</button></div>
+				<div class="regular-14">
+				@if($product->publication == 1)
+					<button class="btn btn-link register-lot-choice-product" data-product="{{ $product->id }}">Да, это моя монета</button>
+				@else
+					<div class="alert alert-info fade in">
+						<i class="fa-fw fa fa-info"></i>
+						Находится на модерации
+					</div>
+				@endif
+				</div>
 			</div>
 		</li>
 	@endforeach
 	</ul>
-	{{ $products->links() }}
 @endif
