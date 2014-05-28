@@ -159,4 +159,42 @@ class DownloadsController extends BaseController {
 		
 	}
 	
+	public function postUploadLotImages($lot_id = NULL){
+		
+		if(!AuthAccount::isUserLoggined()):
+			return Response::make('Ошибка 403 (Forbidden, доступ запрещен)',403);
+		endif;
+		if(Input::hasFile('file')):
+			if(!is_null($lot_id)):
+				$lot = Lot::where('user_id',Auth::user()->id)->find($lot_id);
+			else:
+				$lot = NULL;
+			endif;
+			$dirPath = 'usersfiles/account-'.Auth::user()->id.'/lots';
+			$dirFullPath = base_path($dirPath);
+			if(!File::isDirectory($dirFullPath.'/thumbnail')):
+				File::makeDirectory($dirFullPath.'/thumbnail',0777,TRUE);
+			endif;
+			$fileName = str_random(24).'.'.Input::file('file')->getClientOriginalExtension();
+			ImageManipulation::make(Input::file('file')->getRealPath())->resize(100,100,TRUE)->save($dirFullPath.'/thumbnail/'.$fileName);
+			Input::file('file')->move($dirFullPath,$fileName);
+			
+			$lotID = (!is_null($lot)) ? $lot->id : 0;
+			$lotTitle = (!is_null($lot)) ? $lot->title : '';
+			$maxSortValue = (int)Lot_image::where('lot_id',$lotID)->max('sort')+1;
+			
+			$newImageData = array('lot_id' => $lotID,'user_id'=>Auth::user()->id,'sort' => $maxSortValue,'title' => $lotTitle,'description' => '','attributes' => '[]','publication' => 1,
+				'paths' => json_encode(array('image' => $dirPath.'/'.$fileName,'thumbnail'=> $dirPath.'/thumbnail/'.$fileName)));
+			$newImage = Lot_image::create($newImageData);
+			if(is_null($lot)):
+				$FreeImagesIDs = Lot_image::where('user_id',Auth::user()->id)->where('lot_id',0)->lists('id');
+				Session::put('lot_images',$FreeImagesIDs);
+			endif;
+			return Response::json(array('status'=>TRUE,'responseText'=>'Файл загружен'),200);
+		else:
+			return Response::json(array('status'=>FALSE,'responseText'=>'Файл не загружен'),400);
+		endif;
+		
+	}
+	
 }

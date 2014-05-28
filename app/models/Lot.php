@@ -1,6 +1,6 @@
 <?php
 
-class Lot extends \Eloquent {
+class Lot extends BaseModel {
 	
 	protected $guarded = array();
 
@@ -8,12 +8,24 @@ class Lot extends \Eloquent {
 	
 	public static $rules = array(
 	
-		'user_id' => 'required|numeric',
 		'product_id' => 'required|numeric',
 		
 		'title' => 'required|between:3,255',
 		'type_lot' => 'required|numeric',
 		'quantity' => 'required|numeric',
+	);
+	
+	public static $rules_messages = array(
+		
+		'product_id.required' => 'ID товара должено быть определено',
+		'product_id.numeric' => 'ID товара должен быть числом',
+		
+		'title.required' => 'Название лота не должно быть пустым!',
+		'title.between' => 'Название лота должно быть от 3 до 255 символов!',
+		'type_lot.required' => 'Способ продажи должен быть указан',
+		'type_lot.numeric' => 'Способ продажи должен быть числом',
+		'quantity.required' => 'Поле количество не должно быть пустым!',
+		'quantity.numeric' => 'Значение количества должно быть числом',
 	);
 	
 	protected $fillable = array();

@@ -7,7 +7,21 @@
 @stop
 @section('content')
 <section class="form-example">
-	@include('user-cabinet.forms.catalog.register-lot-form')
+	<div id="div-register-lot-form">
+		@include('user-cabinet.forms.catalog.register-lot-form')
+	</div>
+	<div id="register-lot-other-actions" style="display: none;">
+		<div class="alert alert-info fade in">
+			<i class="fa-fw fa fa-info"></i>
+			<strong id="register-lot-response-text"></strong>
+			<ul>
+				<li><a href="{{ slink::createAuthLink('register-lot') }}"> Выставить еще лот</a></li>
+				<li><a href="javascript:void(0);"> К списку выставленных лотов</a></li>
+				<li><a href="javascript:void(0);"> Перейти на страницу лота</a></li>
+				<li><a href="{{ slink::createAuthLink('register-lot/new-catalog-product') }}"> Добавить в каталог новый товар </a></li>
+			</ul>
+		</div>
+	</div>
 </section>
 @stop
 @section('scripts')
@@ -20,7 +34,14 @@
 			loadScript("{{asset('js/vendor/jquery-form.min.js');}}",runFormValidation);
 		}else{
 			loadScript("{{asset('js/vendor/jquery-form.min.js');}}");
-		}
+		};
+		window.onbeforeunload = function(){
+			if(BASIC.inputChanged === true){
+				return "Покинуть страницу? Все не сохраненные данные будут утеряны! Продолжить?";
+			}else{
+				return null;
+			}
+		};
 	</script>
 	<script src="{{slink::path('js/vendor/redactor.min.js')}}"></script>
 	<script src="{{slink::path('js/system/redactor-config.js')}}"></script>

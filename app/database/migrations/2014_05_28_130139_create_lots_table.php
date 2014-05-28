@@ -14,7 +14,6 @@ class CreateLotsTable extends Migration {
 			
 			$table->string('title',200)->nullable();
 			$table->text('description')->nullable();
-			$table->text('image')->nullable();
 			$table->text('attributes')->nullable();
 			
 			$table->integer('type_lot')->unsigned()->default(1)->nullable();

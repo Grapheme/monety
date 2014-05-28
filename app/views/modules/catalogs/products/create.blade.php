@@ -20,7 +20,7 @@
 		}
 		window.onbeforeunload = function(){
 			if(BASIC.inputChanged === true){
-				return "Покинуть страницу? Все не сохраненные данные будут утеряны! Продоолжить?";
+				return "Покинуть страницу? Все не сохраненные данные будут утеряны! Продолжить?";
 			}else{
 				return null;
 			}

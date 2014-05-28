@@ -16,14 +16,17 @@ class Image extends BaseModel {
 	
 	public function product(){
 
-		return $this->belongsTo('Products','item_id','id');
-
+		return $this->belongsTo('Product','item_id','id');
 	}
 	
 	public function module(){
 
 		return $this->hasOne('Modules','item_id','id');
+	}
+	
+	public function user(){
 
+		return $this->hasOne('User','user_id','id');
 	}
 	
 }

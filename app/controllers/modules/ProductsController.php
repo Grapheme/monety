@@ -268,7 +268,7 @@ class ProductsController extends \BaseController {
 		endif;
 		
 		/*
-		* Присвоение ранее загруженных файлов к товару
+		* Распределение категорий товара
 		*/
 		if(Input::get('categories') != ''):
 			$categoriesIDs = explode(',',Input::get('categories'));

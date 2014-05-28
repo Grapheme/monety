@@ -33,6 +33,7 @@ function runFormValidation(){
 			options.success = function(response,status,xhr,jqForm){
 				$(form).find('.btn-form-submit').elementDisabled(false);
 				if(response.status){
+					BASIC.inputChanged = false;
 					$("#new-product-form").slideUp(500,function(){
 						$("#new-product-response-text").html(response.responseText);
 						$("#new-product-other-actions").show();
@@ -49,7 +50,7 @@ function runFormValidation(){
 	var RegisterLot = $("#register-lot-form").validate({
 		ignore: ":hidden",
 		rules:{
-			name: {required : true},
+			title: {required : true},
 			type_lot: {required : true},
 			quantity: {required : true},
 			shop_price: {required : true},
@@ -57,7 +58,7 @@ function runFormValidation(){
 			auction_price: {required : true},
 		},
 		messages : {
-			name : {required : 'Введите название лота'},
+			title : {required : 'Введите название лота'},
 			type_lot : {required : 'Введите cпособ продажи'},
 			quantity : {required : 'Введите количество'},
 			shop_price : {required : 'Введите цену продажи'},
@@ -74,7 +75,11 @@ function runFormValidation(){
 			},
 			options.success = function(response,status,xhr,jqForm){
 				if(response.status){
-					BASIC.RedirectTO(response.redirect);
+					BASIC.inputChanged = false;
+					$("#div-register-lot-form").slideUp(500,function(){
+						$("#register-lot-response-text").html(response.responseText);
+						$("#register-lot-other-actions").show();
+					});
 				}else{
 					$(form).find('button[type="submit"]').elementDisabled(false);
 					showMessage.constructor(response.responseText,response.responseErrorText);

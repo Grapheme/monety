@@ -15,6 +15,7 @@ class LotsController extends \BaseController {
 		foreach(Products_attributes_groups::whereUserGroup(AuthAccount::getGroupID())->get() as $key => $value):
 			$productsExtendedAttributes[$value->title] = Products_attributes_groups::find($value->id)->productAttributes()->get();
 		endforeach;
+		ImageController::deleteLotImages(0);
 		return View::make('user-cabinet.register-lot.index',compact('productsExtendedAttributes'));
 	}
 
@@ -66,6 +67,68 @@ class LotsController extends \BaseController {
 	
 	public function postRegisterLotStore(){
 		
-		dd(Input::all());
+		$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'');
+		if(Request::ajax()):
+			if(Lot::validate(Input::all(),Lot::$rules,Lot::$rules_messages)):
+				self::saveLotModel();
+				if(Input::get('type_lot') == 1):
+					$json_request['responseText'] = 'Лот выставлен на продажу в магазине';
+				elseif(Input::get('type_lot') == 2):
+					$json_request['responseText'] = 'Лот выставлен на продажу в аукционе';
+				endif;
+				$json_request['status'] = TRUE;
+			else:
+				$json_request['responseText'] = 'Неверно заполнены поля';
+				$json_request['responseErrorText'] = implode(Lot::$errors,'<br />');
+			endif;
+		else:
+			return App::abort(404);
+		endif;
+		return Response::json($json_request,200);
+	}
+	
+	private function saveLotModel($lot = NULL){
+		
+		if(is_null($lot)):
+			$lot = $this->lot;
+		endif;
+		
+		$lot->user_id = Auth::user()->id;
+		$lot->product_id = Input::get('product_id');
+		
+		$lot->title = Input::get('title');
+		$lot->description = Input::get('description');
+		$lot->attributes = json_encode(Input::get('attribute'));
+		
+		$lot->language = App::getLocale();
+		$lot->template = 'lot';
+		
+		$lot->publication = 1;
+		$lot->type_lot = Input::get('type_lot');
+		$lot->quantity = Input::get('quantity');
+		if(Input::get('type_lot') == 1):
+			$lot->shop_price = Input::get('shop_price');
+		elseif(Input::get('type_lot') == 2):
+			$lot->auction_start_price = Input::get('auction_start_price');
+			$lot->auction_blitc_price = Input::get('auction_blitc_price');
+			$lot->auction_period = Input::get('auction_period');
+		endif;
+		
+		$lot->seo_url = $this->stringTranslite(Input::get('title'));
+		$lot->seo_title = Input::get('title');
+		$lot->seo_description =$lot->seo_keywords = $lot->seo_h1 = '';
+
+		$lot->save();
+		$lot->touch();
+
+		/*
+		* Присвоение ранее загруженных файлов к лоту
+		*/
+		
+		if(Session::has('lot_images')):
+			Lot_image::where('user_id',Auth::user()->id)->whereIn('id',Session::get('lot_images'))->update(array('lot_id' => $lot->id,'title' => $lot->title));
+			Session::forget('lot_images');
+		endif;
+		return $lot->id;
 	}
 }

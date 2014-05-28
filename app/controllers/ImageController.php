@@ -154,6 +154,33 @@ class ImageController extends \BaseController {
 		endif;
 	}
 	
+	public function deleteLotImage($id){
+	
+		if(Allow::valid_access('downloads')):
+			$json_request = array('status'=>FALSE,'responseText'=>'','responseErrorText'=>'','redirect'=>FALSE);
+			if(Request::ajax()):
+				if($image = Lot_image::where('user_id',Auth::user()->id)->findOrFail($id)):
+					if($jsonImageData = json_decode($image->paths)):
+						if(File::exists(base_path($jsonImageData->image))):
+							File::delete(base_path($jsonImageData->image));
+						endif;
+						if(File::exists(base_path($jsonImageData->thumbnail))):
+							File::delete(base_path($jsonImageData->thumbnail));
+						endif;
+					endif;
+					$image->delete();
+					$json_request['responseText'] = 'Изображение удалено';
+					$json_request['status'] = TRUE;
+				endif;
+			else:
+				return App::abort(404);
+			endif;
+			return Response::json($json_request,200);
+		else:
+			return App::abort(404);
+		endif;
+	}
+	
 	public static function deleteImages($module_name,$item_id){
 	
 		if(Allow::valid_access('downloads')):
@@ -176,4 +203,28 @@ class ImageController extends \BaseController {
 			return FALSE;
 		endif;
 	}
+	
+	public static function deleteLotImages($lot_id){
+	
+		if(Allow::valid_access('downloads')):
+			if($loadLotImages = Lot_image::where('user_id',Auth::user()->id)->where('lot_id',$lot_id)->get()):
+				foreach($loadLotImages as $key => $image):
+					if($jsonImageData = json_decode($image->paths)):
+						if(File::exists(base_path($jsonImageData->image))):
+							File::delete(base_path($jsonImageData->image));
+						endif;
+						if(File::exists(base_path($jsonImageData->thumbnail))):
+							File::delete(base_path($jsonImageData->thumbnail));
+						endif;
+					endif;
+				endforeach;
+				Lot_image::where('user_id',Auth::user()->id)->where('lot_id',$lot_id)->delete();
+			endif;
+			return TRUE;
+		else:
+			return FALSE;
+		endif;
+	}
+
+
 }

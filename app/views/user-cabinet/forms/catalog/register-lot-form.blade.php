@@ -37,7 +37,7 @@
 					<section>
 						<label class="label">Название лота</label>
 						<label class="input"> <i class="icon-append fa fa-list-alt"></i>
-							{{ Form::text('name','') }}
+							{{ Form::text('title','') }}
 						</label>
 					</section>
 			@if(!empty($productsExtendedAttributes))
@@ -121,14 +121,14 @@
 				</div>
 			@if(Allow::valid_access('downloads'))
 				<div id="images" class="tab-pane fade">
-					<div action="{{ slink::createAuthLink('catalogs/products/upload-product-photo') }}" class="dropzone dz-clickable" id="ProductImageDropZone"></div>
+					<div action="{{ slink::createAuthLink('register-lot/upload-lot-photo') }}" class="dropzone dz-clickable" id="ProductImageDropZone"></div>
 				</div>
 			@endif
 			</div>
 		</fieldset>
 		<footer>
 			<button type="submit" autocomplete="off" class="btn btn-success no-margin regular-10 uppercase btn-form-submit">
-				<i class="fa fa-spinner fa-spin hidden"></i> <span class="btn-response-text">Далее</span>
+				<i class="fa fa-spinner fa-spin hidden"></i> <span class="btn-response-text">Выставить лот</span>
 			</button>
 		</footer>
 	{{ Form::close() }}

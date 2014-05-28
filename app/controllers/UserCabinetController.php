@@ -39,7 +39,7 @@ class UserCabinetController extends BaseController {
 		if(Request::ajax()):
 			if(Product::validate(Input::all(),Product::$rules,Product::$rules_messages)):
 				if(!Product::whereTitle(Input::get('title'))->get()->toArray()):
-//					self::saveProductModel();
+					self::saveProductModel();
 					$json_request['responseText'] = 'Продукт отправлен на модерацию';
 					$json_request['status'] = TRUE;
 				else:
@@ -111,7 +111,7 @@ class UserCabinetController extends BaseController {
 		endif;
 		
 		/*
-		* Присвоение ранее загруженных файлов к товару
+		* Распределение категорий товара
 		*/
 		if(Input::get('categories') != ''):
 			$categoriesIDs = explode(',',Input::get('categories'));

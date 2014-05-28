@@ -15,7 +15,7 @@
 			<i class="fa-fw fa fa-info"></i>
 			<strong id="new-product-response-text"></strong>
 			<ul>
-				<li><a href="{{ slink::createAuthLink('register-lot') }}"> Выставить товар </a></li>
+				<li><a href="{{ slink::createAuthLink('register-lot') }}"> Выставить лот</a></li>
 				<li><a href="{{ slink::createAuthLink('register-lot/new-catalog-product') }}"> Добавить в каталог новый товар </a></li>
 			</ul>
 		</div>
@@ -32,10 +32,10 @@
 			loadScript("{{asset('js/vendor/jquery-form.min.js');}}",runFormValidation);
 		}else{
 			loadScript("{{asset('js/vendor/jquery-form.min.js');}}");
-		}
+		};
 		window.onbeforeunload = function(){
 			if(BASIC.inputChanged === true){
-				return "Покинуть страницу? Все не сохраненные данные будут утеряны! Продоолжить?";
+				return "Покинуть страницу? Все не сохраненные данные будут утеряны! Продолжить?";
 			}else{
 				return null;
 			}
