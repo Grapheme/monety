@@ -13,7 +13,6 @@ $(function(){
 		$(".lot-properties-in-shop").addClass('hidden');
 		$(".lot-properties-in-auction").removeClass('hidden');
 	});
-	
 });
 
 function runFormValidation(){
@@ -48,13 +47,22 @@ function runFormValidation(){
 	});
 	
 	var RegisterLot = $("#register-lot-form").validate({
+		ignore: ":hidden",
 		rules:{
-			login: {required : true, email : true},
-			password : {required : true, minlength : 6},
+			name: {required : true},
+			type_lot: {required : true},
+			count: {required : true},
+			shop_price: {required : true},
+			start_price: {required : true},
+			auction_price: {required : true},
 		},
 		messages : {
-			login : {required : 'Введите Ваш адрес электронной почты',email : 'Введите правильный адрес электронной почты'},
-			password : {required : 'Введите пароль',minlength : 'Минимальная длина пароля 6 символа'},
+			name : {required : 'Введите название лота'},
+			type_lot : {required : 'Введите cпособ продажи'},
+			count : {required : 'Введите количество'},
+			shop_price : {required : 'Введите цену продажи'},
+			start_price : {required : 'Введите начальную цену'},
+			auction_price : {required : 'Введите цену'},
 		},
 		errorPlacement : function(error, element) {
 			error.insertAfter(element.parent());
@@ -95,17 +103,25 @@ function runFormValidation(){
 				$(form).find('button[type="submit"]').elementDisabled(false);
 				if(response.status){
 					if(response.found){
+						$("#register-lot-form-search-response").hide();
 						$("#register-lot-form-search").slideUp(500,function(){
-							$("#register-lot-form-search-response").html(response.responseText);
+							$("#register-lot-form-search-response").html(response.responseText).slideDown(500);
 							$(".register-lot-choice-product").on('click',function(){
 								$("#register-lot-product-id").val($(this).attr('data-product'));
+								$(this).parents('.pop-item-action').remove();
+								$("#register-lot-form-search-response").find(".choise-lot-remove").remove();
+								$("#register-lot-form-search-response").find(".choise-lot-li-hide[data-product != "+$(this).attr('data-product')+" ]").remove();
+								$("#register-lot-properties").slideDown(500);
+							});
+							$("#show-choise-lot-form").on('click',function(){
 								$("#register-lot-form-search-response").slideUp(500,function(){
-									$("#register-lot-properties").show();
+									$("#register-lot-form-search-response").html('');
+									$("#register-lot-form-search").slideDown(500);
 								});
 							});
 						});
 					}else{
-						$("#register-lot-form-search-response").html(response.responseText);
+						$("#register-lot-form-search-response").hide().html(response.responseText).slideDown(500);
 					}
 				}else{
 					showMessage.constructor(response.responseText,response.responseErrorText);

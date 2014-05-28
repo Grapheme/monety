@@ -1,20 +1,23 @@
 @if(isset($products) && $products->count())
 	@if($products->count() < $products_count)
-		<div class="row">
+		<div class="row choise-lot-remove">
 			<div class="alert alert-warning fade in">
 				<i class="fa-fw fa fa-warning"></i>
 				<strong>Внимание!</strong> Отобрано {{ $products->count() }} результов из {{ $products_count }} возможных. Измените условия поиска для более точного результата
 			</div>
 		</div>
 	@endif
-	<div class="row">
+	<div class="row choise-lot-remove">
+		<div class="pull-left">
+			<button id="show-choise-lot-form" class="btn btn-link no-padding no-margin">Изменить условия поиска</button>
+		</div>
 		<div class="pull-right">
 			<a href="{{ slink::createAuthLink('register-lot/new-catalog-product') }}" class="btn btn-link no-padding no-margin">Не нашли свою монету в каталоге?</a>
 		</div>
 	</div>
 	<ul class="pop-offers-list list-unstyled">
 	@foreach($products as $product)
-		<li class="pop-offers-item">
+		<li class="pop-offers-item choise-lot-li-hide" data-product="{{ $product->id }}">
 		@if(!empty($product->image))
 			<a class="item-ava" href="{{ slink::createLink('product/'.$product->seo_url.'-'.$product->id) }}">
 				<img src="{{url('image/catalog-product-thumbnail/'.$product->id)}}" alt="{{ $product->title }}" class="avatar bordered circle">
@@ -48,7 +51,7 @@
 			<div class="pop-item-action">
 				<div class="regular-14">
 				@if($product->publication == 1)
-					<button class="btn btn-link register-lot-choice-product" data-product="{{ $product->id }}">Да, это моя монета</button>
+					<button class="btn btn-link register-lot-choice-product" data-product="{{ $product->id }}">Это моя монета</button>
 				@else
 					<div class="alert alert-info fade in">
 						<i class="fa-fw fa fa-info"></i>

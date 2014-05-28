@@ -16,15 +16,13 @@ class UserCabinetController extends BaseController {
 	* Функции по управлению лотами
 	*/
 	
-	public function getRegisterLot($products = array()){
+	public function getRegisterLot(){
 		
-		$categoryGroup = CategoryGroup::findorFail(1);
-		$categories = Category::getTreeCategories($categoryGroup->id);
 		$productsExtendedAttributes = array();
-		foreach(Products_attributes_groups::all() as $key => $value):
+		foreach(Products_attributes_groups::whereUserGroup(AuthAccount::getGroupID())->get() as $key => $value):
 			$productsExtendedAttributes[$value->title] = Products_attributes_groups::find($value->id)->productAttributes()->get();
 		endforeach;
-		return View::make('user-cabinet.register-lot.index',compact('categories','productsExtendedAttributes','products'));
+		return View::make('user-cabinet.register-lot.index',compact('productsExtendedAttributes'));
 	}
 	
 	public function postRegisterLot(){

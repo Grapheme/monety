@@ -1,9 +1,9 @@
-<div id="register-lot-form-search">
+<div id="register-lot-form-search" class="margin-bottom-10">
 	{{ Form::open(array('url'=>slink::createAuthLink('register-lot/search-products'),'role'=>'form','class'=>'smart-form','id'=>'search-product-form','method'=>'post')) }}
 		<header>Воспользуйтесь поиском для выставления Вашего лота:</header>
 		<fieldset>
 			<section>
-				<label class="label">Название товарной позиции</label>
+				<label class="label">Введите название товарной позиции</label>
 				<label class="input">
 					{{ Form::text('product_name','') }}
 				</label>
@@ -40,26 +40,6 @@
 							{{ Form::text('name','') }}
 						</label>
 					</section>
-				@if(!empty($categories))
-					<section>
-						<label class="label">Категория:</label>
-						<label class="select">
-							<select class="select2" name="category" autocomplete="off">
-							@foreach($categories as $category_title => $category)
-								<optgroup label="{{ $category_title }}">
-								@if(!empty($category['sub_categories']))
-									@foreach($category['sub_categories'] as $sub_category)
-									<option value="{{ $sub_category['id'] }}">{{ $sub_category['title'] }}</option>
-									@endforeach
-								@endif
-								</optgroup>
-							@endforeach
-							</select>
-						</label>
-					</section>
-				@else
-					{{ Form::hidden('category',0) }}
-				@endif
 			@if(!empty($productsExtendedAttributes))
 				@foreach($productsExtendedAttributes as $attrName => $attributes)
 					<section>
@@ -75,7 +55,7 @@
 				@endforeach
 			@endif
 					<section>
-						<label class="label">Содержание</label>
+						<label class="label">Описание лота</label>
 						<label class="textarea">
 							{{ Form::textarea('content','',array('class'=>'redactor')) }}
 						</label>
@@ -85,7 +65,7 @@
 						<div class="row">
 							<div class="col col-12">
 								<label class="radio">
-									<input type="radio" autocomplete="off" id="lot-in-shop" name="radio">
+									<input type="radio" autocomplete="off" id="lot-in-shop" name="type_lot">
 									<i></i>
 									Выставить товар в магазин
 								</label>
@@ -95,7 +75,7 @@
 						<div class="row">
 							<div class="col col-12">
 								<label class="radio">
-									<input type="radio" autocomplete="off" id="lot-in-auction" name="radio">
+									<input type="radio" autocomplete="off" id="lot-in-auction" name="type_lot">
 									<i></i>
 									Выставить товар на аукцион
 								</label>
@@ -134,7 +114,7 @@
 							<label class="label">Длительность, дни</label>
 							<label class="select">
 								<?php $auctionPeriod = array(3,5,7,10,14,21);?>
-								{{ Form::select('attribute['.$attrName.']',$auctionPeriod,NULL,array('autocomplete'=>'off')) }} <i></i>
+								{{ Form::select('period',$auctionPeriod,NULL,array('autocomplete'=>'off')) }} <i></i>
 							</label>
 						</section>
 					</div>
