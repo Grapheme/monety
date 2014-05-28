@@ -57,7 +57,7 @@
 					<section>
 						<label class="label">Описание лота</label>
 						<label class="textarea">
-							{{ Form::textarea('content','',array('class'=>'redactor')) }}
+							{{ Form::textarea('description','',array('class'=>'redactor')) }}
 						</label>
 					</section>
 					<section>
@@ -65,7 +65,7 @@
 						<div class="row">
 							<div class="col col-12">
 								<label class="radio">
-									<input type="radio" autocomplete="off" id="lot-in-shop" name="type_lot">
+									<input type="radio" autocomplete="off" id="lot-in-shop" value="1" name="type_lot">
 									<i></i>
 									Выставить товар в магазин
 								</label>
@@ -75,7 +75,7 @@
 						<div class="row">
 							<div class="col col-12">
 								<label class="radio">
-									<input type="radio" autocomplete="off" id="lot-in-auction" name="type_lot">
+									<input type="radio" autocomplete="off" id="lot-in-auction" value="2" name="type_lot">
 									<i></i>
 									Выставить товар на аукцион
 								</label>
@@ -87,7 +87,7 @@
 						<section class="lot-properties-in-shop lot-properties-in-auction">
 							<label class="label">Количество, шт.</label>
 							<label class="input"><i class="icon-append fa fa-list-alt"></i>
-								{{ Form::text('count','') }}
+								{{ Form::text('quantity','') }}
 							</label>
 						</section>
 						<section class="lot-properties-in-shop">
@@ -100,13 +100,13 @@
 						<section class="lot-properties-in-auction">
 							<label class="label">Начальная цена, руб.</label>
 							<label class="input"><i class="icon-append fa fa-ruble"></i>
-								{{ Form::text('start_price','') }}
+								{{ Form::text('auction_start_price','') }}
 							</label>
 						</section>
 						<section class="lot-properties-in-auction">
 							<label class="label">Цена, руб.</label>
 							<label class="input"><i class="icon-append fa fa-ruble"></i>
-								{{ Form::text('auction_price','') }}
+								{{ Form::text('auction_blitc_price','') }}
 							</label>
 							<div class="note">Купить сейчас!</div>
 						</section>
@@ -114,7 +114,7 @@
 							<label class="label">Длительность, дни</label>
 							<label class="select">
 								<?php $auctionPeriod = array(3,5,7,10,14,21);?>
-								{{ Form::select('period',$auctionPeriod,NULL,array('autocomplete'=>'off')) }} <i></i>
+								{{ Form::select('auction_period',$auctionPeriod,NULL,array('autocomplete'=>'off')) }} <i></i>
 							</label>
 						</section>
 					</div>

@@ -20,6 +20,11 @@ Route::post('redactor/upload','DownloadsController@redactorUploadImage');
 	*/
 	
 Route::group(array('before'=>'auth','prefix'=>$prefix),function(){
+	
+	Route::get('image/uploaded/{file_name}', 'ImageController@showUserUploadedFile');
+	Route::get('image/uploaded_thumbnail/{file_name}', 'ImageController@showUserUploadedFile');
+	Route::get('image/uploaded_thumbnail/{file_name}', 'ImageController@showUserUploadedThumbnailFile');
+	
 	Route::controller('pages', 'PagesController');
 	Route::controller('galleries', 'GalleriesController');
 	Route::controller('downloads', 'DownloadsController');
@@ -68,12 +73,14 @@ Route::group(array('before'=>'admin.auth','prefix'=>'admin'),function(){
 	
 Route::group(array('before'=>'user.auth','prefix'=>'dashboard'),function(){
 	Route::get('/','UserCabinetController@mainPage');
-	Route::get('register-lot','UserCabinetController@getRegisterLot');
-	Route::get('register-lot/new-catalog-product','UserCabinetController@getRegisterLotNewProduct');
-	Route::post('register-lot/store','UserCabinetController@postRegisterLot');
+	
+	Route::get('register-lot','LotsController@getRegisterLot');
+	Route::post('register-lot/store','LotsController@postRegisterLotStore');
+	Route::post('register-lot/search-products','LotsController@postRegisterLotSearchProducts');
+	
+	Route::get('register-lot/new-catalog-product','UserCabinetController@getNewCatalogProduct');
 	Route::post('register-lot/request-new-product/store','UserCabinetController@postRegisterLotRequestNewProductStore');
 	Route::post('register-lot/new-catalog-product/upload-product-photo','UserCabinetController@postUploadCatalogProductImages');
-	Route::post('register-lot/search-products','UserCabinetController@postRegisterLotSearchProducts');
 });
 
 	/*

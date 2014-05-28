@@ -23,6 +23,48 @@ class ImageController extends \BaseController {
 		);
 	}
 	
+	public function showUserUploadedFile($fileName){
+		
+		if(AuthAccount::isAdminLoggined()):
+			$dirPath = 'public/uploads';
+		elseif(AuthAccount::isUserLoggined()):
+			$dirPath = 'usersfiles/account-'.Auth::user()->id;
+		else:
+			$dirPath = 'usersfiles/temporary';
+		endif;
+		$fileFullPath = base_path($dirPath.'/'.$fileName);
+		if(File::exists($fileFullPath)):
+			$MimeType = ImageManipulation::open($fileFullPath)->mime;
+			$response = Response::make(File::get($fileFullPath), 200);
+			$response->header('Content-Type', $MimeType);
+			return $response;
+		else:
+			return '';
+		endif;
+		
+	}
+	
+	public function showUserUploadedThumbnailFile($fileName){
+		
+		if(AuthAccount::isAdminLoggined()):
+			$dirPath = 'public/uploads/thumbnail/';
+		elseif(AuthAccount::isUserLoggined()):
+			$dirPath = 'usersfiles/account-'.Auth::user()->id.'/thumbnail/';
+		else:
+			$dirPath = 'usersfiles/temporary/thumbnail/';
+		endif;
+		$fileFullPath = base_path($dirPath.$fileName);
+		if(File::exists($fileFullPath)):
+			$MimeType = ImageManipulation::open($fileFullPath)->mime;
+			$response = Response::make(File::get($fileFullPath), 200);
+			$response->header('Content-Type', $MimeType);
+			return $response;
+		else:
+			return '';
+		endif;
+		
+	}
+	
 	public function showImage($image_group,$id){
 		
 		$image = ''; $filePath = NULL;
@@ -80,8 +122,9 @@ class ImageController extends \BaseController {
 		if(File::exists($filePath)):
 			$MimeType = ImageManipulation::open(base_path($filePath))->mime;
 		endif;
-		header('Content-type: '.$MimeType);
-		echo $image;
+		$response = Response::make($image, 200);
+		$response->header('Content-Type', $MimeType);
+		return $response;
 	}
 	
 	public function deleteImage($id){

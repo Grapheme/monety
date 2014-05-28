@@ -58,41 +58,57 @@ class DownloadsController extends BaseController {
 	
 	public function redactorUploadedImages(){
 		
-		$uploadPath = public_path('uploads');
-		if(!file_exists($uploadPath)):
-			echo json_encode(array());
-			exit;
+		if(AuthAccount::isAdminLoggined()):
+			$dirPath = 'public/uploads';
+		elseif(AuthAccount::isUserLoggined()):
+			$dirPath = 'usersfiles/account-'.Auth::user()->id;
+		else:
+			$dirPath = 'usersfiles/temporary';
 		endif;
-		$fullList[0] = $fileList = array('thumb'=>'','image'=>'','title'=>'Изображение','folder'=>'Миниатюры');
-		if($listDir = scandir($uploadPath)):
+		$dirFullPath = base_path($dirPath);
+		if(!file_exists($dirFullPath)):
+			return stripslashes(Response::json(array(),200));
+		endif;
+		$fullList = array();
+		if($listDir = scandir($dirFullPath)):
 			$index = 0;
+			$fileList = array('thumb'=>'','image'=>'','title'=>'Изображение','folder'=>'Миниатюры');
 			foreach($listDir as $number => $file):
-				if(is_file($uploadPath.'/'.$file)):
-					$thumbnail = $uploadPath.'/thumbnail/thumb_'.$file;
+				if(is_file($dirFullPath.'/'.$file)):
+					$thumbnail = $dirFullPath.'/thumbnail/thumb_'.$file;
 					if(file_exists($thumbnail) && is_file($thumbnail)):
-						$fileList['thumb'] = url('uploads/thumbnail/thumb_'.$file);
+						$fileList['thumb'] = slink::createAuthLink('image/uploaded_thumbnail/thumb_'.$file);
 					endif;
-					$fileList['image'] = url('uploads/'.$file);
+					$fileList['image'] = slink::createAuthLink('image/uploaded/'.$file);
 					$fullList[$index] = $fileList;
 					$index++;
 				endif;
 			endforeach;
 		endif;
-		echo json_encode($fullList);
+		return Response::json($fullList,200);
 	}
 	
 	public function redactorUploadImage(){
 		
-		
-		$uploadPath = public_path('uploads');
+		if(AuthAccount::isAdminLoggined()):
+			$dirPath = 'public/uploads';
+		elseif(AuthAccount::isUserLoggined()):
+			$dirPath = 'usersfiles/account-'.Auth::user()->id;
+		else:
+			$dirPath = 'usersfiles/temporary';
+		endif;
+		$dirFullPath = base_path($dirPath);
+		if(!File::isDirectory($dirFullPath.'/thumbnail')):
+			File::makeDirectory($dirFullPath.'/thumbnail',0777,TRUE);
+		endif;
 		if(Input::hasFile('file')):
 			$fileName = str_random(16).'.'.Input::file('file')->getClientOriginalExtension();
-			if(!File::exists($uploadPath.'/thumbnail')):
-				File::makeDirectory($uploadPath.'/thumbnail',0777,TRUE);
+			if(!File::exists($dirFullPath.'/thumbnail')):
+				File::makeDirectory($dirFullPath.'/thumbnail',0777,TRUE);
 			endif;
-			ImageManipulation::make(Input::file('file')->getRealPath())->resize(100,100,TRUE)->save($uploadPath.'/thumbnail/thumb_'.$fileName);
-			ImageManipulation::make(Input::file('file')->getRealPath())->resize(600,300,TRUE)->save($uploadPath.'/'.$fileName);
-			$file = array('filelink'=>url('uploads/'.$fileName));
+			ImageManipulation::make(Input::file('file')->getRealPath())->resize(100,100,TRUE)->save($dirFullPath.'/thumbnail/thumb_'.$fileName);
+			ImageManipulation::make(Input::file('file')->getRealPath())->resize(600,300,TRUE)->save($dirFullPath.'/'.$fileName);
+			$file = array('filelink'=>slink::createAuthLink('image/uploaded_thumbnail/thumb_'.$fileName));
 			echo stripslashes(json_encode($file));
 		else:
 			exit('Нет файла для загрузки!');

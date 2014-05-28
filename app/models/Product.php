@@ -14,7 +14,6 @@ class Product extends BaseModel {
 		'year' => 'digits:4',
 		'price' => 'numeric',
 		
-		'seo_url' => 'alpha_dash',
 		'catalog_id' => 'required|integer',
 		'category_group_id' => 'required|integer'
 	);
@@ -34,7 +33,6 @@ class Product extends BaseModel {
 	
 
 	protected $fillable = array();
-	
 	
 	public function catalog(){
 

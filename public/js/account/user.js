@@ -51,7 +51,7 @@ function runFormValidation(){
 		rules:{
 			name: {required : true},
 			type_lot: {required : true},
-			count: {required : true},
+			quantity: {required : true},
 			shop_price: {required : true},
 			start_price: {required : true},
 			auction_price: {required : true},
@@ -59,7 +59,7 @@ function runFormValidation(){
 		messages : {
 			name : {required : 'Введите название лота'},
 			type_lot : {required : 'Введите cпособ продажи'},
-			count : {required : 'Введите количество'},
+			quantity : {required : 'Введите количество'},
 			shop_price : {required : 'Введите цену продажи'},
 			start_price : {required : 'Введите начальную цену'},
 			auction_price : {required : 'Введите цену'},

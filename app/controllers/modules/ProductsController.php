@@ -126,7 +126,7 @@ class ProductsController extends \BaseController {
 		$templates = Template::all();
 		$languages = Language::all();
 		$productsExtendedAttributes = array();
-		foreach(Products_attributes_groups::all() as $key => $value):
+		foreach(Products_attributes_groups::whereUserGroup(1)->get() as $key => $value):
 			$productsExtendedAttributes[$value->title] = Products_attributes_groups::find($value->id)->productAttributes()->get();
 		endforeach;
 		return View::make('modules.catalogs.products.edit',compact('product','catalogs','category_groups','data_fields','productsExtendedAttributes','loadProductImages','templates','languages'));
