@@ -15,7 +15,11 @@
 			<i class="fa-fw fa fa-info"></i>
 			<strong id="register-lot-response-text"></strong>
 			<ul>
+			@if(Input::has('product_id'))
+				<li><a href="{{ slink::createAuthLink('register-lot?product_id='.Input::get('product_id')) }}"> Выставить еще лот</a></li>
+			@else
 				<li><a href="{{ slink::createAuthLink('register-lot') }}"> Выставить еще лот</a></li>
+			@endif
 				<li><a href="javascript:void(0);"> К списку выставленных лотов</a></li>
 				<li><a href="javascript:void(0);"> Перейти на страницу лота</a></li>
 				<li><a href="{{ slink::createAuthLink('register-lot/new-catalog-product') }}"> Добавить в каталог новый товар </a></li>

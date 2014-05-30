@@ -24,6 +24,9 @@
 			<div class="pop-item-price">
 				<div class="txt-color-red regular-18 margin-bottom-10">85 301.17руб</div>
 				<div class="regular-14">с доставкой<br>92 200.00 руб</div>
+			@if(AuthAccount::isUserLoggined())
+				<a class="btn btn-success btn-xs" href="{{ slink::createAuthLink('register-lot?product_id='.$product->id) }}">Продать монеты</a>
+			@endif
 			</div>
 		</li>
 	@endforeach

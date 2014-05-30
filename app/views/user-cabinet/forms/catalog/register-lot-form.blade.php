@@ -1,4 +1,4 @@
-<div id="register-lot-form-search" class="margin-bottom-10">
+<div id="register-lot-form-search" class="margin-bottom-10" {{ Input::has('product_id') ? 'style="display: none;"' : '' }}>
 	{{ Form::open(array('url'=>slink::createAuthLink('register-lot/search-products'),'role'=>'form','class'=>'smart-form','id'=>'search-product-form','method'=>'post')) }}
 		<header>Воспользуйтесь поиском для выставления Вашего лота:</header>
 		<fieldset>
@@ -16,10 +16,10 @@
 		</footer>
 	{{ Form::close() }}
 </div>
-<div class="margin-top-10" id="register-lot-form-search-response"></div>
-<div id="register-lot-properties" style="display: none;">
+<div class="margin-top-10" id="register-lot-form-search-response">{{ Input::has('product_id') ? $product : '' }}</div>
+<div id="register-lot-properties" {{ Input::has('product_id') ? '' : 'style="display: none;"' }}>
 	{{ Form::open(array('url'=>slink::createAuthLink('register-lot/store'),'role'=>'form','class'=>'smart-form','id'=>'register-lot-form','method'=>'post')) }}
-		{{ Form::hidden('product_id',0,array('id'=>'register-lot-product-id')) }}
+		{{ Form::hidden('product_id',$product_id,array('id'=>'register-lot-product-id')) }}
 		<header>Чтобы выставить лот заполните форму:</header>
 		<fieldset>
 			<ul class="nav nav-tabs bordered">
