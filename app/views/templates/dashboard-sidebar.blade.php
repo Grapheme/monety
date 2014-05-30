@@ -12,7 +12,7 @@
 	<h2 class="aside-header">Мои продажи</h2>
 	<ul class="aside-list list-unstyled">
 		<li class="aside-item"><a href="{{ slink::createAuthLink('register-lot') }}">Выставить лот</a></li>
-		<li class="aside-item"><a href="javascript:void(0);">Действующие лоты</a></li>
+		<li class="aside-item"><a href="{{ slink::createAuthLink('sales/active-lots') }}">Действующие лоты</a></li>
 		<li class="aside-item"><a href="javascript:void(0);">Проданные лоты</a></li>
 		<li class="aside-item"><a href="javascript:void(0);">Непроданные лоты</a></li>
 	</ul>

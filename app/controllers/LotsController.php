@@ -8,7 +8,14 @@ class LotsController extends \BaseController {
 		
 		$this->lot = $lot;
 	}
-	
+	/******************************** Списки лотов *******************************/
+	public function getSalesActiveLots(){
+		
+		$shopLots = Lot::where('user_id',Auth::user()->id)->where('type_lot',1)->with('product')->get();
+		$auctionLots = Lot::where('user_id',Auth::user()->id)->where('type_lot',2)->with('product')->get();
+		return View::make('user-cabinet.lots.sales-list',compact('auctionLots','shopLots'));
+	}
+	/************************* Функции по регистрации лотов **********************/
 	public function getRegisterLot(){
 		
 		$product = ''; $product_id = 0;

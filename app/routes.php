@@ -78,9 +78,7 @@ Route::group(array('before'=>'user.auth','prefix'=>'dashboard'),function(){
 	Route::post('register-lot/store','LotsController@postRegisterLotStore');
 	Route::post('register-lot/search-products','LotsController@postRegisterLotSearchProducts');
 	
-	
 	Route::get('register-lot/upload-lot-photo', 'DownloadsController@postUploadLotImages');
-	
 	
 	Route::post('register-lot/upload-lot-photo', 'DownloadsController@postUploadLotImages');
 	Route::post('register-lot/upload-lot-photo/lot/{lot_id}', 'DownloadsController@postUploadLotImages')->where('lot_id','\d+');
@@ -88,6 +86,9 @@ Route::group(array('before'=>'user.auth','prefix'=>'dashboard'),function(){
 	Route::get('register-lot/new-catalog-product','UserCabinetController@getNewCatalogProduct');
 	Route::post('register-lot/request-new-product/store','UserCabinetController@postRegisterLotRequestNewProductStore');
 	Route::post('register-lot/new-catalog-product/upload-product-photo','UserCabinetController@postUploadCatalogProductImages');
+	
+	
+	Route::get('sales/active-lots','LotsController@getSalesActiveLots');
 });
 
 	/*
