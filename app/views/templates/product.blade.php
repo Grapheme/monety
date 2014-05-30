@@ -1,6 +1,6 @@
 @extends('templates.default')
 @section('style')
-<link rel="stylesheet" href="{{ slink::path('css/fancybox.css') }}" />
+<link rel="stylesheet" href="{{ slink::path('css/fancybox.css') }}">
 @stop
 @section('content')
 	@if($product->publication == 0)
@@ -56,6 +56,22 @@
 			{{ sPage::content_render($product->description) }}
 		</section>
 	</article>
+	@if($product->in_shop->count())
+	<article class="row margin-top-20">
+		<section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h3 class="regular-20">Предложения в магазине</h3>
+			@include('templates.lots',array('lots'=>$product->in_shop))
+		</section>
+	</article>
+	@endif
+	@if($product->in_auction->count())
+	<article class="row margin-top-20">
+		<section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h3 class="regular-20">Предложения на укционе</h3>
+			@include('templates.lots',array('lots'=>$product->in_auction))
+		</section>
+	</article>
+	@endif
 @stop
 @section('scripts')
 <script src="{{ slink::path('js/vendor/jquery.fancybox.pack.js') }}"></script>

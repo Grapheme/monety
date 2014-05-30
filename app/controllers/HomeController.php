@@ -93,7 +93,14 @@ class HomeController extends BaseController {
 			endforeach;
 			$product->attributes = $productAttributes;
 			$product->categories = $product->categories()->get()->toArray();
-			
+			$product->in_auction = $product->lotsInAuction();
+			$product->in_shop = $product->lotsInShop();
+			foreach($product->in_auction as $index => $lot):
+				$product->in_auction[$index]->owner = $lot->user()->first();
+			endforeach;
+			foreach($product->in_shop as $index => $lot):
+				$product->in_shop[$index]->owner = $lot->user()->first();
+			endforeach;
 			$module = Modules::where('url','catalogs')->first();
 			$product->images = Image::where('module_id',$module->id)->where('item_id',$product->id)->get();
 			return View::make('templates.'.$product->template,array('product'=>$product,'page_title'=>$product->seo_title,'page_description'=>$product->seo_description,
@@ -127,16 +134,18 @@ class HomeController extends BaseController {
 						endif;
 					else:
 						$products = Category::where('publication',1)->find($category_id)->products()->where('publication',1)->where('catalog_id',$productsCatalog->id)
-								->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->paginate(Config::get('app-default.catalog_count_on_page'));
+							->orderBy('sort','asc')->orderBy('title','asc')->orderBy('price','desc')->paginate(Config::get('app-default.catalog_count_on_page'));
 					endif;
+					foreach($products as $index => $product):
+						$products[$index]['in_auction'] = $product->lotsInAuction()->count();
+						$products[$index]['in_shop'] = $product->lotsInShop()->count();
+					endforeach;
 					if(!empty($productsCatalog->template) && View::exists('templates.'.$productsCatalog->template)):
-						
 						$view_variables = array(
 							'page_title'=>$productsCategory->seo_title,'page_description'=>$productsCategory->seo_description,'pege_keywords'=>$productsCategory->seo_keywords,
 							'page_author'=>'','page_h1'=>$productsCategory->seo_h1,'menu'=> Page::getMenu(),
 							'products'=>$products, 'category_content' => sPage::content_render($productsCategory->description),'content' => sPage::content_render($productsCatalog->description)
 						);
-					
 						return View::make('templates.'.$productsCatalog->template,$view_variables);
 					else:
 						return App::abort(404,'Отсутсвует шаблон: templates/'.$productsCategory->template);
@@ -151,5 +160,29 @@ class HomeController extends BaseController {
 				return App::abort(404);
 		endif;
 	}  // Функция для просмотра каталога товаров
-
+	
+	public function getShowProductLot($lot_url){
+		
+		if(!Allow::enabled_module('catalogs')):
+			return App::abort(404);
+		endif;
+		$lot_id = getItemIDforURL($lot_url);
+		if(AuthAccount::isAdminLoggined()):
+			$lot = Lot::where('language',Config::get('app.locale'))->find($lot_id);
+		else:
+			$lot = Lot::where('publication',1)->where('language',Config::get('app.locale'))->find($lot_id);
+		endif;
+		if(!$lot):
+			return App::abort(404,'Запрашиваемый лот не найден');
+		endif;
+		if(!empty($lot->template) && View::exists('templates.'.$lot->template)):
+			$lot->attributes = json_decode($lot->attributes);
+			$lot->owner = $lot->user()->first();
+			$lot->images =  Lot_image::where('lot_id',$lot->id)->get();
+			return View::make('templates.'.$lot->template,array('lot'=>$lot,'page_title'=>$lot->seo_title,'page_description'=>$lot->seo_description,
+					'pege_keywords'=>$lot->seo_keywords,'page_author'=>'','page_h1'=>$lot->seo_h1,'menu'=> Page::getMenu()));
+		else:
+			return App::abort(404,'Отсутсвует шаблон: templates/'.$lot->template);
+		endif;
+	} // Функция для просмотра лота
 }

@@ -67,4 +67,30 @@ class myDateTime {
 		
 		return preg_replace("/(\d+)\.(\w+)\.(\d+)/i","\$3-\$2-\$1",$date_string);
 	}
+
+	public static function daysLeftFull($date_start = NULL,$days = NULL){
+		
+		if(is_null($date_start) || is_null($days)):
+			return 'Ошибка подсчета';
+		endif;
+		
+		$dateTimeNow = new DateTime(date('Y-m-d H:i:s'));
+		$dateTimeCreated = new DateTime($date_start);
+		$dateTimeFuture = $dateTimeCreated->add(new DateInterval('P'.$days.'D'));
+		$daysLeft = $dateTimeFuture->diff($dateTimeNow);
+		return $daysLeft->format('%a д. %h ч. %i м.');
+	}
+	
+	public static function daysLeftShort($date_start,$days){
+		
+		if(is_null($date_start) || is_null($days)):
+			return 'Ошибка подсчета';
+		endif;
+		
+		$dateTimeNow = new DateTime(date('Y-m-d H:i:s'));
+		$dateTimeCreated = new DateTime($date_start);
+		$dateTimeFuture = $dateTimeCreated->add(new DateInterval('P'.$days.'D'));
+		$daysLeft = $dateTimeFuture->diff($dateTimeNow);
+		return $daysLeft->format('%a д.');
+	}
 }

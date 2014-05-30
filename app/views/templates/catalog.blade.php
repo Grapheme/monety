@@ -9,21 +9,19 @@
 		@endif
 			<div class="pop-item-expires">
 				<a href="{{ slink::createLink('product/'.$product->seo_url.'-'.$product->id) }}">{{ $product->title }}</a>
+				<div class="">
+					{{ Str::words(strip_tags($product->description),50,' ...') }}
+				</div>
 				<div class="status">
 					<div class="line">
-						<span class="txt-color-red"><strong><span class="fa fa-clock-o"></span> 10 дней</strong></span> до окончания
-					</div>
-					<div class="line">
-						<strong>1 предмет</strong> доступен
+						Выставлено на аукцион: <strong>{{ $product->in_auction }}</strong> {{ Plural::items($product->in_auction) }}
 					</div>
 					<div class="line last">
-						<strong>10 пользователей</strong> сделали ставки
+						В магазине: <strong>{{ $product->in_shop }}</strong> {{ Plural::items($product->in_shop) }}
 					</div>
 				</div>
 			</div>
-			<div class="pop-item-price">
-				<div class="txt-color-red regular-18 margin-bottom-10">85 301.17руб</div>
-				<div class="regular-14">с доставкой<br>92 200.00 руб</div>
+			<div class="pop-item-action">
 			@if(AuthAccount::isUserLoggined())
 				<a class="btn btn-success btn-xs" href="{{ slink::createAuthLink('register-lot?product_id='.$product->id) }}">Продать монеты</a>
 			@endif

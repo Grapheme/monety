@@ -58,4 +58,14 @@ class Product extends BaseModel {
 		
 		return $this->belongsToMany('Category');
 	}
+	
+	public function lotsInAuction(){
+		
+		return $this->hasMany('Lot')->where('type_lot',2)->get();
+	}
+	
+	public function lotsInShop(){
+		
+		return $this->hasMany('Lot')->where('type_lot',1)->get();
+	}
 }

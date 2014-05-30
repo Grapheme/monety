@@ -126,6 +126,10 @@ class shortcode {
 			endif;
 			$products = $selected_products->paginate(static::$config['limit']);
 			if($products->count()):
+				foreach($products as $index => $product):
+					$products[$index]['in_auction'] = $product->lotsInAuction()->count();
+					$products[$index]['in_shop'] = $product->lotsInShop()->count();
+				endforeach;
 				if(View::exists('templates.'.static::$config['path'])):
 					return View::make('templates.'.static::$config['path'],compact('products'));
 				else: 

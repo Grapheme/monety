@@ -42,6 +42,6 @@ class Lot extends BaseModel {
 	
 	public function images(){
 
-		return $this->hasMany('Image','item_id','id');
+		return $this->hasMany('Lot_image','item_id','id');
 	}
 }
