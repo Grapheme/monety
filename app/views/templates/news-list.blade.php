@@ -1,27 +1,18 @@
-<div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-	@if(isset($news) && $news->count())
-		@foreach($news as $new)
-		<div class="row">
-			<div class="margin-top-10">
-				<hr>
-				<h3><a href="{{slink::createLink('news/'.$new->seo_url)}}">{{$new->title}}</a></h3>
-				<p><span class="glyphicon glyphicon-time"></span> {{ myDateTime::SwapDotDateWithoutTime($new->date_publication,TRUE) }}</p>
-			@if($new->thumbnail_image)
-				<div>
-					<img src="{{ url('image/news-thumbnail/'.$new->id) }}" alt="{{ $new->title }}" />
-				</div>
-			@endif
-				<div>
+@if(isset($news) && $news->count())
+	<ul class="pop-offers-list list-unstyled">
+	@foreach($news as $new)
+		<li class="pop-offers-item">
+		@if(!empty($new->thumbnail_image))
+			<img src="{{ slink::path('image/news-thumbnail/'.$new->id) }}" alt="{{ $new->title }}" />
+		@endif
+			<div class="pop-item-expires">
+				<a href="{{ slink::createLink('news/'.$new->seo_url) }}">{{ $new->title }}</a>
+				<div class="">
 					{{$new->preview}}
 				</div>
-				<a href="{{slink::createLink('news/'.$new->seo_url)}}" class="btn btn-default no-margin regular-10 uppercase pull-left btn-spinner">
-					<span class="btn-response-text">Просмотр</span><i class="glyphicon glyphicon-chevron-right hidden"></i>
-				</a>
 			</div>
-		</div>
-		@endforeach
-		{{ $news->links() }}
-	@endif
-	</div>
-</div>
+		</li>
+	@endforeach
+	</ul>
+	{{ $news->links() }}
+@endif

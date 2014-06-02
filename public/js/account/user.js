@@ -46,7 +46,6 @@ function runFormValidation(){
 			$(form).ajaxSubmit(options);
 		}
 	});
-	
 	var RegisterLot = $("#register-lot-form").validate({
 		ignore: ":hidden",
 		rules:{
@@ -136,4 +135,33 @@ function runFormValidation(){
 			$(form).ajaxSubmit(options);
 		}
 	});
+	var SendComment = $("#send-comment-form").validate({
+		rules:{
+			comment: {required : true},
+		},
+		messages : {
+			comment : {required : 'Введите текст комментария'},
+		},
+		errorPlacement : function(error, element) {
+			error.insertAfter(element.parent());
+		},
+		submitHandler: function(form) {
+			var options = {target: null,dataType:'json',type:'post'};
+			options.beforeSubmit = function(formData,jqForm,options){
+				$(form).find('button[type="submit"]').elementDisabled(true);
+			},
+			options.success = function(response,status,xhr,jqForm){
+				$(form).find('button[type="submit"]').elementDisabled(false);
+				if(response.status){
+					
+				}else{
+					showMessage.constructor(response.responseText,response.responseErrorText);
+					showMessage.smallError();
+				}
+			}
+			$(form).ajaxSubmit(options);
+		}
+	});
+
+
 };
