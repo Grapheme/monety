@@ -19,8 +19,8 @@
 		<div>
 			<a href="{{ URL::previous() }}" class="btn btn-link no-padding margin-left-10">Назад в каталог</a>
 		</div>
-	</div>
 	@endif
+	</div>
 	<ul class="pop-offers-list list-unstyled">
 	@foreach($products as $product)
 		<li class="pop-offers-item choise-lot-li-hide" data-product="{{ $product->id }}">
